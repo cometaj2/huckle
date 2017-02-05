@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd /Users/jeff/Documents/workspace/huck
-pyinstaller --onefile --version-file=/Documents/workspace/huck/src/version.txt ~/Documents/workspace/huck/src/huck.py

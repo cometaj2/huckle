@@ -16,13 +16,13 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1.0',
+    version='0.0.1.dev1',
 
     description='A generic CLI used with any API that follows the standard hypermedia CLI pattern.',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/pypa/sampleproject',
+    url='https://github.com/cometaj2/huck',
 
     # Author details
     author='Jeff Michaud',
