@@ -18,7 +18,7 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version='0.0.1.dev1',
 
-    description='A generic CLI used with any API that follows the standard hypermedia CLI pattern.',
+    description='A generic CLI that can be used with any API that follows the standard hypermedia CLI pattern.',
     long_description=long_description,
 
     # The project's main homepage.
@@ -95,7 +95,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'huck=huck:main',
+            'huck=huck.__main__:main',
         ],
     },
 )
