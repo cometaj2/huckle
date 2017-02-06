@@ -3,12 +3,10 @@ import sys
 
 from ConfigParser import SafeConfigParser
 
-version = "0.0.1.dev1"
 home = os.path.expanduser("~")
 dot_huck = "%s/.huck" % home
 dot_bash_profile = home + "/.bash_profile"
 url = ""
-cliname = ""
 
 def parse_configuration(cli):
     config_file_path = dot_huck + "/" + "cli_" + cli 
@@ -20,11 +18,7 @@ def parse_configuration(cli):
                 if name == "url":
                     global url
                     url = value
-                if name == "cliname":
-                    global cliname
-                    cliname = value
             if url == "": sys.exit("No url defined for " + cli + " under " + config_file_path)
-            if cliname == "": sys.exit("No cliname defined for " + cli + " under " + config_file_path)
     else:
         sys.exit("No cli configuration " + config_file_path + " available for " + cli) 
 
