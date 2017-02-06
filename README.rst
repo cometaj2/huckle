@@ -34,5 +34,6 @@ huck create <cliname>
 huck cli <cliname>
 
     Invokes the cli name to issue API calls. The details are left to API implementers.
+    
     documentation and commands are presented gradually, as incomplete calls are made, to provide
     users with a way to incrementally discover and learn how calls are issued.
