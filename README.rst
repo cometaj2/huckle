@@ -2,8 +2,8 @@ Huck (hypermedia unified CLI... with a "k")
 ===========================================
 
 Huck is a very specific form of generic hypermedia client that plays in the
-CLI space. It runs as a command line interface (CLI) application that
-instantly provides a CLI to *any* hypermedia API (REST API) that follows the
+CLI space. It's a command line interface (CLI) that impersonates the CLI
+of any hypermedia API (REST API) that follows the
 standard hypermedia CLI pattern.
 
 ----
