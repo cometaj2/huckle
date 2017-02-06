@@ -6,6 +6,7 @@ from ConfigParser import SafeConfigParser
 version = "0.0.1.dev1"
 home = os.path.expanduser("~")
 dot_huck = "%s/.huck" % home
+dot_bash_profile = home + "/.bash_profile"
 url = ""
 cliname = ""
 
@@ -26,3 +27,10 @@ def parse_configuration(cli):
             if cliname == "": sys.exit("No cliname defined for " + cli + " under " + config_file_path)
     else:
         sys.exit("No cli configuration " + config_file_path + " available for " + cli) 
+
+def alias_cli(cli):
+    f = open(dot_bash_profile, "a+")
+    f.write("\n")
+    f.write("# huck aliases\n")
+    f.write("alias " + cli + "=\"huck cli " + cli + "\"")
+    f.close
