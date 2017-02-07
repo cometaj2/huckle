@@ -24,6 +24,7 @@ def cli():
             config.parse_configuration(sys.argv[2])
             navigate(sys.argv[2:])
         if sys.argv[1] == "create":
+            config.create_configuration(sys.argv[2])
             config.alias_cli(sys.argv[2])
     else:
         sys.exit(usage)
