@@ -12,8 +12,7 @@ by the server are instantaneously distributed to all clients without there being
 a need to update the client as the API changes. This is used to huck's advantage
 and brings these benefits to the shell command line.
 
-Once a CLI is created via huck, it can be invoked by name directly. Huck then takes
-over and provides a dynamic view of the documentation and commands that can be issued
+Huck provides a dynamic view of the documentation and commands that can be issued
 to the CLI API it's associated to.
 
 Usage
@@ -21,15 +20,18 @@ Usage
 
 huck create [cliname]
 
-    This aliases a new cliname for use via huck. The current implementation simply leverages
-    .bash_profile aliases.
+    This creates an new cliname alias and configuration file. Once a CLI is created via huck,
+    it can be invoked by name directly after restarting the terminal.
+   
+    Note that an existing configuration file is left alone if the command is run multiple times 
+    for the same cliname.
 
 huck cli [cliname]
 
-    Invokes the cliname to issue API calls, the details of which are left to API implementers.
+    This invokes the cliname to issue API calls; the details of which are left to API implementers.
     
     Documentation and commands are presented gradually, as incomplete calls are made, to provide
-    users with a way to incrementally discover and learn how calls are issued to an API.
+    users with a way to incrementally discover and learn how CLI calls are issued to an API.
 
 Configuration
 -------------
@@ -37,9 +39,8 @@ Configuration
 Huck uses the .bash_profile to defer to a ~/.huck/huck_profile for CLI aliases; to avoid
 crowding the .bash_profile and to facilitate cleanup if huck is uninstalled.
 
-Huck also uses CLI configuration files (e.g. ~/.huck/usp5/config) to associate a specific
-CLI, usp5 in this example, to a hypermedia API url root.
+Huck also uses CLI configuration files (e.g. ~/.huck/<cliname>/config) to associate a specific
+CLI to a hypermedia API url root.
 
 Each CLI configuration file contains:
     - A URL to the root of the hypermedia CLI API
-
