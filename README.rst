@@ -10,8 +10,7 @@ API (REST API) that follows the standard hypermedia CLI pattern.
 As is normally seen with any hypermedia client under REST, all changes published
 by the server are instantaneously distributed to all clients without there being
 a need to update the client as the API changes. This is used to huck's advantage
-and brings these benefits to the command line in the form of a generically usable
-CLI.
+and brings these benefits to the shell command line.
 
 Huck uses a CLI configuration files (e.g. ~/.huck/usp5/config) to associate a
 specific CLI, usp5 in this case, to a hypermedia API url root.
