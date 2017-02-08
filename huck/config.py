@@ -4,6 +4,9 @@ import sys
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 
+version = "0.0.1.dev1"
+dependencies = ["restnavigator==1.0.1"]
+
 home = os.path.expanduser("~")
 dot_huck = "%s/.huck" % home
 dot_bash_profile = home + "/.bash_profile"
