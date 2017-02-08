@@ -2,26 +2,26 @@ Huck (hypermedia unified CLI... with a "k")
 ===========================================
 
 Huck is a very specific form of generic hypermedia client that plays in the
-CLI space. It's a command line interface (CLI) that impersonates the CLI
-of any hypermedia API (REST API) that follows the
-standard hypermedia CLI pattern.
+command line interface (CLI) space. It's a CLI that understands any hypermedia
+API (REST API) that follows the standard hypermedia CLI pattern.
 
 ----
 
 As is normally seen with any hypermedia client under REST, all changes published
 by the server are instantaneously distributed to all clients without there being
-a need to update the CLI client as the API changes. This is used to huck's advantage.
+a need to update the client as the API changes. This is used to huck's advantage
+and brings these benefits to the command line in the form of a generically usable
+CLI.
 
-Huck uses a CLI configuration files (e.g. ~/.huck/profile_aws) to associate a
-specific CLI to a hypermedia API url root and CLI name.
+Huck uses a CLI configuration files (e.g. ~/.huck/usp5/config) to associate a
+specific CLI, usp5 in this case, to a hypermedia API url root.
 
-Each cli configuration file contains two things:
+Each CLI configuration file contains:
     - A URL to the root of the hypermedia API
-    - A CLI name
 
-Once a CLI is created, the CLI can then be invoked by name. Huck then takes
+Once a CLI is created, it can be invoked by name. Huck then takes
 over and provides a dynamic view of the commands and documentation that can
-be used to issue CLI calls to the API it's associated to.
+be used to issue commands to the CLI API it's associated to.
 
 Usage
 =====

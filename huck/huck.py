@@ -15,6 +15,7 @@ usage = """Usage:
 
 def navigate(argv):
     h = Navigator.hal(config.url)
+
     if len(argv) == 1:
       print json.dumps(h(), indent=4, sort_keys=True)
 
