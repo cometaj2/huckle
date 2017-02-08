@@ -14,7 +14,7 @@ usage = """Usage:
 """
 
 def navigate(argv):
-    h = Navigator.hal(config.url)
+    h = Navigator.hal(config.url, apiname=config.cliname)
 
     if len(argv) == 1:
       print json.dumps(h(), indent=4, sort_keys=True)
@@ -22,7 +22,7 @@ def navigate(argv):
     length = len(argv[1:])
     for i, x in enumerate(argv[1:]):
         try:
-            h.links['command'].get_by('name', x)
+            h.links["command"].get_by("name", x)
         except:
             print "ERROR: The \"" + x + "\" command is not available."
             break

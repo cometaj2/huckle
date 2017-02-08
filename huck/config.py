@@ -8,6 +8,7 @@ home = os.path.expanduser("~")
 dot_huck = "%s/.huck" % home
 dot_bash_profile = home + "/.bash_profile"
 url = ""
+cliname = ""
 
 def parse_configuration(cli):
     config_file_path = dot_huck + "/" + cli + "/config"
@@ -19,6 +20,8 @@ def parse_configuration(cli):
                 if name == "url":
                     global url
                     url = value
+                    global cliname
+                    cliname = cli
             if url == "": sys.exit("No url defined for " + cli + " under " + config_file_path)
     else:
         sys.exit("No cli configuration " + config_file_path + " available for " + cli) 
