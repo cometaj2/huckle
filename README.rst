@@ -16,7 +16,7 @@ Huck uses a CLI configuration files (e.g. ~/.huck/usp5/config) to associate a
 specific CLI, usp5 in this case, to a hypermedia API url root.
 
 Each CLI configuration file contains:
-    - A URL to the root of the hypermedia API
+    - A URL to the root of the hypermedia CLI API
 
 Once a CLI is created, it can be invoked by name. Huck then takes
 over and provides a dynamic view of the commands and documentation that can
