@@ -77,5 +77,4 @@ def cli():
             config.create_configuration(sys.argv[2])
             config.alias_cli(sys.argv[2])
     else:
- 
         sys.exit(usage)

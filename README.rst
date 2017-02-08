@@ -25,12 +25,12 @@ be used to issue commands to the CLI API it's associated to.
 Usage
 =====
 
-huck create <cliname>
+huck create [cliname]
 
     This aliases a new cliname for use via huck. The current implementation simply leverages
     .bash_profile aliases.
 
-huck cli <cliname>
+huck cli [cliname]
 
     Invokes the cli name to issue API calls. The details are left to API implementers.
     
