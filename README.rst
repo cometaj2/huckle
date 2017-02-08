@@ -7,13 +7,19 @@ API (REST API) that abide by a specific hypermedia API CLI pattern.
 
 ----
 
-As is normally seen with any hypermedia client under REST, all changes published
-by the server are instantaneously distributed to all clients without there being
-a need to update the client as the API changes. This is used to huck's advantage
-and brings these benefits to the shell command line.
+As is normally seen with any well-behaved client/server interaction under REST,
+all changes published by the server are distributed to all clients without there
+being a need to update the client as the API changes. This is used to huck's
+advantage and this benefit is brought to the shell command line interface.
 
 Huck provides a dynamic view of the documentation and commands that can be issued
-to the CLI API it's associated to.
+to the CLI APIs it's associated to.
+
+What can be noticed is that any API implementer, that abides by a specific
+hypermedia API CLI pattern, gets a client side shell CLI for their API, for free;
+and given that most programming languages have a way to issue shell commands, such
+APIs become readily consumable anywhere, and can be experimented with quickly
+by developers.
 
 Usage
 -----
