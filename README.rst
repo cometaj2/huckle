@@ -1,5 +1,5 @@
-Huck (hypermedia unified CLI... with a "k")
-===========================================
+Huck (hypermedia unified CLI... with a kick)
+============================================
 
 Huck is a very specific form of generic hypermedia client that plays in the
 command line interface (CLI) space. It's a CLI that understands any hypermedia
