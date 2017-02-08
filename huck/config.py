@@ -9,6 +9,7 @@ dependencies = ["restnavigator==1.0.1"]
 
 home = os.path.expanduser("~")
 dot_huck = "%s/.huck" % home
+dot_huck_profile = dot_huck + "/huck_profile"
 dot_bash_profile = home + "/.bash_profile"
 url = ""
 cliname = ""
@@ -30,17 +31,26 @@ def parse_configuration(cli):
         sys.exit("No cli configuration " + config_file_path + " available for " + cli) 
 
 def create_configuration(cli):
-    config_file_path = dot_huck + "/" + cli 
-    create_folder(config_file_path)
-    create_file(config_file_path + "/config")
-    init_configuration(cli)
+    config_file_folder = dot_huck + "/" + cli 
+    config_file = config_file_folder + "/config"
+    create_folder(config_file_folder)
+    
+    if not os.path.exists(config_file):
+        create_file(config_file)
+        init_configuration(cli)
 
 def alias_cli(cli):
-    f = open(dot_bash_profile, "a+")
-    f.write("\n")
-    f.write("# huck aliases\n")
-    f.write("alias " + cli + "=\"huck cli " + cli + "\"")
-    f.close
+    if not is_configured(dot_bash_profile, ". " + dot_huck_profile):
+        f = open(dot_bash_profile, "a+")
+        f.write("\n")
+        f.write("# we load the huck aliases profile\n")
+        f.write(". " + dot_huck_profile)
+        f.close
+
+    if not is_configured(dot_huck_profile, "alias " + cli + "="):
+        g = open(dot_huck_profile, "a+")
+        g.write("alias " + cli + "=\"huck cli " + cli + "\"\n")
+        g.close
 
 def create_folder(path):
     if not os.path.exists(path):
@@ -66,7 +76,13 @@ def init_configuration(cli):
     config_file_path = dot_huck + "/" + cli + "/config"
     parser = SafeConfigParser()
     parser.readfp(StringIO("[default]"))
-    parser.set("default", "url", " ")
+    parser.set("default", "url", "")
       
     with open(config_file_path, "w") as config:
         parser.write(config)
+
+def is_configured(file_path, contains):
+    if contains in open(file_path).read():
+        return True
+    else:
+        return False

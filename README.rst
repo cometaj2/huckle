@@ -28,15 +28,18 @@ huck cli [cliname]
 
     Invokes the cliname to issue API calls, the details of which are left to API implementers.
     
-    documentation and commands are presented gradually, as incomplete calls are made, to provide
+    Documentation and commands are presented gradually, as incomplete calls are made, to provide
     users with a way to incrementally discover and learn how calls are issued to an API.
 
 Configuration
 -------------
 
-    Huck uses CLI configuration files (e.g. ~/.huck/usp5/config) to associate a
-    specific CLI, usp5 in this example, to a hypermedia API url root.
+Huck uses the .bash_profile to defer to a ~/.huck/.huck_profile for CLI aliases; to avoid
+crowding the .bash_profile and to facilitate cleanup if huck is uninstalled.
 
-    Each CLI configuration file contains:
-        - A URL to the root of the hypermedia CLI API
+Huck also uses CLI configuration files (e.g. ~/.huck/usp5/config) to associate a specific
+CLI, usp5 in this example, to a hypermedia API url root.
+
+Each CLI configuration file contains:
+    - A URL to the root of the hypermedia CLI API
 

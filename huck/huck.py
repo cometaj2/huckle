@@ -28,7 +28,7 @@ commands:
 options:
     --version
 
-    Hucks's version and the version of it's dependencies
+    Hucks's version and the version of it's dependencies.
 
 """
 
@@ -41,7 +41,7 @@ def navigate(argv):
     for i, x in enumerate(argv[1:]):
         h = h["command"].get_by("name", x)
         if h is None:
-            print "ERROR: The \"" + x + "\" command is not available."
+            print config.cliname + ": " + x + ": " + "command not found."
             break
 
         if i == length - 1:
