@@ -34,7 +34,7 @@ huck cli [cliname]
 Configuration
 -------------
 
-Huck uses the .bash_profile to defer to a ~/.huck/.huck_profile for CLI aliases; to avoid
+Huck uses the .bash_profile to defer to a ~/.huck/huck_profile for CLI aliases; to avoid
 crowding the .bash_profile and to facilitate cleanup if huck is uninstalled.
 
 Huck also uses CLI configuration files (e.g. ~/.huck/usp5/config) to associate a specific
