@@ -2,7 +2,7 @@ import sys
 import config
 import json
 
-from haleasy import HALEasy
+from restnavigator import Navigator
 
 usage = """Usage:
    
@@ -14,9 +14,20 @@ usage = """Usage:
 """
 
 def navigate(argv):
-    for x in argv:
-        h = HALEasy(config.url)
-        print json.dumps(h.properties(), indent=4, sort_keys=True)
+    h = Navigator.hal(config.url)
+    if len(argv) == 1:
+      print json.dumps(h(), indent=4, sort_keys=True)
+
+    length = len(argv[1:])
+    for i, x in enumerate(argv[1:]):
+        try:
+            h.links['command'].get_by('name', x)
+        except:
+            print "ERROR: The \"" + x + "\" command is not available."
+            break
+
+        if i == length - 1:
+          print json.dumps(h(), indent=4, sort_keys=True)
 
 def cli():
     if len(sys.argv) > 2:
@@ -27,4 +38,5 @@ def cli():
             config.create_configuration(sys.argv[2])
             config.alias_cli(sys.argv[2])
     else:
+ 
         sys.exit(usage)
