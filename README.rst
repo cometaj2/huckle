@@ -31,6 +31,10 @@ author. A few candidates are being considered:
 The current implementation leverage hal+json with a specific json structure, but ALPS
 seems the most likely candidate to help enable widespread cross media-type support.
 
+Help shape huck in the discussion list [1] or by raising issues on github!
+
+[1] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
+
 Usage
 -----
 
