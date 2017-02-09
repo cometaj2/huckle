@@ -21,15 +21,15 @@ and given that most programming languages have a way to issue shell commands, su
 APIs become readily consumable anywhere, and can be experimented with quickly
 by developers.
 
-The standard hypermedia API CLI pattern is also work in progress by the author and a
-few candidates are being looked at:
+The standard hypermedia API CLI pattern definition is a work in progress by the
+author. A few candidates are being considered:
 
     - Media-type specific structure
     - Microformat (http://microformats.org/)
     - ALPS (http://alps.io/)
 
-The current implementation leverage hal+json with a specific json structure but ALPS
-seems the most likely candidate to help foster cross media-type support.
+The current implementation leverage hal+json with a specific json structure, but ALPS
+seems the most likely candidate to help enable widespread cross media-type support.
 
 Usage
 -----
