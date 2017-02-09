@@ -16,7 +16,7 @@ Huck provides a dynamic view of the documentation and commands that can be issue
 to the CLI APIs it's associated to.
 
 What can be noticed is that any API implementer, that abides by a specific
-hypermedia API CLI pattern, gets a client side shell CLI for their API, for free;
+hypermedia API CLI pattern, gets a client side shell CLI for their API for free;
 and given that most programming languages have a way to issue shell commands, such
 APIs become readily consumable anywhere, and can be experimented with quickly
 by developers.
