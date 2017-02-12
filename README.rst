@@ -34,7 +34,7 @@ support.
 
 Help shape huck and HCLI on the discussion list [2] or by raising issues on github!
 
-[1] https://github.com/cometaj2/I-D/tree/master/hcli  
+[1] https://github.com/cometaj2/I-D/tree/master/hcli<br/>
 [2] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
 
 Usage
