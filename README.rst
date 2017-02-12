@@ -22,18 +22,20 @@ APIs become readily consumable anywhere, and can be experimented with quickly
 by developers.
 
 The standard hypermedia API CLI pattern definition is a work in progress by the
-author. A few candidates are being considered:
+author with the HCLI Internet-Draft [1]. A few candidates are being considered:
 
     - Media-type specific structure
     - Microformat (http://microformats.org/)
     - ALPS (http://alps.io/)
 
-The current implementation leverage hal+json with a specific json structure, but ALPS
-seems the most likely candidate to help enable widespread cross media-type support.
+The current implementation of huck leverage hal+json with a specific json structure,
+but ALPS seems the most likely candidate to help enable widespread cross media-type
+support.
 
-Help shape huck in the discussion list [1] or by raising issues on github!
+Help shape huck and HCLI on the discussion list [2] or by raising issues on github!
 
-[1] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
+[1] https://github.com/cometaj2/I-D/tree/master/hcli
+[2] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
 
 Usage
 -----
