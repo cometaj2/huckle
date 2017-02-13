@@ -21,7 +21,7 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version=config.version,
 
-    description='A generic CLI that can be used with any API that follows the standard hypermedia CLI pattern.',
+    description='A generic CLI that can be used with any API that abides by the standard hypertext command line interface (HCLI) semantics.',
     long_description=long_description,
 
     # The project's main homepage.
