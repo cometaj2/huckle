@@ -1,7 +1,7 @@
 Huckle (hypermedia unified CLI... with a kick)
 ============================================
 
-Huck is a very specific form of generic hypermedia client that plays in the
+Huckle is a very specific form of generic hypermedia client that plays in the
 command line interface (CLI) space. It's a CLI that understands any hypermedia
 API (REST API) that abide by a specific hypermedia API CLI pattern.
 
@@ -12,7 +12,7 @@ all changes published by the server are distributed to all clients without there
 being a need to update the client as the API changes. This is used to huckle's
 advantage and this benefit is brought to the shell command line interface.
 
-Huck provides a dynamic view of the documentation and commands that can be issued
+Huckle provides a dynamic view of the documentation and commands that can be issued
 to the CLI APIs it's associated to.
 
 What can be noticed is that any API implementer, that abides by a specific
@@ -59,10 +59,10 @@ huckle cli [cliname]
 Configuration
 -------------
 
-Huck uses the .bash_profile to defer to a ~/.huckle/huckle_profile for CLI aliases; to avoid
+Huckle uses the .bash_profile to defer to a ~/.huckle/huckle_profile for CLI aliases; to avoid
 crowding the .bash_profile and to facilitate cleanup if huckle is uninstalled.
 
-Huck also uses CLI configuration files (e.g. ~/.huckle/<cliname>/config) to associate a specific
+Huckle also uses CLI configuration files (e.g. ~/.huckle/<cliname>/config) to associate a specific
 CLI to a hypermedia API url root.
 
 Each CLI configuration file contains:
