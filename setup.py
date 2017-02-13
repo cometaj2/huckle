@@ -53,9 +53,14 @@ from huckle import config
 #    return None
 
 if sys.argv[-1] == 'publish':
+    os.system("rm -rf dist")
     os.system("python setup.py sdist")
     os.system("twine upload dist/* -r pypi")
-    os.system("git tag -a %s -m 'version %s'" % (config.__version__, config.__version__))
+    os.system("git tag -a %s -m 'version %s'" % ("huckle-" + config.__version__, "huckle-" + config.__version__))
+    sys.exit()
+
+if sys.argv[-1] == 'tag':
+    os.system("git tag -a %s -m 'version %s'" % ("huckle-" + config.__version__, "huckle-" + config.__version__))
     sys.exit()
 
 here = path.abspath(path.dirname(__file__))
