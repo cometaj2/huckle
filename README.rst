@@ -1,4 +1,4 @@
-Huck (hypermedia unified CLI... with a kick)
+Huckle (hypermedia unified CLI... with a kick)
 ============================================
 
 Huck is a very specific form of generic hypermedia client that plays in the
@@ -41,7 +41,7 @@ Help shape huck and HCLI on the discussion list [2] or by raising issues on gith
 Usage
 -----
 
-huck create [cliname]
+huckle create [cliname]
 
     This creates an new cliname alias and configuration file. Once a CLI is created via huck,
     it can be invoked by name directly after restarting the terminal.
@@ -49,7 +49,7 @@ huck create [cliname]
     Note that an existing configuration file is left alone if the command is run multiple times 
     for the same cliname.
 
-huck cli [cliname]
+huckle cli [cliname]
 
     This invokes the cliname to issue API calls; the details of which are left to API implementers.
     

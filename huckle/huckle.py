@@ -5,14 +5,14 @@ import json
 from restnavigator import Navigator
 
 usage = """name:
-    huck
+    huckle
 
 desciption:
-    huck is a generic hypermedia client that provides a cli-like interaction with
+    huckle is a generic hypermedia client that provides a cli-like interaction with
     hypermedia APIs that abide by a specific hypermedia API CLI pattern.
 
 synopsis:
-    huck [options] <command> [parameter]
+    huckle [options] <command> [parameter]
 
 commands:
     create [cliname]
@@ -23,12 +23,12 @@ commands:
     cli [cliname]
     
     Used to invoke a cli. Note that the [cliname] alias created with
-    huck create [cliname] should be used instead, for brevity.
+    huckle create [cliname] should be used instead, for brevity.
 
 options:
     --version
 
-    Hucks's version and the version of it's dependencies.
+    Huckle's version and the version of it's dependencies.
 
 """
 
@@ -92,6 +92,6 @@ def cli():
                 dependencies += " "
                 dependencies += config.dependencies[i].rsplit('==', 1)[0] + "/"
                 dependencies += config.dependencies[i].rsplit('==', 1)[1]
-            print "huck/" + config.version + dependencies
+            print "huckle/" + config.version + dependencies
         else:
             sys.exit(usage)

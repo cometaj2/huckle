@@ -8,14 +8,14 @@ version = "0.1.0.dev1"
 dependencies = ["restnavigator==1.0.1"]
 
 home = os.path.expanduser("~")
-dot_huck = "%s/.huck" % home
-dot_huck_profile = dot_huck + "/huck_profile"
+dot_huckle = "%s/.huckle" % home
+dot_huckle_profile = dot_huckle + "/huckle_profile"
 dot_bash_profile = home + "/.bash_profile"
 url = ""
 cliname = ""
 
 def parse_configuration(cli):
-    config_file_path = dot_huck + "/" + cli + "/config"
+    config_file_path = dot_huckle + "/" + cli + "/config"
     parser = SafeConfigParser()
     parser.read(config_file_path)
     if parser.has_section("default"):
@@ -31,7 +31,7 @@ def parse_configuration(cli):
         sys.exit("No cli configuration " + config_file_path + " available for " + cli) 
 
 def create_configuration(cli):
-    config_file_folder = dot_huck + "/" + cli 
+    config_file_folder = dot_huckle + "/" + cli 
     config_file = config_file_folder + "/config"
     create_folder(config_file_folder)
     
@@ -40,16 +40,16 @@ def create_configuration(cli):
         init_configuration(cli)
 
 def alias_cli(cli):
-    if not is_configured(dot_bash_profile, ". " + dot_huck_profile):
+    if not is_configured(dot_bash_profile, ". " + dot_huckle_profile):
         f = open(dot_bash_profile, "a+")
         f.write("\n")
-        f.write("# we load the huck aliases profile\n")
-        f.write(". " + dot_huck_profile)
+        f.write("# we load the huckle aliases profile\n")
+        f.write(". " + dot_huckle_profile)
         f.close
 
-    if not is_configured(dot_huck_profile, "alias " + cli + "="):
-        g = open(dot_huck_profile, "a+")
-        g.write("alias " + cli + "=\"huck cli " + cli + "\"\n")
+    if not is_configured(dot_huckle_profile, "alias " + cli + "="):
+        g = open(dot_huckle_profile, "a+")
+        g.write("alias " + cli + "=\"huckle cli " + cli + "\"\n")
         g.close
 
 def create_folder(path):
@@ -73,7 +73,7 @@ def create_file(path):
                 file_obj.close        
 
 def init_configuration(cli):
-    config_file_path = dot_huck + "/" + cli + "/config"
+    config_file_path = dot_huckle + "/" + cli + "/config"
     parser = SafeConfigParser()
     parser.readfp(StringIO("[default]"))
     parser.set("default", "url", "")

@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-from huck import config
+from huckle import config
 
 here = path.abspath(path.dirname(__file__))
 
@@ -14,7 +14,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='huck',
+    name='huckle',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -25,7 +25,7 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/cometaj2/huck',
+    url='https://github.com/cometaj2/huckle',
 
     # Author details
     author='Jeff Michaud',
@@ -98,7 +98,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'huck=huck.__main__:main',
+            'huckle=huckle.__main__:main',
         ],
     },
 )
