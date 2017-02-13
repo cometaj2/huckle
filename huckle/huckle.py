@@ -8,8 +8,8 @@ usage = """name:
     huckle
 
 desciption:
-    huckle is a generic hypermedia client that provides a cli-like interaction with
-    hypermedia APIs that abide by a specific hypermedia API CLI pattern.
+    Huckle is a generic CLI that can be used with any API that abides by
+    the standard hypertext command line interface (HCLI) semantics.
 
 synopsis:
     huckle [options] <command> [parameter]
@@ -17,12 +17,12 @@ synopsis:
 commands:
     create [cliname]
     
-    This allows you to alias into a new cli. Restarting the terminal
+    This allows you to alias into a new CLI. Restarting the terminal
     is required since we're using a .bash_profile alias.
                    
     cli [cliname]
     
-    Used to invoke a cli. Note that the [cliname] alias created with
+    Used to invoke a CLI. Note that the [cliname] alias created with
     huckle create [cliname] should be used instead, for brevity.
 
 options:
