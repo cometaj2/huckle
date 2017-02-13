@@ -4,7 +4,7 @@ import sys
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 
-version = "0.1.0.dev1"
+__version__ = "0.1.0.dev2"
 dependencies = ["restnavigator==1.0.1"]
 
 home = os.path.expanduser("~")
