@@ -70,9 +70,11 @@ Each CLI configuration file contains:
 
 To Do
 -----
-- Support HCLI version 1.0 semantics
-- Support for forward proxy configuration
-- Support various authentication per CLI configuration  
+Support HCLI version 1.0 semantics  
+
+Support for forward proxy configuration  
+
+Support various authentication per CLI configuration  
 
     - HTTP basic auth  
     - HTTP Digest  
@@ -80,7 +82,7 @@ To Do
     - X509 (HTTPS mutual authentication)  
     - SAML  
 
-- Automatic man page generation 
+Automatic man page generation  
 
     - When the "help" keyword is used in a command line execution we take the user to the man page for the "last executed command"  
     - CLI exit codes are clean  
