@@ -73,13 +73,16 @@ To Do
 - Support HCLI version 1.0 semantics
 - Support for forward proxy configuration
 - Support various authentication per CLI configuration  
-  - HTTP basic auth  
-  - HTTP Digest  
-  - Oauth  
-  - X509 (HTTPS mutual authentication)  
-  - SAML  
-- Automatic man page generation
-  - When the "help" keyword is used in a command line execution we take the user to the man page for the "last executed command"  
-- CLI exit codes are clean
-  - Errors are output to STDERR when HCLI fails  
-  - An appropriate exit code is used  
+
+    - HTTP basic auth  
+    - HTTP Digest  
+    - Oauth  
+    - X509 (HTTPS mutual authentication)  
+    - SAML  
+
+- Automatic man page generation 
+
+    - When the "help" keyword is used in a command line execution we take the user to the man page for the "last executed command"  
+    - CLI exit codes are clean  
+    - Errors are output to STDERR when HCLI fails  
+    - An appropriate exit code is used  
