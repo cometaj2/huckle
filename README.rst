@@ -76,11 +76,13 @@ Support for forward proxy configuration
 
 Support various authentication per CLI configuration  
 
-    - HTTP basic auth  
+    - HTTP Basic Auth  
     - HTTP Digest  
     - Oauth  
     - X509 (HTTPS mutual authentication)  
     - SAML  
+
+Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
 
 Automatic man page generation  
 
