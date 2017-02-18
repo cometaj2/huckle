@@ -72,6 +72,8 @@ To Do
 -----
 Support HCLI version 1.0 semantics  
 
+    - Automatic hypertext navigation and command line execution attempt
+
 Support for forward proxy configuration  
 
 Support various authentication per CLI configuration  
@@ -87,6 +89,7 @@ Support server certificate validation bypass (e.g. --ssl-no-verify. This is not 
 Automatic man page generation  
 
     - When the "help" keyword is used in a command line execution we take the user to the man page for the "last executed command"  
-    - CLI exit codes are clean  
+    - Configuration per CLI to avoid opening up man pages and output the documentation directly in the terminal instead upon partial/incomplete CLI execution.
+    - CLI exit codes are clean.  
     - Errors are output to STDERR when HCLI fails  
     - An appropriate exit code is used  
