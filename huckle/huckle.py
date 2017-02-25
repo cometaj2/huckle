@@ -38,47 +38,41 @@ EXAMPLE
 """
 
 def navigate(argv):
-    h = Navigator.hal(config.url, apiname=config.cliname)
+    nav = Navigator.hal(config.url, apiname=config.cliname)
     if len(argv) == 1:
-        display_docs(h)
+        display_docs(nav)
 
-    #length = len(argv[1:])
-    #for i, x in enumerate(argv[1:]):
-    #    h = h["command"].get_by("name", x)
-    #    if h is None:
-    #        print config.cliname + ": " + x + ": " + "command not found."
-    #        break
-    #
-    #    if i == length - 1:
-    #        display_docs(h)
+    length = len(argv[1:])
+    for i, x in enumerate(argv[1:]):
+
+        ilength = len(nav.embedded()["item"])
+        for j, y in enumerate(nav.embedded()["item"]):
+           
+            tempnav = nav.embedded()["item"][j]
+            if tempnav()["name"] == x:
+                nav = tempnav["cli"][0]
+                break
+
+            if j == ilength - 1:
+                print config.cliname + ": " + x + ": " + "command not found."
+                sys.exit(1)
+
+        if i == length - 1:
+            display_docs(nav)
 
 def display_docs(navigator):
     for i, x in enumerate(navigator()["section"]):
         print navigator()["section"][i]["name"].upper()
         print "    " + navigator()["section"][i]["description"] + "\n"
-    #print navigator()["name"] + " version " + navigator()["version"] + "\n"
-    #print "description:"
-    #print "    " + navigator()["description"] + "\n" 
 
-    #print "synopsis:"
-    #print "    " + navigator()["synopsis"]["description"] + "\n"
-    #try:
-    #    navigator()["option"]
-    #    print "options:"
-    #    for i, x in enumerate(navigator()["option"]):
-    #        print "    " + navigator()["option"][i]["name"] + "\n"
-    #        print "    " + navigator()["option"][i]["description"] + "\n"
-    #except:
-    #    pass
-
-    #try:
-    #    navigator()["command"]
-    #    print "commands:"
-    #    for i, x in enumerate(navigator()["command"]):
-    #        print "    " + navigator()["command"][i]["name"] + "\n"
-    #        print "    " + navigator()["command"][i]["description"] + "\n"
-    #except:
-    #    pass
+    try:
+        for i, x in enumerate(navigator.embedded()["item"]):
+            tempnav = navigator.embedded()["item"][i]
+            #print tempnav.links()["type"]
+            print tempnav()["name"]
+            print "    " + tempnav()["description"] + "\n"
+    except:
+        pass
 
 def pretty_json(json):
     print json.dumps(json, indent=4, sort_keys=True)
