@@ -4,17 +4,17 @@ import json
 
 from restnavigator import Navigator
 
-usage = """name:
+usage = """NAME
     huckle
 
-desciption:
+SYNOPSIS
+    huckle [options] <command> [parameter]
+
+DESCRIPTION
     Huckle is a generic CLI that can be used with any API that abides by
     the standard hypertext command line interface (HCLI) semantics.
 
-synopsis:
-    huckle [options] <command> [parameter]
-
-commands:
+COMMANDS
     create [cliname]
     
     This allows you to alias into a new CLI. Restarting the terminal
@@ -25,10 +25,15 @@ commands:
     Used to invoke a CLI. Note that the [cliname] alias created with
     huckle create [cliname] should be used instead, for brevity.
 
-options:
+OPTIONS
     --version
 
     Huckle's version and the version of it's dependencies.
+
+EXAMPLE
+    huckle create usp5
+    huckle cli usp5 (equivalent to simply invoking "usp5")
+    huckle --version
 
 """
 
@@ -37,40 +42,43 @@ def navigate(argv):
     if len(argv) == 1:
         display_docs(h)
 
-    length = len(argv[1:])
-    for i, x in enumerate(argv[1:]):
-        h = h["command"].get_by("name", x)
-        if h is None:
-            print config.cliname + ": " + x + ": " + "command not found."
-            break
-
-        if i == length - 1:
-            display_docs(h)
+    #length = len(argv[1:])
+    #for i, x in enumerate(argv[1:]):
+    #    h = h["command"].get_by("name", x)
+    #    if h is None:
+    #        print config.cliname + ": " + x + ": " + "command not found."
+    #        break
+    #
+    #    if i == length - 1:
+    #        display_docs(h)
 
 def display_docs(navigator):
-    print navigator()["name"] + " version " + navigator()["version"] + "\n"
-    print "description:"
-    print "    " + navigator()["description"] + "\n" 
+    for i, x in enumerate(navigator()["section"]):
+        print navigator()["section"][i]["name"].upper()
+        print "    " + navigator()["section"][i]["description"] + "\n"
+    #print navigator()["name"] + " version " + navigator()["version"] + "\n"
+    #print "description:"
+    #print "    " + navigator()["description"] + "\n" 
 
-    print "synopsis:"
-    print "    " + navigator()["synopsis"]["description"] + "\n"
-    try:
-        navigator()["option"]
-        print "options:"
-        for i, x in enumerate(navigator()["option"]):
-            print "    " + navigator()["option"][i]["name"] + "\n"
-            print "    " + navigator()["option"][i]["description"] + "\n"
-    except:
-        pass
+    #print "synopsis:"
+    #print "    " + navigator()["synopsis"]["description"] + "\n"
+    #try:
+    #    navigator()["option"]
+    #    print "options:"
+    #    for i, x in enumerate(navigator()["option"]):
+    #        print "    " + navigator()["option"][i]["name"] + "\n"
+    #        print "    " + navigator()["option"][i]["description"] + "\n"
+    #except:
+    #    pass
 
-    try:
-        navigator()["command"]
-        print "commands:"
-        for i, x in enumerate(navigator()["command"]):
-            print "    " + navigator()["command"][i]["name"] + "\n"
-            print "    " + navigator()["command"][i]["description"] + "\n"
-    except:
-        pass
+    #try:
+    #    navigator()["command"]
+    #    print "commands:"
+    #    for i, x in enumerate(navigator()["command"]):
+    #        print "    " + navigator()["command"][i]["name"] + "\n"
+    #        print "    " + navigator()["command"][i]["description"] + "\n"
+    #except:
+    #    pass
 
 def pretty_json(json):
     print json.dumps(json, indent=4, sort_keys=True)
