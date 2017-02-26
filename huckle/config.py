@@ -1,5 +1,6 @@
 import os
 import sys
+import utils
 
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
@@ -42,10 +43,10 @@ def parse_configuration(cli):
 def create_configuration(cli):
     config_file_folder = dot_huckle + "/" + cli 
     config_file = config_file_folder + "/config"
-    create_folder(config_file_folder)
+    utils.create_folder(config_file_folder)
     
     if not os.path.exists(config_file):
-        create_file(config_file)
+        utils.create_file(config_file)
         init_configuration(cli)
 
 def alias_cli(cli):
@@ -60,26 +61,6 @@ def alias_cli(cli):
         g = open(dot_huckle_profile, "a+")
         g.write("alias " + cli + "=\"huckle cli " + cli + "\"\n")
         g.close
-
-def create_folder(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
-
-def create_file(path):
-    if not os.path.exists(path):
-        flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
-
-        try:
-            file_handle = os.open(path, flags, 0o0600)
-        except OSError as e:
-            if e.errno == errno.EEXIST:  # Failed as the file already exists.
-                pass
-            else:
-                raise
-        else:
-            with os.fdopen(file_handle, 'w') as file_obj:
-                file_obj.write("")
-                file_obj.close        
 
 def init_configuration(cli):
     config_file_path = dot_huckle + "/" + cli + "/config"
