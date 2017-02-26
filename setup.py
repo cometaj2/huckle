@@ -89,7 +89,7 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[config.dependencies[0]],
     package_data={
-        'huckle': ['data/huckle.dat'],
+        'huckle': ['data/huckle.man'],
     },
     entry_points={
         'console_scripts': [
