@@ -64,7 +64,7 @@ def cli():
         else:
             print "huckle: " + sys.argv[1] + ": command not found."
             print "to see help text, use: huckle help"
-            sys.exit(1)
+            sys.exit(2)
     elif len(sys.argv) == 2:
         if sys.argv[1] == "--version":
             dependencies = ""
@@ -79,7 +79,7 @@ def cli():
         else:
             print "huckle: " + sys.argv[1] + ": command not found."
             print "to see help text, use: huckle help"
-            sys.exit(1)
+            sys.exit(2)
     else:
         print "to see help text, use: huckle help"
-        sys.exit(1)
+        sys.exit(2)
