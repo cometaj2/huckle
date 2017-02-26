@@ -10,13 +10,15 @@ dependencies = ["restnavigator==1.0.1"]
 
 root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
-cli_manpage_path = "/tmp"
 home = os.path.expanduser("~")
 dot_huckle = "%s/.huckle" % home
 dot_huckle_profile = dot_huckle + "/huckle_profile"
 dot_bash_profile = home + "/.bash_profile"
+
+# These next 3 variables are dynamically updated from read configuration. Be careful!
 url = ""
 cliname = ""
+cli_manpage_path = "/tmp"
 
 hcli_command_type = "command"
 hcli_option_type = "option"
@@ -36,6 +38,8 @@ def parse_configuration(cli):
                     url = value
                     global cliname
                     cliname = cli
+                    global cli_manpage_path
+                    cli_manpage_path = cli_manpage_path + "/huckle." + cliname
             if url == "": sys.exit("No url defined for " + cli + " under " + config_file_path)
     else:
         sys.exit("No cli configuration " + config_file_path + " available for " + cli) 
@@ -48,6 +52,8 @@ def create_configuration(cli):
     if not os.path.exists(config_file):
         utils.create_file(config_file)
         init_configuration(cli)
+
+    utils.create_folder(cli_manpage_path + "/huckle." + cli)
 
 def alias_cli(cli):
     if not is_configured(dot_bash_profile, ". " + dot_huckle_profile):
