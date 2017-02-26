@@ -7,6 +7,8 @@ from StringIO import StringIO
 __version__ = "0.1.0.dev4"
 dependencies = ["restnavigator==1.0.1"]
 
+root = os.path.abspath(os.path.dirname(__file__))
+manpage_path = root + "/data/huckle.dat"
 home = os.path.expanduser("~")
 dot_huckle = "%s/.huckle" % home
 dot_huckle_profile = dot_huckle + "/huckle_profile"

@@ -88,6 +88,9 @@ setup(
     keywords='cli client hypermedia rest generic development',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[config.dependencies[0]],
+    package_data={
+        'huckle': ['data/huckle.dat'],
+    },
     entry_points={
         'console_scripts': [
             'huckle=huckle.__main__:main',

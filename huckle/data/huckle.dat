@@ -1,0 +1,36 @@
+.\" Process this file with
+.\" groff -man -Tascii huckle.dat
+.\"
+.TH HUCKLE 1 "FEBRUARY 2017" Linux "User Manuals"
+.SH NAME
+huckle \- A generic hypertext command line interface (HCLI) client
+.SH SYNOPSIS
+.B huckle
+[
+.I option
+]
+.I command
+.I cliname
+.SH DESCRIPTION
+.B huckle
+is a generic CLI that can be used with any API that abides by
+the standard version 1.0 hypertext command line interface (HCLI) semantics.
+.SH COMMANDS
+.IP create
+This allows you to alias into a new CLI. Restarting the terminal
+is required since we're using a .bash_profile alias.
+.IP cli
+Used to invoke a CLI. Note that the [cliname] alias created with
+huckle create [cliname] should be used instead, for brevity.
+.IP help
+This help file
+.SH OPTIONS
+.IP --version
+.B huckle
+version and the version of it's dependencies.
+.SH EXAMPLE
+huckle create usp5
+
+huckle cli usp5 (equivalent to simply invoking "usp5")
+
+huckle --version

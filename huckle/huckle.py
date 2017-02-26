@@ -1,41 +1,11 @@
 import sys
 import config
 import json
+import subprocess
+import pkgutil
 
+from subprocess import call
 from restnavigator import Navigator
-
-usage = """NAME
-    huckle
-
-SYNOPSIS
-    huckle [options] <command> [parameter]
-
-DESCRIPTION
-    Huckle is a generic CLI that can be used with any API that abides by
-    the standard hypertext command line interface (HCLI) semantics.
-
-COMMANDS
-    create [cliname]
-    
-    This allows you to alias into a new CLI. Restarting the terminal
-    is required since we're using a .bash_profile alias.
-                   
-    cli [cliname]
-    
-    Used to invoke a CLI. Note that the [cliname] alias created with
-    huckle create [cliname] should be used instead, for brevity.
-
-OPTIONS
-    --version
-
-    Huckle's version and the version of it's dependencies.
-
-EXAMPLE
-    huckle create usp5
-    huckle cli usp5 (equivalent to simply invoking "usp5")
-    huckle --version
-
-"""
 
 def navigate(argv):
     nav = Navigator.hal(config.url, apiname=config.cliname)
@@ -74,6 +44,9 @@ def display_docs(navigator):
     except:
         pass
 
+def display_man_page(path):
+    call(["man", path])
+
 def pretty_json(json):
     print json.dumps(json, indent=4, sort_keys=True)
 
@@ -85,15 +58,28 @@ def cli():
         elif sys.argv[1] == "create":
             config.create_configuration(sys.argv[2])
             config.alias_cli(sys.argv[2])
+        elif sys.argv[1] == "help":
+            display_man_page(config.manpage_path)
+            sys.exit(0)
         else:
-            sys.exit(usage)
-    else:
-        if len(sys.argv) == 2 and sys.argv[1] == "--version":
+            print "huckle: " + sys.argv[1] + ": command not found."
+            print "to see help text, use: huckle help"
+            sys.exit(1)
+    elif len(sys.argv) == 2:
+        if sys.argv[1] == "--version":
             dependencies = ""
             for i, x in enumerate(config.dependencies):
                 dependencies += " "
                 dependencies += config.dependencies[i].rsplit('==', 1)[0] + "/"
                 dependencies += config.dependencies[i].rsplit('==', 1)[1]
             print "huckle/" + config.__version__ + dependencies
+        elif sys.argv[1] == "help":
+            display_man_page(config.manpage_path)
+            sys.exit(0)
         else:
-            sys.exit(usage)
+            print "huckle: " + sys.argv[1] + ": command not found."
+            print "to see help text, use: huckle help"
+            sys.exit(1)
+    else:
+        print "to see help text, use: huckle help"
+        sys.exit(1)
