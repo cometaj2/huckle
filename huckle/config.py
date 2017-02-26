@@ -5,7 +5,7 @@ import utils
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 
-__version__ = "0.1.0.dev5"
+__version__ = "0.1.0.dev6"
 dependencies = ["restnavigator==1.0.1"]
 
 root = os.path.abspath(os.path.dirname(__file__))
