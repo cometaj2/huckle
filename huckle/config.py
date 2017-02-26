@@ -17,6 +17,12 @@ dot_bash_profile = home + "/.bash_profile"
 url = ""
 cliname = ""
 
+hcli_command_type = "command"
+hcli_option_type = "option"
+hcli_parameter_type = "parameter"
+hcli_safe_type = "safe-execution"
+hcli_unsafe_type = "unsafe-execution"
+
 def parse_configuration(cli):
     config_file_path = dot_huckle + "/" + cli + "/config"
     parser = SafeConfigParser()

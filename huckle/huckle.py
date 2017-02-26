@@ -10,11 +10,7 @@ from restnavigator import Navigator
 def navigate(argv):
     nav = Navigator.hal(config.url, apiname=config.cliname)
     if len(argv) == 1:
-        print config.cliname + ": " + "command not found."
-        print "to see help text, use:\n"
-        print "  " + config.cliname + " help"
-        print "  " + config.cliname + " <command> help"
-        sys.exit(1)
+        not_found()
 
     length = len(argv[1:])
     for i, x in enumerate(argv[1:]):
@@ -41,24 +37,7 @@ def navigate(argv):
                     sys.exit(1)
 
         if i == length - 1:
-            print config.cliname + ": " + "command not found."
-            print "to see help text, use:\n"
-            print "  " + config.cliname + " help"
-            print "  " + config.cliname + " <command> help"
-            sys.exit(1)
-
-def display_docs(navigator):
-    for i, x in enumerate(navigator()["section"]):
-        print navigator()["section"][i]["name"].upper()
-        print "    " + navigator()["section"][i]["description"] + "\n"
-
-    try:
-        for i, x in enumerate(navigator.embedded()["item"]):
-            tempnav = navigator.embedded()["item"][i]
-            print tempnav()["name"]
-            print "    " + tempnav()["description"] + "\n"
-    except:
-        pass
+            not_found()
 
 def display_man_page(path):
     call(["man", path])
@@ -70,21 +49,53 @@ def hcli_to_man(navigator):
     f = open(dynamic_doc_path, "a+")
     f.write(".TH " + navigator()["name"] + " 1 \n")
     for i, x in enumerate(navigator()["section"]):
-        f.write(".SH " + navigator()["section"][i]["name"].upper() + "\n")
-        f.write(navigator()["section"][i]["description"] + "\n")
-
-    #try:
-    #    for i, x in enumerate(navigator.embedded()["item"]):
-    #        tempnav = navigator.embedded()["item"][i]
-    #        print tempnav()["name"]
-    #        print "    " + tempnav()["description"] + "\n"
-    #except:
-    #    pass
+        section = navigator()["section"][i]
+        if section["name"].upper() == "EXAMPLES":
+            f.write(options_and_commands(navigator))
+        f.write(".SH " + section["name"].upper() + "\n")
+        f.write(section["description"] + "\n")
+    
     f.close()
     display_man_page(dynamic_doc_path)
 
+def options_and_commands(navigator):
+    # This block outputs an OPTIONS section, in the man page, alongside each available option flag and its description
+    options = ""
+    option_count = 0
+    for i, x in enumerate(navigator.embedded()["item"]):
+        tempnav = navigator.embedded()["item"][i]
+        hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
+        if hcli_type == config.hcli_option_type:
+            option_count += 1
+            options = options + ".IP " + tempnav()["name"] + "\n"
+            options = options + tempnav()["description"] + "\n"
+    if option_count > 0:
+        options = ".SH OPTIONS\n" + options
+
+    # This block outputs a COMMANDS section, in the man page, alongside each available command and its description
+    commands = ""
+    command_count = 0
+    for i, x in enumerate(navigator.embedded()["item"]):
+        tempnav = navigator.embedded()["item"][i]
+        hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
+        if hcli_type == config.hcli_command_type:
+            command_count += 1
+            commands = commands + ".IP " + tempnav()["name"] + "\n"
+            commands = commands + tempnav()["description"] + "\n"
+    if command_count > 0:
+        commands = ".SH COMMANDS\n" + commands
+ 
+    return options + commands
+
 def pretty_json(json):
     print json.dumps(json, indent=4, sort_keys=True)
+
+def not_found():
+    print config.cliname + ": " + "command not found."
+    print "for help, use:\n"
+    print "  " + config.cliname + " help"
+    print "  " + config.cliname + " <command> help"
+    sys.exit(1)
 
 def cli():
     if len(sys.argv) > 2:
