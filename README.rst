@@ -85,11 +85,3 @@ Support various authentication per CLI configuration
     - SAML  
 
 Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
-
-Automatic man page generation  
-
-    - When the "help" keyword is used in a command line execution we take the user to the man page for the "last executed command"  
-    - Configuration per CLI to avoid opening up man pages and output the documentation directly in the terminal instead upon partial/incomplete CLI execution.
-    - CLI exit codes are clean.  
-    - Errors are output to STDERR when HCLI fails  
-    - An appropriate exit code is used  
