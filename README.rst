@@ -56,6 +56,10 @@ huckle cli [cliname]
     Documentation and commands are presented gradually, as incomplete calls are made, to provide
     users with a way to incrementally discover and learn how CLI calls are issued to an API.
 
+huckle help
+
+    This opens up a man page that describes how to use huckle
+
 Configuration
 -------------
 
