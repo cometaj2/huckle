@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import sys
 
@@ -20,3 +22,7 @@ def create_file(path):
             with os.fdopen(file_handle, 'w') as file_obj:
                 file_obj.write("")
                 file_obj.close        
+
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)

@@ -11,7 +11,7 @@ from restnavigator import Navigator
 def navigate(argv):
     nav = Navigator.hal(config.url, apiname=config.cliname)
     if len(argv) == 1:
-        not_found()
+        for_help()
 
     length = len(argv[1:])
     for i, x in enumerate(argv[1:]):
@@ -20,7 +20,8 @@ def navigate(argv):
         try:
             ilength = len(nav.embedded()["item"])
         except:
-            sys.exit(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad hcli 1.0 server implementation.")
+            utils.eprint(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad hcli 1.0 server implementation.")
+            sys.exit(1)
 
         for j, y in enumerate(nav.embedded()["item"]):
            
@@ -34,11 +35,13 @@ def navigate(argv):
                     hcli_to_man(nav)
                     sys.exit(0)
                 else:
-                    print config.cliname + ": " + x + ": " + "command not found."
-                    sys.exit(1)
+                    utils.eprint(config.cliname + ": " + x + ": " + "command not found.")
+                    sys.exit(2)
 
         if i == length - 1:
-            not_found()
+            utils.eprint(config.cliname + ": " + "command not found.")
+            for_help()
+            sys.exit(2)
 
 def display_man_page(path):
     call(["man", path])
@@ -91,12 +94,10 @@ def options_and_commands(navigator):
 def pretty_json(json):
     print json.dumps(json, indent=4, sort_keys=True)
 
-def not_found():
-    print config.cliname + ": " + "command not found."
-    print "for help, use:\n"
-    print "  " + config.cliname + " help"
-    print "  " + config.cliname + " <command> help"
-    sys.exit(1)
+def for_help():
+    utils.eprint("for help, use:\n")
+    utils.eprint("  " + config.cliname + " help")
+    utils.eprint("  " + config.cliname + " <command> help")
 
 def cli():
     if len(sys.argv) > 2:
@@ -110,8 +111,8 @@ def cli():
             display_man_page(config.huckle_manpage_path)
             sys.exit(0)
         else:
-            print "huckle: " + sys.argv[1] + ": command not found."
-            print "to see help text, use: huckle help"
+            utils.eprint("huckle: " + sys.argv[1] + ": command not found.")
+            for_help()
             sys.exit(2)
     elif len(sys.argv) == 2:
         if sys.argv[1] == "--version":
@@ -125,9 +126,9 @@ def cli():
             display_man_page(config.huckle_manpage_path)
             sys.exit(0)
         else:
-            print "huckle: " + sys.argv[1] + ": command not found."
-            print "to see help text, use: huckle help"
+            utils.eprint("huckle: " + sys.argv[1] + ": command not found.")
+            for_help()
             sys.exit(2)
     else:
-        print "to see help text, use: huckle help"
+        for_help()
         sys.exit(2)
