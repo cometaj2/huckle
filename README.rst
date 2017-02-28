@@ -68,11 +68,34 @@ CLI to a hypermedia API url root.
 Each CLI configuration file contains:
     - A URL to the root of the hypermedia CLI API
 
+Supports
+--------
+
+Support automatic man page document when dropping the "help" keyword anywhere in a command line sequence.
+
+Supports HCLI version 1.0 semantics for:
+
+    - hal+json
+
+Supports responses for:
+
+    - application/json
+
 To Do
 -----
-Support HCLI version 1.0 semantics  
+Support HCLI version 1.0 semantics for: 
 
-    - Automatic hypertext navigation and command line execution attempt
+    - Collection+JSON
+    - hal+xml
+    - HTML
+    - Siren
+    - JSON API
+    - JSON-LD
+    - Mason
+
+Support streaming application/octet-stream to the server from STDIN
+    
+Support application/octet-stream media-type response reception
 
 Support for forward proxy configuration  
 
