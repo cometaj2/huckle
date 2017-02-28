@@ -4,6 +4,7 @@ import utils
 import json
 import subprocess
 import time
+import urllib
 
 from subprocess import call
 from restnavigator import Navigator
@@ -36,8 +37,14 @@ def navigate(argv):
                     hcli_to_man(nav)
                     sys.exit(2)
                 else:
-                    utils.eprint(config.cliname + ": " + x + ": " + "command not found.")
-                    sys.exit(2)
+                    hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
+                    if hcli_type == config.hcli_parameter_type:
+                        nav = tempnav["cli"][0](hcli_param=urllib.quote(x))
+                        print nav
+                        break
+                    else:
+                        utils.eprint(config.cliname + ": " + x + ": " + "command not found.")
+                        sys.exit(2)
 
             if j == ilength - 1:
                 if x == "help":
