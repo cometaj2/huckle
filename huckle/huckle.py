@@ -21,7 +21,7 @@ def navigate(argv):
         try:
             ilength = len(nav.embedded()["item"])
         except:
-            utils.eprint(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad hcli 1.0 server implementation.")
+            utils.eprint(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad or inexistent hcli 1.0 server implementation.")
             sys.exit(1)
 
         for j, y in enumerate(nav.embedded()["item"]):
@@ -40,7 +40,6 @@ def navigate(argv):
                     hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
                     if hcli_type == config.hcli_parameter_type:
                         nav = tempnav["cli"][0](hcli_param=urllib.quote(x))
-                        print nav
                         break
                     else:
                         utils.eprint(config.cliname + ": " + x + ": " + "command not found.")
@@ -55,7 +54,16 @@ def navigate(argv):
                     sys.exit(2)
 
         if i == length - 1:
-            utils.eprint(config.cliname + ": " + "command not found.")
+            for k, z in enumerate(nav.embedded()["item"]):
+                tempnav = nav.embedded()["item"][k]
+
+                hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
+                if hcli_type == config.hcli_safe_type:
+                    nav = tempnav["cli"][0]
+                    print json.dumps(nav())
+                    sys.exit(0)
+            
+            utils.eprint(config.cliname + ": " + "unable to execute.")
             for_help()
             sys.exit(2)
 
