@@ -26,9 +26,18 @@ def navigate(argv):
         for j, y in enumerate(nav.embedded()["item"]):
            
             tempnav = nav.embedded()["item"][j]
-            if tempnav()["name"] == x:
-                nav = tempnav["cli"][0]
-                break
+            
+            try:
+                if tempnav()["name"] == x:
+                    nav = tempnav["cli"][0]
+                    break
+            except:
+                if x == "help":
+                    hcli_to_man(nav)
+                    sys.exit(2)
+                else:
+                    utils.eprint(config.cliname + ": " + x + ": " + "command not found.")
+                    sys.exit(2)
 
             if j == ilength - 1:
                 if x == "help":
