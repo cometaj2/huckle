@@ -32,7 +32,7 @@ Help shape huckle and HCLI on the discussion list [3] or by raising issues on gi
 
 [2] http://alps.io/
 
-[2] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
+[3] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
 
 Usage
 -----
@@ -71,7 +71,9 @@ Each CLI configuration file contains:
 Supports
 --------
 
-Support automatic man page document when dropping the "help" keyword anywhere in a command line sequence.
+Support automatic man page document for:
+
+    - Every command, using the "help" keyword anywhere in a command line sequence.
 
 Supports HCLI version 1.0 semantics for:
 
@@ -83,6 +85,8 @@ Supports responses for:
 
 To Do
 -----
+Switch to httplib2 and urllib2 for more flexibility. restnavigator 1.0.1 is unmaintained.
+
 Support HCLI version 1.0 semantics for: 
 
     - Collection+JSON
