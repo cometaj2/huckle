@@ -75,8 +75,8 @@ huckle help
 Configuration
 -------------
 
-Huckle uses the .bash_profile to defer to a ~/.huckle/huckle_profile for CLI aliases; to avoid
-crowding the .bash_profile and to facilitate cleanup if huckle is uninstalled.
+Huckle uses the ~/.bash_profile to defer to a ~/.huckle/huckle_profile for CLI aliases; to avoid
+crowding the ~/.bash_profile and to facilitate cleanup if huckle is uninstalled.
 
 Huckle also uses CLI configuration files (e.g. ~/.huckle/<cliname>/config) to associate a specific
 CLI to a hypermedia API url root.
