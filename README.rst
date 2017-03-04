@@ -37,9 +37,9 @@ Help shape huckle and HTCLI on the discussion list [3] or by raising issues on g
 Install Python, pip and huckle
 -------------------
 
-Huckle requires Python 2.7+ and pip
+Huckle requires Python 2.7 and pip
 
-  - Install Python 2.7+ for your system
+  - Install Python 2.7 for your system
 
 Install pip
 
