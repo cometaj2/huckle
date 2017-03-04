@@ -28,7 +28,7 @@ media-type support.
 
 Help shape huckle and HTCLI on the discussion list [3] or by raising issues on github!
 
-[1] https://github.com/cometaj2/I-D/tree/master/htcli
+[1] https://github.com/cometaj2/I-D/tree/master/hcli
 
 [2] http://alps.io/
 
