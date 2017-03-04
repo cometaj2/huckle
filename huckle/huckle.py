@@ -1,12 +1,11 @@
 import sys
 import config
 import utils
-import json
-import time
 import hclinav
 
+# navigate through the command line sequence for a given cliname
 def navigate(argv):
-    nav = hclinav.navigator(config.url, config.cliname)
+    nav = hclinav.navigator(root=config.url, apiname=config.cliname)
     if len(argv) == 1:
         hclinav.for_help()
 
@@ -17,6 +16,7 @@ def navigate(argv):
         if i == length - 1:
             hclinav.traverse_execution(nav)
 
+# huckle's minimal set of commands
 def cli():
     if len(sys.argv) > 2:
         if sys.argv[1] == "cli":
@@ -49,9 +49,11 @@ def cli():
             hclinav.for_help()
             sys.exit(2)
     else:
-        hclinav.for_help()
+        utils.eprint("for help, use:\n")
+        utils.eprint("  huckle help")
         sys.exit(2)
 
+# shows huckle's version and the versioin of its dependencies
 def show_dependencies():
     dependencies = ""
     for i, x in enumerate(config.dependencies):
@@ -59,4 +61,3 @@ def show_dependencies():
         dependencies += config.dependencies[i].rsplit('==', 1)[0] + "/"
         dependencies += config.dependencies[i].rsplit('==', 1)[1]
     print "huckle/" + config.__version__ + dependencies
-

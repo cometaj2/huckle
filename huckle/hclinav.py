@@ -10,10 +10,12 @@ import urllib
 from subprocess import call
 from restnavigator import Navigator
 
+# produces a navigator that starts navigating from the root and with an api display name of apiname
 def navigator(root, apiname):
     nav = Navigator.hal(config.url, apiname=config.cliname)
     return nav
 
+# attempts to traverse through an hcli document with a command line argument
 def traverse_argument(nav, arg):        
     ilength = 0
     try:
@@ -51,6 +53,7 @@ def traverse_argument(nav, arg):
                 utils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
                 sys.exit(2)
 
+# attempts to traverse through a safe or unsafe execution. (only invoked when we've run out of command line arguments to parse)
 def traverse_execution(nav):
     for k, z in enumerate(nav.embedded()["item"]):
         tempnav = nav.embedded()["item"][k]
@@ -70,9 +73,11 @@ def traverse_execution(nav):
     for_help()
     sys.exit(2)
 
+# displays a man page (file) located on a given path
 def display_man_page(path):
     call(["man", path])
 
+# converts an hcli document to a man page and displays it
 def hcli_to_man(navigator):
     millis = str(time.time())
     dynamic_doc_path = config.cli_manpage_path + "/" + config.cliname + "." + millis + ".man" 
@@ -89,6 +94,7 @@ def hcli_to_man(navigator):
     f.close()
     display_man_page(dynamic_doc_path)
 
+# generates an OPTIONS and COMMANDS section to add to a man page
 def options_and_commands(navigator):
     # This block outputs an OPTIONS section, in the man page, alongside each available option flag and its description
     options = ""
@@ -118,44 +124,12 @@ def options_and_commands(navigator):
  
     return options + commands
 
+# pretty json dump
 def pretty_json(json):
     print json.dumps(json, indent=4, sort_keys=True)
 
+# standard error message to tell users to go check the help pages (man pages)
 def for_help():
     utils.eprint("for help, use:\n")
     utils.eprint("  " + config.cliname + " help")
     utils.eprint("  " + config.cliname + " <command> help")
-
-def cli():
-    if len(sys.argv) > 2:
-        if sys.argv[1] == "cli":
-            config.parse_configuration(sys.argv[2])
-            navigate(sys.argv[2:])
-        elif sys.argv[1] == "create":
-            config.create_configuration(sys.argv[2])
-            config.alias_cli(sys.argv[2])
-        elif sys.argv[1] == "help":
-            display_man_page(config.huckle_manpage_path)
-            sys.exit(0)
-        else:
-            utils.eprint("huckle: " + sys.argv[1] + ": command not found.")
-            for_help()
-            sys.exit(2)
-    elif len(sys.argv) == 2:
-        if sys.argv[1] == "--version":
-            dependencies = ""
-            for i, x in enumerate(config.dependencies):
-                dependencies += " "
-                dependencies += config.dependencies[i].rsplit('==', 1)[0] + "/"
-                dependencies += config.dependencies[i].rsplit('==', 1)[1]
-            print "huckle/" + config.__version__ + dependencies
-        elif sys.argv[1] == "help":
-            display_man_page(config.huckle_manpage_path)
-            sys.exit(0)
-        else:
-            utils.eprint("huckle: " + sys.argv[1] + ": command not found.")
-            for_help()
-            sys.exit(2)
-    else:
-        for_help()
-        sys.exit(2)
