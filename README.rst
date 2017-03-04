@@ -13,7 +13,7 @@ being a need to update the client as the API changes. This is used to huckle's
 advantage and this benefit is brought to the shell command line interface.
 
 Huckle provides a dynamic view of the documentation, commands, options and
-parameters that can be issued to the HCLI APIs it interacts with.
+parameters that can be issued to the HTCLI APIs it interacts with.
 
 What can be noticed is that any API implementer, that abides by a specific
 hypermedia API CLI pattern, gets a client side shell CLI for their API for free;
@@ -22,17 +22,33 @@ APIs become readily consumable anywhere, and can be experimented with quickly
 by developers.
 
 The standard hypermedia API CLI pattern definition is a work in progress by the
-author with the HCLI Internet-Draft [1]. The current implementation leverages hal+json
+author with the HTCLI Internet-Draft [1]. The current implementation leverages hal+json
 alongside a static form of ALPS (semantic profile) [2] to help enable widespread cross
 media-type support.
 
-Help shape huckle and HCLI on the discussion list [3] or by raising issues on github!
+Help shape huckle and HTCLI on the discussion list [3] or by raising issues on github!
 
-[1] https://github.com/cometaj2/I-D/tree/master/hcli
+[1] https://github.com/cometaj2/I-D/tree/master/htcli
 
 [2] http://alps.io/
 
 [3] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
+
+Install Python, pip and huckle
+-------------------
+
+Huckle requires Python 2.7+ and pip
+
+  - Install Python 2.7+ for your system
+
+Install pip
+
+  - curl -O https://bootstrap.pypa.io/get-pip.py
+  - python get-pip.py
+
+Install huckle
+
+  - pip install huckle
 
 Usage
 -----
@@ -75,7 +91,7 @@ Support automatic man page document for:
 
     - Every command, using the "help" keyword anywhere in a command line sequence.
 
-Supports HCLI version 1.0 semantics for:
+Supports HTCLI version 1.0 semantics for:
 
     - hal+json
 
@@ -87,7 +103,7 @@ To Do
 -----
 Switch to httplib2 and urllib2 for more flexibility. restnavigator 1.0.1 is unmaintained.
 
-Support HCLI version 1.0 semantics for: 
+Support HTCLI version 1.0 semantics for: 
 
     - Collection+JSON
     - hal+xml

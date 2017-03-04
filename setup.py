@@ -72,7 +72,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='huckle',
     version=config.__version__,
-    description='A generic CLI that can be used with any API that abides by the standard hypertext command line interface (HCLI) semantics.',
+    description='A generic CLI that can be used with any API that abides by the standard hypertext command line interface (HTCLI) semantics.',
     long_description=long_description,
     url='https://github.com/cometaj2/huckle',
     author='Jeff Michaud',
@@ -87,7 +87,8 @@ setup(
     ],
     keywords='cli client hypermedia rest generic development',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=[config.dependencies[0]],
+    install_requires=[config.dependencies[0],
+                      config.dependencies[1]],
     package_data={
         'huckle': ['data/huckle.man'],
     },

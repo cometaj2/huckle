@@ -4,12 +4,18 @@ import utils
 import json
 import subprocess
 import time
+
+import httplib2
 import urllib
 
 from subprocess import call
 from restnavigator import Navigator
 
 def navigate(argv):
+    h = httplib2.Http()
+    resp, content = h.request(config.url, "OPTIONS")
+    print resp
+    
     nav = Navigator.hal(config.url, apiname=config.cliname)
     if len(argv) == 1:
         for_help()
