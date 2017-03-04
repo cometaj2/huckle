@@ -53,7 +53,7 @@ Install huckle
 Usage
 -----
 
-huckle create [cliname]
+huckle create <cliname>
 
     This creates an new cliname alias and configuration file. Once a CLI is created via huckle,
     it can be invoked by name directly after restarting the terminal.
@@ -61,7 +61,7 @@ huckle create [cliname]
     Note that an existing configuration file is left alone if the command is run multiple times 
     for the same cliname.
 
-huckle cli [cliname]
+huckle cli <cliname>
 
     This invokes the cliname to issue API calls; the details of which are left to API implementers.
     

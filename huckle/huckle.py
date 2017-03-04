@@ -12,9 +12,9 @@ from subprocess import call
 from restnavigator import Navigator
 
 def navigate(argv):
-    h = httplib2.Http()
-    resp, content = h.request(config.url, "OPTIONS")
-    print resp
+    #h = httplib2.Http()
+    #resp, content = h.request(config.url, "OPTIONS")
+    #print resp
     
     nav = Navigator.hal(config.url, apiname=config.cliname)
     if len(argv) == 1:
@@ -68,7 +68,12 @@ def navigate(argv):
                     nav = tempnav["cli"][0]
                     print json.dumps(nav())
                     sys.exit(0)
-            
+
+                if hcli_type == config.hcli_unsafe_type:
+                    nav = tempnav["cli"][0].create()
+                    print json.dumps(nav())
+                    sys.exit(0)
+
             utils.eprint(config.cliname + ": " + "unable to execute.")
             for_help()
             sys.exit(2)
