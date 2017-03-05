@@ -5,7 +5,7 @@ import utils
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 
-__version__ = "0.1.0.dev7"
+__version__ = "0.2.0.dev1"
 dependencies = ["restnavigator==1.0.1",
                 "httplib2==0.10.3"]
 
