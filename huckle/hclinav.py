@@ -4,7 +4,7 @@ import utils
 import json
 import subprocess
 import time
-import httplib2
+import requests
 import urllib
 
 from subprocess import call
@@ -61,14 +61,12 @@ def traverse_execution(nav):
         hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
         if hcli_type == config.hcli_safe_type:
             nav = tempnav["cli"][0]
-            body = flexible_safe_executor(nav.uri)
-            print body
+            flexible_safe_executor(nav.uri)
             sys.exit(0)
 
         if hcli_type == config.hcli_unsafe_type:
             nav = tempnav["cli"][0]
-            body = flexible_unsafe_executor(nav.uri, "")
-            print body
+            flexible_unsafe_executor(nav.uri)
             sys.exit(0)
 
     utils.eprint(config.cliname + ": " + "unable to execute.")
@@ -136,23 +134,25 @@ def for_help():
     utils.eprint("  " + config.cliname + " help")
     utils.eprint("  " + config.cliname + " <command> help")
 
-# a flexible executor that can work with application/octet-stream media-type (per hcli spec)
+# a flexible executor that can work with the application/octet-stream media-type (per hcli spec)
 def flexible_safe_executor(url):
-    h = httplib2.Http()
-    resp, content = h.request(
-                                 uri=url,
-                                 method="GET",
-                                 headers={'accept':'application/octet-stream;q=0.9,*/*;q=0.8'}
-                             )
-    return content
+    r = requests.get(url, stream=True)
+    output_chunks(r)
+    return
 
-# a flexible executor that can work with application/octet-stream media-type (per hcli spec)
-def flexible_unsafe_executor(url, stream):
-    h = httplib2.Http()
-    resp, content = h.request(
-                                 uri=url,
-                                 method="POST",
-                                 headers={'accept':'application/octet-stream;q=0.9,*/*;q=0.8'},
-                                 body=stream
-                             )
-    return content
+# a flexible executor that can work with the application/octet-stream media-type (per hcli spec)
+def flexible_unsafe_executor(url):
+    if not sys.stdin.isatty():
+        with sys.stdin as f:
+            r = requests.post(url, data=f, stream=True)
+            output_chunks(r)
+            return
+    else:
+        r = requests.post(url, data=None, stream=True)
+        output_chunks(r)
+        return
+
+def output_chunks(request):
+    for chunk in request.iter_content(8192):
+        if chunk:
+            print(chunk)
