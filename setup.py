@@ -1,58 +1,17 @@
 import os
 import sys
+import subprocess
 
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
 from huckle import config
-
-#import subprocess, re
-#from distutils.command.sdist import sdist as _sdist
-#from distutils.core import setup, Command
-
-#VERSION_PY = """
-# This file is originally generated from Git information by running 'setup.py
-# version'. Distribution tarballs contain a pre-generated copy of this file.
-#
-#__version__ = '%s'
-#"""
-#def update_version_py():
-#    if not os.path.isdir(".git"):
-#        print "This does not appear to be a Git repository."
-#        return
-#    try:
-#        p = subprocess.Popen(["git", "describe",
-#                              "--tags", "--dirty", "--always"],
-#                             stdout=subprocess.PIPE)
-#    except EnvironmentError:
-#        print "unable to run git, leaving huckle/version.py alone"
-#        return
-#    stdout = p.communicate()[0]
-#    if p.returncode != 0:
-#        print "unable to run git, leaving huckle/version.py alone"
-#        return
-#
-#    # we use tags like "huckle-0.1.0.dev1", so strip the prefix
-#    #assert stdout.startswith("huckle-")
-#    ver = stdout[len("huckle-"):].strip()
-#    f = open("huckle/version.py", "w")
-#    f.write(VERSION_PY % ver)
-#    f.close()
-#    print "set huckle/version.py to '%s'" % ver
-
-#def get_version():
-#    try:
-#        f = open("huckle/_version.py")
-#    except EnvironmentError:
-#        return None
-#    for line in f.readlines():
-#        mo = re.match("__version__ = '([^']+)'", line)
-#        if mo:
-#            ver = mo.group(1)
-#            return ver
-#    return None
+from huckle import utils
 
 if sys.argv[-1] == 'publish':
+    branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip()
+    if branch != "master":
+        sys.exit("publishing from a branch other than master is disallowed.")
     os.system("rm -rf dist")
     os.system("python setup.py sdist")
     os.system("twine upload dist/* -r pypi")
@@ -60,6 +19,9 @@ if sys.argv[-1] == 'publish':
     sys.exit()
 
 if sys.argv[-1] == 'tag':
+    branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip()
+    if branch != "master":
+        sys.exit("tagging from a branch other than master is disallowed.")
     os.system("git tag -a %s -m 'version %s'" % ("huckle-" + config.__version__, "huckle-" + config.__version__))
     sys.exit()
 
