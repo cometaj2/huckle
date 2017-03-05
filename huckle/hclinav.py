@@ -61,12 +61,14 @@ def traverse_execution(nav):
         hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
         if hcli_type == config.hcli_safe_type:
             nav = tempnav["cli"][0]
-            print json.dumps(nav())
+            body = flexible_safe_executor(nav.uri)
+            print body
             sys.exit(0)
 
         if hcli_type == config.hcli_unsafe_type:
-            nav = tempnav["cli"][0].create()
-            print json.dumps(nav())
+            nav = tempnav["cli"][0]
+            body = flexible_unsafe_executor(nav.uri, "")
+            print body
             sys.exit(0)
 
     utils.eprint(config.cliname + ": " + "unable to execute.")
@@ -133,3 +135,24 @@ def for_help():
     utils.eprint("for help, use:\n")
     utils.eprint("  " + config.cliname + " help")
     utils.eprint("  " + config.cliname + " <command> help")
+
+# a flexible executor that can work with application/octet-stream media-type (per hcli spec)
+def flexible_safe_executor(url):
+    h = httplib2.Http()
+    resp, content = h.request(
+                                 uri=url,
+                                 method="GET",
+                                 headers={'accept':'application/octet-stream;q=0.9,*/*;q=0.8'}
+                             )
+    return content
+
+# a flexible executor that can work with application/octet-stream media-type (per hcli spec)
+def flexible_unsafe_executor(url, stream):
+    h = httplib2.Http()
+    resp, content = h.request(
+                                 uri=url,
+                                 method="POST",
+                                 headers={'accept':'application/octet-stream;q=0.9,*/*;q=0.8'},
+                                 body=stream
+                             )
+    return content
