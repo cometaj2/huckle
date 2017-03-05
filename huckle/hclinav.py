@@ -12,7 +12,7 @@ from restnavigator import Navigator
 
 # produces a navigator that starts navigating from the root and with an api display name of apiname
 def navigator(root, apiname):
-    nav = Navigator.hal(config.url, apiname=config.cliname)
+    nav = Navigator.hal(root=root, apiname=apiname)
     return nav
 
 # attempts to traverse through an hcli document with a command line argument
