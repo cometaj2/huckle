@@ -67,7 +67,7 @@ def traverse_execution(nav):
 
         if hcli_type == config.hcli_unsafe_type:
             nav = tempnav["cli"][0]
-            body = flexible_unsafe_executor(nav.uri)
+            body = flexible_unsafe_executor(nav.uri, "")
             print body
             sys.exit(0)
 
@@ -147,12 +147,12 @@ def flexible_safe_executor(url):
     return content
 
 # a flexible executor that can work with application/octet-stream media-type (per hcli spec)
-def flexible_unsafe_executor(url):
+def flexible_unsafe_executor(url, stream):
     h = httplib2.Http()
     resp, content = h.request(
                                  uri=url,
                                  method="POST",
                                  headers={'accept':'application/octet-stream;q=0.9,*/*;q=0.8'},
-                                 body=None
+                                 body=stream
                              )
     return content
