@@ -93,7 +93,7 @@ Supports
 
     - hal+json
 
-- Supports responses for:
+- Supports command line execution responses for:
 
     - All media types
 
