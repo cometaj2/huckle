@@ -153,6 +153,7 @@ def flexible_unsafe_executor(url):
         return
 
 def output_chunks(request):
-    for chunk in request.iter_content(8192):
-        if chunk:
-            print(chunk)
+    with sys.stdout as f:
+        for chunk in request.iter_content(16384):
+            if chunk:
+                f.write(chunk)

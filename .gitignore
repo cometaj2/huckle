@@ -1,4 +1,5 @@
 # general things to ignore
+.DS_Store
 build/
 dist/
 *.egg-info/

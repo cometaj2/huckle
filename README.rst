@@ -87,22 +87,22 @@ Each CLI configuration file contains:
 Supports
 --------
 
-Support automatic man page document for:
+- Support automatic man page document with the "help" command
 
-    - Every command, using the "help" keyword anywhere in a command line sequence.
-
-Supports HCLI version 1.0 semantics for:
+- Supports HCLI version 1.0 semantics for:
 
     - hal+json
 
-Supports responses for:
+- Supports responses for:
 
-    - application/json
+    - All media types
+
+- Supports streaming via STDIN/STDOUT with a fixed chunk size of 16834:
+
+    - It's possible to stream VERY large files.
 
 To Do
 -----
-Switch to httplib2 and urllib2 for more flexibility. restnavigator 1.0.1 is unmaintained.
-
 Support HCLI version 1.0 semantics for: 
 
     - Collection+JSON
@@ -113,9 +113,13 @@ Support HCLI version 1.0 semantics for:
     - JSON-LD
     - Mason
 
-Support streaming application/octet-stream to the server from STDIN
-    
-Support application/octet-stream media-type response reception
+Support stream configuration
+
+    - sending and receiving streams (configurable via CLI config)
+    - sending and receiving non-streams (configuration via CLI config)
+    - chunk size for streams send/receive (configurable via CLI config)
+
+Support non-stream send/receive (via CLI configuration)
 
 Support for forward proxy configuration  
 
