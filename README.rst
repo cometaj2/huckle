@@ -87,7 +87,7 @@ Each CLI configuration file contains:
 Supports
 --------
 
-- Support automatic man page document with the "help" command
+- Support automatic man page document with the "help" command.
 
 - Supports HCLI version 1.0 semantics for:
 
@@ -97,9 +97,9 @@ Supports
 
     - All media types
 
-- Supports streaming via STDIN/STDOUT with a fixed chunk size of 16834:
-
-    - It's possible to stream VERY large files.
+- Supports streaming:
+ 
+    - Handles very large STDIN/STDOUT streams (fixed chunk size of 16834)
 
 To Do
 -----
