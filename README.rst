@@ -91,23 +91,22 @@ An example CLI that can be used with Huckle is available on hcli.io.
 Supports
 --------
 
-- Support automatic man page document generation with the "help" command.
-
-- Supports HCLI version 1.0 semantics for:
+- Automatic man page document generation with the "help" command.
+- HCLI version 1.0 semantics for:
 
     - hal+json
 
-- Supports command line execution responses for:
+- Command line execution responses for:
 
     - All media types
 
-- Supports streaming:
+- Streaming:
  
     - Handles very large STDIN/STDOUT streams (fixed chunk size of 16834)
 
 To Do
 -----
-Support HCLI version 1.0 semantics for: 
+- Support HCLI version 1.0 semantics for: 
 
     - Collection+JSON
     - hal+xml
@@ -117,17 +116,17 @@ Support HCLI version 1.0 semantics for:
     - JSON-LD
     - Mason
 
-Support stream configuration
+- Support stream configuration
 
     - sending and receiving streams (configurable via CLI config)
     - sending and receiving non-streams (configuration via CLI config)
     - chunk size for streams send/receive (configurable via CLI config)
 
-Support non-stream send/receive (via CLI configuration)
+- Support non-stream send/receive (via CLI configuration)
 
-Support for forward proxy configuration  
+- Support for forward proxy configuration  
 
-Support various authentication per CLI configuration  
+- Support various authentication per CLI configuration  
 
     - HTTP Basic Auth  
     - HTTP Digest  
@@ -135,6 +134,6 @@ Support various authentication per CLI configuration
     - X509 (HTTPS mutual authentication)  
     - SAML  
 
-Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
+- Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
 
-Support error output to STDERR
+- Support error output to STDERR on client response status code >= 400
