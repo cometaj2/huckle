@@ -34,7 +34,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='huckle',
     version=config.__version__,
-    description='A generic CLI that can be used with any API that abides by the standard hypertext command line interface (HCLI) semantics.',
+    description='A CLI that can act as an impostor for any CLI expressed through hypertext command line interface (HCLI) semantics.',
     long_description=long_description,
     url='https://github.com/cometaj2/huckle',
     author='Jeff Michaud',
