@@ -2,8 +2,8 @@ Huckle (hypermedia unified CLI... with a kick)
 ============================================
 
 Huckle is a very specific form of generic hypermedia client that plays in the
-command line interface (CLI) space. It's a CLI that understands any hypermedia
-API (REST API) that abide by a specific hypermedia API CLI pattern.
+command line interface (CLI) space. It's a CLI that can act as an impostor for
+any CLI expressed via hypertext command line interface (HCLI) semantics.
 
 ----
 
@@ -13,7 +13,7 @@ being a need to update the client as the API changes. This is used to huckle's
 advantage and this benefit is brought to the shell command line interface.
 
 Huckle provides a dynamic view of the documentation, commands, options and
-parameters that can be issued to the HCLI APIs it interacts with.
+parameters that can be issued to an HCLI API it interacts with.
 
 What can be noticed is that any API implementer, that abides by a specific
 hypermedia API CLI pattern, gets a client side shell CLI for their API for free;
@@ -21,10 +21,10 @@ and given that most programming languages have a way to issue shell commands, su
 APIs become readily consumable anywhere, and can be experimented with quickly
 by developers.
 
-The standard hypermedia API CLI pattern definition is a work in progress by the
-author with the HCLI Internet-Draft [1]. The current implementation leverages hal+json
-alongside a static form of ALPS (semantic profile) [2] to help enable widespread cross
-media-type support.
+The standard HCLI Internet-Draft [1] is a work in progress by the author.
+
+The current implementation leverages hal+json alongside a static form of ALPS
+(semantic profile) [2] to help enable widespread cross media-type support.
 
 Help shape huckle and HCLI on the discussion list [3] or by raising issues on github!
 
@@ -63,10 +63,10 @@ huckle create <cliname>
 
 huckle cli <cliname>
 
-    This invokes the cliname to issue API calls; the details of which are left to API implementers.
+    This invokes the cliname to issue HCLI API calls; the details of which are left to API implementers.
     
-    Documentation and commands are presented gradually, as incomplete calls are made, to provide
-    users with a way to incrementally discover and learn how CLI calls are issued to an API.
+    Commands, options and parameters are presented gradually, to provide users with a way to
+    incrementally discover and learn how the CLI is used.
 
 huckle help
 
@@ -84,10 +84,14 @@ CLI to a hypermedia API url root.
 Each CLI configuration file contains:
     - A URL to the root of the hypermedia CLI API
 
+An example CLI that can be used with Huckle is available on hcli.io:
+    - https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf (HCLI root)
+    - https://hcli.io/hal/#/hcli-webapp/cli/jsonf?command=jsonf (HAL Browser navigation)
+
 Supports
 --------
 
-- Support automatic man page document with the "help" command.
+- Support automatic man page document generation with the "help" command.
 
 - Supports HCLI version 1.0 semantics for:
 
@@ -132,3 +136,5 @@ Support various authentication per CLI configuration
     - SAML  
 
 Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
+
+Support error output to STDERR
