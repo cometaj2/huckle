@@ -28,11 +28,11 @@ The current implementation leverages hal+json alongside a static form of ALPS
 
 Help shape huckle and HCLI on the discussion list [3] or by raising issues on github!
 
-[1] https://github.com/cometaj2/I-D/tree/master/hcli
+[1] <https://github.com/cometaj2/I-D/tree/master/hcli>
 
-[2] http://alps.io/
+[2] <http://alps.io/>
 
-[3] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
+[3] <https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick>
 
 Install Python, pip and huckle
 -------------------
@@ -85,8 +85,8 @@ Each CLI configuration file contains:
     - A URL to the root of the hypermedia CLI API
 
 An example CLI that can be used with Huckle is available on hcli.io:
-    - https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf (HCLI root)
-    - https://hcli.io/hal/#/hcli-webapp/cli/jsonf?command=jsonf (HAL Browser navigation)
+    - <https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf> (HCLI root)
+    - <https://hcli.io/hal/#/hcli-webapp/cli/jsonf?command=jsonf> (HAL Browser navigation)
 
 Supports
 --------
