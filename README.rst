@@ -14,7 +14,7 @@ unix/linux shell.
 
 Given that most programming languages have a way to issue shell commands, such
 APIs become readily consumable anywhere, and can be experimented with quickly
-by developers.
+by developers with Huckle's help.
 
 Huckle provides a dynamic view of the documentation, commands, options and
 parameters that can be issued to an HCLI API it interacts with.
