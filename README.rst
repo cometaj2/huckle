@@ -100,7 +100,9 @@ Supports
 
 - Streaming:
  
-    - Handles very large STDIN/STDOUT streams (fixed chunk size of 16834)
+    - Handles very large stdin/stdout streams (fixed chunk size of 16834)
+
+- Error output to stderr on client response status code >= 400
 
 To Do
 -----
@@ -133,5 +135,3 @@ To Do
     - SAML  
 
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
-
-- Support error output to STDERR on client response status code >= 400

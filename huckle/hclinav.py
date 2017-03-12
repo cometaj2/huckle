@@ -152,8 +152,15 @@ def flexible_unsafe_executor(url):
         output_chunks(r)
         return
 
-def output_chunks(request):
-    with sys.stdout as f:
-        for chunk in request.iter_content(16384):
-            if chunk:
-                f.write(chunk)
+def output_chunks(response):
+    if response.status_code >= 400:
+        code = response.status_code
+        utils.eprint(code, requests.status_codes._codes[code][0])
+        utils.eprint(response.headers)
+        utils.eprint(response.content)
+        sys.exit(1)
+    else:
+        with sys.stdout as f:
+            for chunk in response.iter_content(16384):
+                if chunk:
+                    f.write(chunk)
