@@ -9,16 +9,15 @@ command line interface (HCLI) semantics.
 As is normally seen with any well-behaved client/server interaction under REST,
 all changes published by the server are distributed to all clients without there
 being a need to update the client as the API changes. This is used to huckle's
-advantage and this benefit is brought to the shell command line interface.
+advantage and this benefit is brought to the command line interface and the
+unix/linux shell.
+
+Given that most programming languages have a way to issue shell commands, such
+APIs become readily consumable anywhere, and can be experimented with quickly
+by developers.
 
 Huckle provides a dynamic view of the documentation, commands, options and
 parameters that can be issued to an HCLI API it interacts with.
-
-What can be noticed is that any API implementer, that abides by a specific
-hypermedia API CLI pattern, gets a client side shell CLI for their API for free;
-and given that most programming languages have a way to issue shell commands, such
-APIs become readily consumable anywhere, and can be experimented with quickly
-by developers.
 
 The standard HCLI Internet-Draft [1] is a work in progress by the author.
 
