@@ -1,9 +1,8 @@
 Huckle (hypermedia unified CLI... with a kick)
 ============================================
 
-Huckle is a very specific form of generic hypermedia client that plays in the
-command line interface (CLI) space. It's a CLI that can act as an impostor for
-any CLI expressed via hypertext command line interface (HCLI) semantics.
+Huckle is a CLI that can act as an impostor for any CLI expressed via hypertext
+command line interface (HCLI) semantics.
 
 ----
 
