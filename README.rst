@@ -14,7 +14,7 @@ unix/linux shell.
 
 Given that most programming languages have a way to issue shell commands, such
 APIs become readily consumable anywhere, and can be experimented with quickly
-by developers with Huckle's help.
+by developers, with Huckle's help.
 
 Huckle provides a dynamic view of the documentation, commands, options and
 parameters that can be issued to an HCLI API it interacts with.
@@ -24,13 +24,17 @@ The standard HCLI Internet-Draft [1] is a work in progress by the author.
 The current implementation leverages hal+json alongside a static form of ALPS
 (semantic profile) [2] to help enable widespread cross media-type support.
 
-Help shape huckle and HCLI on the discussion list [3] or by raising issues on github!
+You can access an simple example HCLI server to play with huckle [3]
+
+Help shape huckle and HCLI on the discussion list [4] or by raising issues on github!
 
 [1] https://github.com/cometaj2/I-D/tree/master/hcli
 
-[2] http://alps.io/
+[2] http://alps.io
 
-[3] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
+[3] https://hcli.io
+
+[4] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
 
 Install Python, pip and huckle
 -------------------
@@ -65,6 +69,11 @@ huckle cli <cliname>
     
     Commands, options and parameters are presented gradually, to provide users with a way to
     incrementally discover and learn how the CLI is used.
+
+<cliname> ... help
+
+    The reserved "help" command can be used anywhere in a command line sequence to have huckle generate
+    a man page from the last successfully received HCLI Document. This can help with CLI exploration.
 
 huckle help
 
