@@ -144,3 +144,8 @@ To Do
     - SAML  
 
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
+
+Bugs
+----
+
+Fix recreation of huckle.cliname folder in /tmp if it goes missing to avoid crashing the application
