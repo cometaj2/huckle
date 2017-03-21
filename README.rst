@@ -148,4 +148,4 @@ To Do
 Bugs
 ----
 
-Fix recreation of huckle.cliname folder in /tmp if it goes missing to avoid crashing the application
+None are known... so far.

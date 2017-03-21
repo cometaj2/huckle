@@ -81,6 +81,7 @@ def display_man_page(path):
 def hcli_to_man(navigator):
     millis = str(time.time())
     dynamic_doc_path = config.cli_manpage_path + "/" + config.cliname + "." + millis + ".man" 
+    utils.create_folder(config.cli_manpage_path)
     utils.create_file(dynamic_doc_path)
     f = open(dynamic_doc_path, "a+")
     f.write(".TH " + navigator()["name"] + " 1 \n")
