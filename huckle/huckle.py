@@ -7,7 +7,7 @@ import hclinav
 def navigate(argv):
     nav = hclinav.navigator(root=config.url, apiname=config.cliname)
     if len(argv) == 1:
-        hclinav.for_help()
+        hclinav.traverse_execution(nav)
 
     length = len(argv[1:])
     for i, x in enumerate(argv[1:]):
