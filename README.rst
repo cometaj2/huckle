@@ -95,6 +95,12 @@ An example CLI that can be used with Huckle is available on hcli.io.
     - https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf (HCLI root)  
     - https://hcli.io/hal/#/hcli-webapp/ (HAL Browser navigation)  
 
+Versioning
+----------
+
+Huckle uses semantic versioning (http://semver.org) and may make use of the "prealphax", "alphax"
+"betax", and "rcx" extensions where x is a number (e.g. 0.3.0-prealpha1)
+
 Supports
 --------
 
