@@ -99,7 +99,8 @@ Versioning
 ----------
 
 Huckle uses semantic versioning (http://semver.org) and may make use of the "prealphax", "alphax"
-"betax", and "rcx" extensions where x is a number (e.g. 0.3.0-prealpha1)
+"betax", and "rcx" extensions where x is a number (e.g. 0.3.0-prealpha1) on github. Only full
+major.minor.patch releases will be pushed to pip from now on.
 
 Supports
 --------
@@ -121,6 +122,10 @@ Supports
 
 To Do
 -----
+- Fork restnavigator and adjust to use requests (single http client instead of two)
+
+- Support help docs output in the absence of man pages (e.g. git-bash on Windows)
+
 - Support HCLI version 1.0 semantics for: 
 
     - Collection+JSON
@@ -147,7 +152,8 @@ To Do
     - HTTP Digest  
     - Oauth  
     - X509 (HTTPS mutual authentication)  
-    - SAML  
+    - AWS
+    - SAML 
 
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
 
