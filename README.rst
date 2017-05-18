@@ -159,6 +159,10 @@ To Do
 
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
 
+- Support auto configuration of an hcli when providing a url to an HCLI document (e.g. huckle get https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
+
+- Support hcli name conflic resolution (brainstorm implementation; alias or rename?)
+
 Bugs
 ----
 
