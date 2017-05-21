@@ -43,7 +43,7 @@ Huckle requires bash with access to man pages, Python 2.7 and pip
 
   - Install Python 2.7 for your system
 
-Install pip
+Install pip (if it didn't get install alongside Python). For example:
 
   - curl -O https://bootstrap.pypa.io/get-pip.py
   - python get-pip.py
