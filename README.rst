@@ -86,7 +86,7 @@ Huckle uses the ~/.bash_profile to defer to a ~/.huckle/huckle_profile for CLI a
 crowding the ~/.bash_profile and to facilitate cleanup if huckle is uninstalled.
 
 Huckle also uses CLI configuration files (e.g. ~/.huckle/<cliname>/config) to associate a specific
-CLI to a hypermedia API url root.
+CLI to a hypermedia API URL root and other CLI specific configuration.
 
 Each CLI configuration file contains:
     - A URL to the root of the hypermedia CLI API
