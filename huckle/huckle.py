@@ -53,7 +53,7 @@ def cli():
         utils.eprint("  huckle help")
         sys.exit(2)
 
-# shows huckle's version and the version of its dependencies
+# show huckle's version and the version of its dependencies
 def show_dependencies():
     dependencies = ""
     for i, x in enumerate(config.dependencies):

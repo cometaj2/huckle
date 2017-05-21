@@ -97,6 +97,7 @@ def hcli_to_man(navigator):
 
 # generates an OPTIONS and COMMANDS section to add to a man page
 def options_and_commands(navigator):
+
     # This block outputs an OPTIONS section, in the man page, alongside each available option flag and its description
     options = ""
     option_count = 0
@@ -135,13 +136,13 @@ def for_help():
     utils.eprint("  " + config.cliname + " help")
     utils.eprint("  " + config.cliname + " <command> help")
 
-# a flexible executor that can work with the application/octet-stream media-type (per hcli spec)
+# a flexible executor that can work with the application/octet-stream media-type (per HCLI 1.0 spec)
 def flexible_safe_executor(url):
     r = requests.get(url, stream=True)
     output_chunks(r)
     return
 
-# a flexible executor that can work with the application/octet-stream media-type (per hcli spec)
+# a flexible executor that can work with the application/octet-stream media-type (per HCLI 1.0 spec)
 def flexible_unsafe_executor(url):
     if not sys.stdin.isatty():
         with sys.stdin as f:
@@ -153,6 +154,7 @@ def flexible_unsafe_executor(url):
         output_chunks(r)
         return
 
+# outputs the received response received from a safe or unsafe execution
 def output_chunks(response):
     if response.status_code >= 400:
         code = response.status_code
