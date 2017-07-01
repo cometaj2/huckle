@@ -128,7 +128,7 @@ To Do
 
 - Support help docs output in the absence of man pages (e.g. git-bash on Windows)
 
-- Support immediate use of a CLI created through huckle create <cliname> (instead of having to restart the terminal)
+- Support immediate use of a CLI created through huckle create \<cliname> (instead of having to restart the terminal)
 
 - Support HCLI version 1.0 semantics for: 
 
