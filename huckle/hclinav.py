@@ -1,6 +1,6 @@
 import sys
 import config
-import utils
+import hutils
 import json
 import subprocess
 import time
@@ -21,7 +21,7 @@ def traverse_argument(nav, arg):
     try:
         ilength = len(nav.embedded()["item"])
     except:
-        utils.eprint(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad or inexistent hcli 1.0 server implementation.")
+        hutils.eprint(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad or inexistent hcli 1.0 server implementation.")
         sys.exit(1)
 
     for j, y in enumerate(nav.embedded()["item"]):
@@ -42,7 +42,7 @@ def traverse_argument(nav, arg):
                     nav = tempnav["cli"][0](hcli_param=urllib.quote(arg))
                     return nav
                 else:
-                    utils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
+                    hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
                     sys.exit(2)
 
         if j == ilength - 1:
@@ -50,7 +50,7 @@ def traverse_argument(nav, arg):
                 hcli_to_man(nav)
                 sys.exit(0)
             else:
-                utils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
+                hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
                 sys.exit(2)
 
 # attempts to traverse through a safe or unsafe execution. (only invoked when we've run out of command line arguments to parse)
@@ -69,7 +69,7 @@ def traverse_execution(nav):
             flexible_unsafe_executor(nav.uri)
             sys.exit(0)
 
-    utils.eprint(config.cliname + ": " + "unable to execute.")
+    hutils.eprint(config.cliname + ": " + "unable to execute.")
     for_help()
     sys.exit(2)
 
@@ -81,8 +81,8 @@ def display_man_page(path):
 def hcli_to_man(navigator):
     millis = str(time.time())
     dynamic_doc_path = config.cli_manpage_path + "/" + config.cliname + "." + millis + ".man" 
-    utils.create_folder(config.cli_manpage_path)
-    utils.create_file(dynamic_doc_path)
+    hutils.create_folder(config.cli_manpage_path)
+    hutils.create_file(dynamic_doc_path)
     f = open(dynamic_doc_path, "a+")
     f.write(".TH " + navigator()["name"] + " 1 \n")
     for i, x in enumerate(navigator()["section"]):
@@ -132,9 +132,9 @@ def pretty_json(json):
 
 # standard error message to tell users to go check the help pages (man pages)
 def for_help():
-    utils.eprint("for help, use:\n")
-    utils.eprint("  " + config.cliname + " help")
-    utils.eprint("  " + config.cliname + " <command> help")
+    hutils.eprint("for help, use:\n")
+    hutils.eprint("  " + config.cliname + " help")
+    hutils.eprint("  " + config.cliname + " <command> help")
 
 # a flexible executor that can work with the application/octet-stream media-type (per HCLI 1.0 spec)
 def flexible_safe_executor(url):
@@ -158,9 +158,9 @@ def flexible_unsafe_executor(url):
 def output_chunks(response):
     if response.status_code >= 400:
         code = response.status_code
-        utils.eprint(code, requests.status_codes._codes[code][0])
-        utils.eprint(response.headers)
-        utils.eprint(response.content)
+        hutils.eprint(code, requests.status_codes._codes[code][0])
+        hutils.eprint(response.headers)
+        hutils.eprint(response.content)
         sys.exit(1)
     else:
         with sys.stdout as f:

@@ -1,6 +1,6 @@
 import sys
 import config
-import utils
+import hutils
 import hclinav
 
 # navigate through the command line sequence for a given cliname
@@ -32,7 +32,7 @@ def cli():
             sys.exit(0)
 
         else:
-            utils.eprint("huckle: " + sys.argv[1] + ": command not found.")
+            hutils.eprint("huckle: " + sys.argv[1] + ": command not found.")
             hclinav.for_help()
             sys.exit(2)
 
@@ -45,12 +45,12 @@ def cli():
             sys.exit(0)
 
         else:
-            utils.eprint("huckle: " + sys.argv[1] + ": command not found.")
+            hutils.eprint("huckle: " + sys.argv[1] + ": command not found.")
             hclinav.for_help()
             sys.exit(2)
     else:
-        utils.eprint("for help, use:\n")
-        utils.eprint("  huckle help")
+        hutils.eprint("for help, use:\n")
+        hutils.eprint("  huckle help")
         sys.exit(2)
 
 # show huckle's version and the version of its dependencies

@@ -1,6 +1,6 @@
 import os
 import sys
-import utils
+import hutils
 
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
@@ -51,13 +51,13 @@ def parse_configuration(cli):
 def create_configuration(cli):
     config_file_folder = dot_huckle + "/" + cli 
     config_file = config_file_folder + "/config"
-    utils.create_folder(config_file_folder)
+    hutils.create_folder(config_file_folder)
     
     if not os.path.exists(config_file):
-        utils.create_file(config_file)
+        hutils.create_file(config_file)
         init_configuration(cli)
 
-    utils.create_folder(cli_manpage_path + "/huckle." + cli)
+    hutils.create_folder(cli_manpage_path + "/huckle." + cli)
 
 # sets up an alias for a cli so that it can be called directly by name (instead of calling it via the explicit huckle call) 
 def alias_cli(cli):

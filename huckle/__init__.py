@@ -1,6 +1,6 @@
-import utils
+import hutils
 import config
 
-utils.create_folder(config.dot_huckle)
-utils.create_file(config.dot_huckle_profile)
-utils.create_file(config.dot_bash_profile)
+hutils.create_folder(config.dot_huckle)
+hutils.create_file(config.dot_huckle_profile)
+hutils.create_file(config.dot_bash_profile)
