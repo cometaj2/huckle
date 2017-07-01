@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function
+
 # huckle's imports
 from . import config
 from . import hutils
@@ -62,4 +64,4 @@ def show_dependencies():
         dependencies += " "
         dependencies += config.dependencies[i].rsplit('==', 1)[0] + "/"
         dependencies += config.dependencies[i].rsplit('==', 1)[1]
-    print "huckle/" + config.__version__ + dependencies
+    print("huckle/" + config.__version__ + dependencies)

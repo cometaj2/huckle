@@ -1,4 +1,6 @@
-from ConfigParser import SafeConfigParser
+from __future__ import absolute_import, division, print_function
+
+from six.moves.configparser import SafeConfigParser
 from StringIO import StringIO
 
 # huckle's imports
