@@ -98,7 +98,7 @@ An example CLI that can be used with Huckle is available on hcli.io:
 Versioning
 ----------
 
-Huckle uses semantic versioning (http://semver.org) and may make use of the "prealphax", "alphax"
+Huckle uses semantic versioning (http://semver.org) and may make use of the "devx", "prealphax", "alphax"
 "betax", and "rcx" extensions where x is a number (e.g. 0.3.0-prealpha1) on github. Only full
 major.minor.patch releases will be pushed to pip from now on.
 
