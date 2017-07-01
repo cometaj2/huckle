@@ -16,6 +16,8 @@ if sys.argv[-1] == 'publish':
     os.system("python setup.py sdist")
     os.system("twine upload dist/* -r pypi")
     os.system("git tag -a %s -m 'version %s'" % ("huckle-" + config.__version__, "huckle-" + config.__version__))
+    os.system("git push")
+    os.system("git push --tags")
     sys.exit()
 
 if sys.argv[-1] == 'tag':
