@@ -6,6 +6,7 @@ python:
 install:
   - "pip install pytest"
   - "pip install -e ."
+  - "ls"
   - "pwd"
 
 # command to run tests
