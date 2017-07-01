@@ -89,11 +89,11 @@ Huckle also uses CLI configuration files (e.g. ~/.huckle/<cliname>/config) to as
 CLI to a hypermedia API URL root and other CLI specific configuration.
 
 Each CLI configuration file contains:
-    - A URL to the root of the hypermedia CLI API
+- A URL to the root of the hypermedia CLI API
 
-An example CLI that can be used with Huckle is available on hcli.io.
-    - https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf (HCLI root)  
-    - https://hcli.io/hal/#/hcli-webapp/ (HAL Browser navigation)  
+An example CLI that can be used with Huckle is available on hcli.io:
+- https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf (HCLI root)  
+- https://hcli.io/hal/#/hcli-webapp/ (HAL Browser navigation)  
 
 Versioning
 ----------
