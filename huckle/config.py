@@ -5,7 +5,7 @@ import utils
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 dependencies = ["restnavigator==1.0.1",
                 "requests[socks]==2.13.0"]
 
