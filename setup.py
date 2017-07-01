@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 from huckle import config
-from huckle import utils
+from huckle import hutils
 
 if sys.argv[-1] == 'publish':
     branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip()
