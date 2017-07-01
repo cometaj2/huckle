@@ -55,7 +55,7 @@ Install huckle
 Usage
 -----
 
-huckle create <cliname>
+huckle create \<cliname>
 
     This creates an new cliname alias and configuration file. Once a CLI is created via huckle,
     it can be invoked by name directly after restarting the terminal.
@@ -63,14 +63,14 @@ huckle create <cliname>
     Note that an existing configuration file is left alone if the command is run multiple times 
     for the same cliname.
 
-huckle cli <cliname>
+huckle cli \<cliname>
 
     This invokes the cliname to issue HCLI API calls; the details of which are left to API implementers.
     
     Commands, options and parameters are presented gradually, to provide users with a way to
     incrementally discover and learn how the CLI is used.
 
-<cliname> ... help
+\<cliname> ... help
 
     The reserved "help" command can be used anywhere in a command line sequence to have huckle generate
     a man page from the last successfully received HCLI Document. This helps with CLI exploration.
@@ -85,7 +85,7 @@ Configuration
 Huckle uses the ~/.bash_profile to defer to a ~/.huckle/huckle_profile for CLI aliases; to avoid
 crowding the ~/.bash_profile and to facilitate cleanup if huckle is uninstalled.
 
-Huckle also uses CLI configuration files (e.g. ~/.huckle/<cliname>/config) to associate a specific
+Huckle also uses CLI configuration files (e.g. ~/.huckle/\<cliname>/config) to associate a specific
 CLI to a hypermedia API URL root and other CLI specific configuration.
 
 Each CLI configuration file contains:
