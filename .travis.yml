@@ -15,7 +15,6 @@ python:
 # commands to install with dependencies
 install:
   - "pip install --upgrade pip"
-  - "pip install pytest"
   - "pip install -e ."
 
 # command to run tests
