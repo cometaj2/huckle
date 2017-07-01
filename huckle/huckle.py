@@ -1,9 +1,9 @@
-import sys
-
 # huckle's imports
-import config
-import hutils
-import hclinav
+from . import config
+from . import hutils
+from . import hclinav
+
+import sys
 
 # navigate through the command line sequence for a given cliname
 def navigate(argv):

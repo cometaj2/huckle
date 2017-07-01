@@ -1,6 +1,6 @@
-import hutils
-import config
-import huckle
+from . import hutils
+from . import config
+from . import huckle
 
 def main():
     hutils.create_folder(config.dot_huckle)

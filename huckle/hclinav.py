@@ -1,16 +1,16 @@
 from subprocess import call
 from restnavigator import Navigator
 
+# huckle's imports
+from . import config
+from . import hutils
+
 import sys
 import json
 import subprocess
 import time
 import requests
 import urllib
-
-# huckle's imports
-import config
-import hutils
 
 # produces a navigator that starts navigating from the root and with an api display name of apiname
 def navigator(root, apiname):
