@@ -17,7 +17,7 @@ def create_file(path):
         try:
             file_handle = os.open(path, flags, 0o0600)
         except OSError as e:
-            if e.errno == errno.EEXIST:  # Failed as the file already exists.
+            if e.errno == errno.EEXIST:  # Failed since the file already exists.
                 pass
             else:
                 raise

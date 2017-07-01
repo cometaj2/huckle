@@ -120,6 +120,8 @@ Supports
 
 - Error output to stderr on client response status code >= 400
 
+- SOCKS tunneling through environment variables (ALL_PROXY)
+
 To Do
 -----
 - Fork restnavigator repo or otherwise adjust to use restnavigator with requests (single http client instead of two)
@@ -146,8 +148,6 @@ To Do
 
 - Support non-stream send/receive (via CLI configuration)
 
-- Support for forward proxy configuration  
-
 - Support various authentication per CLI configuration  
 
     - HTTP Basic Auth  
@@ -160,6 +160,8 @@ To Do
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
 
 - Support auto configuration of an hcli when providing a url to an HCLI document (e.g. huckle get https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
+
+- Support forward proxy configuration through proxy environment variables (HTTP_PROXY, HTTPS_PROXY)
 
 - Support hcli name conflic resolution (brainstorm implementation; alias or rename?)
 

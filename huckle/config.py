@@ -5,9 +5,9 @@ import utils
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 
-__version__ = "0.3.1"
+__version__ = "0.4.0"
 dependencies = ["restnavigator==1.0.1",
-                "requests==2.13.0"]
+                "requests[socks]==2.13.0"]
 
 root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
