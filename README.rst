@@ -1,4 +1,4 @@
-Huckle (hypermedia unified CLI... with a kick)
+Huckle (hypermedia unified CLI... with a kick) [![Build Status](https://travis-ci.org/cometaj2/huckle.svg?branch=master)](https://travis-ci.org/cometaj2/huckle)
 ============================================
 
 Huckle is a CLI that can act as an impostor for any CLI expressed via hypertext
