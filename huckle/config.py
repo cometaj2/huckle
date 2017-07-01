@@ -1,6 +1,6 @@
 import os
 import sys
-import hutils
+from huckle import hutils
 
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
