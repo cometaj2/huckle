@@ -1,4 +1,9 @@
-Huckle (hypermedia unified CLI... with a kick) [![Build Status](https://travis-ci.org/cometaj2/huckle.svg?branch=master)](https://travis-ci.org/cometaj2/huckle) [![PyPI version](https://badge.fury.io/py/huckle.svg)](https://badge.fury.io/py/huckle)
+Huckle (hypermedia unified CLI... with a kick) |build status|_ |pypi|_ 
+
+.. |build status| image:: https://travis-ci.org/cometaj2/huckle.svg?branch=master
+.. _build status: https://travis-ci.org/cometaj2/huckle
+.. |pypi| image:: https://badge.fury.io/py/huckle.svg
+.. _pypi: https://badge.fury.io/py/huckle
 ============================================
 
 Huckle is a CLI that can act as an impostor for any CLI expressed via hypertext
