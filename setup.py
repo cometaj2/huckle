@@ -15,7 +15,7 @@ if sys.argv[-1] == 'publish':
     os.system("rm -rf dist")
     os.system("python setup.py sdist")
     os.system("twine upload dist/* -r pypi")
-    os.system("git tag -a %s -m 'version %s'" % ("huckle-" + package.__version__, "huckle-" + config.__version__))
+    os.system("git tag -a %s -m 'version %s'" % ("huckle-" + package.__version__, "huckle-" + package.__version__))
     os.system("git push")
     os.system("git push --tags")
     sys.exit()
@@ -24,7 +24,7 @@ if sys.argv[-1] == 'tag':
     branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip()
     if branch != "master":
         sys.exit("tagging from a branch other than master is disallowed.")
-    os.system("git tag -a %s -m 'version %s'" % ("huckle-" + package.__version__, "huckle-" + config.__version__))
+    os.system("git tag -a %s -m 'version %s'" % ("huckle-" + package.__version__, "huckle-" + package.__version__))
     sys.exit()
 
 here = path.abspath(path.dirname(__file__))
@@ -48,6 +48,10 @@ setup(
         'Topic :: Software Development :: User Interfaces',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
     keywords='cli client hypermedia rest generic development',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
