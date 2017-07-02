@@ -11,7 +11,8 @@ import sys
 
 __version__ = "0.4.1"
 dependencies = ["restnavigator==1.0.1",
-                "requests[socks]==2.13.0"]
+                "requests[socks]==2.13.0",
+                "six==1.10.0"]
 
 root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
