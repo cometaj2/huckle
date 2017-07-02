@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function
 
 # huckle's imports
+from . import package
 from . import config
 from . import hutils
 from . import hclinav
@@ -60,8 +61,8 @@ def cli():
 # show huckle's version and the version of its dependencies
 def show_dependencies():
     dependencies = ""
-    for i, x in enumerate(config.dependencies):
+    for i, x in enumerate(package.dependencies):
         dependencies += " "
-        dependencies += config.dependencies[i].rsplit('==', 1)[0] + "/"
-        dependencies += config.dependencies[i].rsplit('==', 1)[1]
-    print("huckle/" + config.__version__ + dependencies)
+        dependencies += package.dependencies[i].rsplit('==', 1)[0] + "/"
+        dependencies += package.dependencies[i].rsplit('==', 1)[1]
+    print("huckle/" + package.__version__ + dependencies)
