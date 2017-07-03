@@ -32,6 +32,9 @@ def cli():
             config.create_configuration(sys.argv[2])
             config.alias_cli(sys.argv[2])
 
+        elif sys.argv[1] == "pull":
+            hclinav.pull(sys.argv[2])
+
         elif sys.argv[1] == "help":
             hclinav.display_man_page(config.huckle_manpage_path)
             sys.exit(0)

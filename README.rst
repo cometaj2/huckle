@@ -70,6 +70,15 @@ huckle cli \<cliname>
     Commands, options and parameters are presented gradually, to provide users with a way to
     incrementally discover and learn how the CLI is used.
 
+huckle pull \<url>
+
+    This attempts to auto configure a CLI via the root URL of an HCLI. If successful, the CLI can be invoked
+    by name as if created via "huckle create". However, URL is automatically set for the CLI so no manual
+    configuration is required.
+    
+    Note that an existing configuration file is left alone if the command is run multiple times 
+    for the same cliname.
+
 \<cliname> ... help
 
     The reserved "help" command can be used anywhere in a command line sequence to have huckle generate
@@ -122,6 +131,8 @@ Supports
 
 - SOCKS tunneling through environment variables (ALL_PROXY)
 
+- Auto configuration of an hcli when provided with a url to an HCLI document (e.g. huckle pull https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
+
 To Do
 -----
 - Fork restnavigator repo or otherwise adjust to use restnavigator with requests (single http client instead of two)
@@ -158,8 +169,6 @@ To Do
     - SAML 
 
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
-
-- Support auto configuration of an hcli when providing a url to an HCLI document (e.g. huckle get https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
 
 - Support forward proxy configuration through proxy environment variables (HTTP_PROXY, HTTPS_PROXY)
 

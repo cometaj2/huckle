@@ -48,14 +48,14 @@ def parse_configuration(cli):
         sys.exit("No cli configuration " + config_file_path + " available for " + cli) 
 
 # creates a configuration file for a named cli
-def create_configuration(cli):
+def create_configuration(cli, url):
     config_file_folder = dot_huckle + "/" + cli 
     config_file = config_file_folder + "/config"
     hutils.create_folder(config_file_folder)
     
     if not os.path.exists(config_file):
         hutils.create_file(config_file)
-        init_configuration(cli)
+        init_configuration(cli, url)
 
     hutils.create_folder(cli_manpage_path + "/huckle." + cli)
 
@@ -74,11 +74,15 @@ def alias_cli(cli):
         g.close
 
 # initializes the configuration file of a given cli (initialized when a cli "created")
-def init_configuration(cli):
+def init_configuration(cli, url):
     config_file_path = dot_huckle + "/" + cli + "/config"
     parser = SafeConfigParser()
     parser.readfp(StringIO("[default]"))
-    parser.set("default", "url", "")
+
+    if url is None:
+        parser.set("default", "url", "")
+    else:
+        parser.set("default", "url", url)
       
     with open(config_file_path, "w") as config:
         parser.write(config)

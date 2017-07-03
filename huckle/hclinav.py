@@ -75,6 +75,14 @@ def traverse_execution(nav):
     for_help()
     sys.exit(2)
 
+# attempts to pull at the root of the hcli to auto configure the cli
+def pull(url):
+    nav = navigator(root=url, apiname="unknown")
+    if nav()["hcli_version"] == "1.0":
+        cli = nav()["name"]
+        config.create_configuration(cli, url)
+        config.alias_cli(cli)
+
 # displays a man page (file) located on a given path
 def display_man_page(path):
     call(["man", path])
