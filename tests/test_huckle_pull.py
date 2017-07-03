@@ -4,7 +4,7 @@ import subprocess
 import os
 
 def test_function():
-    cmd1 = './test_huckle_pull.sh'
+    cmd1 = 'tests/test_huckle_pull.sh'
     p1 = subprocess.Popen(cmd1.split(), stdout=subprocess.PIPE)
     out, err = p1.communicate()
 
