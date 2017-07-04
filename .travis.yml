@@ -12,4 +12,4 @@ install:
   - "pip install -e ."
 
 # command to run tests
-script: python -m pytest --pyargs huckle 
+script: python -m pytest
