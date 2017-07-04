@@ -138,7 +138,7 @@ def options_and_commands(navigator):
 
 # pretty json dump
 def pretty_json(json):
-    print json.dumps(json, indent=4, sort_keys=True)
+    print(json.dumps(json, indent=4, sort_keys=True))
 
 # standard error message to tell users to go check the help pages (man pages)
 def for_help():
