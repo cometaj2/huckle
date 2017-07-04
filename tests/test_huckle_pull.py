@@ -4,8 +4,6 @@ import subprocess
 import os
 
 def test_function():
-    cmd1 = 'tests/test_huckle_pull.sh'
-    p1 = subprocess.Popen(cmd1.split(), stdout=subprocess.PIPE)
-    out, err = p1.communicate()
+    out = subprocess.check_output(['tests/test_huckle_pull.sh'])
 
-    assert('{\n  "hello": "world"\n}' in out.decode(encoding="UTF-8"))
+    assert('{\n  "hello": "world"\n}' in out)
