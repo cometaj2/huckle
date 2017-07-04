@@ -11,5 +11,9 @@ install:
   - "pip install --upgrade pip"
   - "pip install -e ."
 
+# we make sure pytest can locate the tests
+before_script:
+  - "export PYTHONPATH=$PYTHONPATH:$(pwd)"
+
 # command to run tests
 script: python -m pytest
