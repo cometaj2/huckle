@@ -6,6 +6,6 @@ import os
 def test_function():
     cmd1 = 'tests/test_huckle_pull.sh'
     p1 = subprocess.Popen(cmd1.split(), stdout=subprocess.PIPE)
-    out, err = p1.communicate(str.encode('utf-8'))
+    out, err = p1.communicate()
 
-    assert('{\n  "hello": "world"\n}'.encode('utf-8') in out)
+    assert('{\n  "hello": "world"\n}' in out.decode(encoding="UTF-8"))
