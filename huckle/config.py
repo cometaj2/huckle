@@ -77,7 +77,7 @@ def alias_cli(cli):
 def init_configuration(cli, url):
     config_file_path = dot_huckle + "/" + cli + "/config"
     parser = SafeConfigParser()
-    parser.readfp(StringIO("[default]"))
+    parser.readfp(StringIO("[default]").encode('utf-8'))
 
     if url is None:
         parser.set("default", "url", "")

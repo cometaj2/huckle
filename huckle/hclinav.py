@@ -156,7 +156,7 @@ def flexible_safe_executor(url):
 def flexible_unsafe_executor(url):
     if not sys.stdin.isatty():
         with sys.stdin as f:
-            r = requests.post(url, data=f.encode('utf-8'), stream=True)
+            r = requests.post(url, data=f, stream=True)
             output_chunks(r)
             return
     else:
