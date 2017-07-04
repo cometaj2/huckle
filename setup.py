@@ -56,13 +56,12 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     keywords='cli client hypermedia rest generic development',
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=find_packages(exclude=['__pycache__', 'tests']),
     install_requires=[package.dependencies[0],
                       package.dependencies[1],
                       package.dependencies[2]],
-    package_data={
-        'huckle': ['data/huckle.man'],
-    },
+    package_data={'huckle': ['data/*']},
+    include_package_data=True,
     entry_points={
         'console_scripts': [
             'huckle=huckle.__main__:main',

@@ -7,19 +7,26 @@ huckle \- A generic hypertext command line interface (HCLI) client
 .I option
 |
 .I <command>
-.I <cliname>
+.I <parameter>
 ]
 .SH DESCRIPTION
 .B huckle
 is a generic CLI that can be used with any API that abides by
 the standard version 1.0 hypertext command line interface (HCLI) semantics.
 .SH COMMANDS
-.IP create
+.IP "create <cliname>"
 This allows you to alias into a new CLI. Restarting the terminal
 is required since we're using a ~/.bash_profile alias.
-.IP cli
+.IP "cli <cliname>"
 Used to invoke a CLI. Note that the <cliname> alias created with
 huckle create <cliname> should be used instead, for brevity.
+.IP "pull <url>"
+This attempts to auto configure a CLI via the root URL of an HCLI. If successful, the CLI can be invoked:w
+by name as if created via "huckle create". However, URL is automatically set for the CLI so no manual
+configuration is required.
+
+Note that an existing configuration file is left alone if the command is run multiple times
+for the same cliname.
 .IP help
 This help file
 .SH OPTIONS
@@ -30,5 +37,7 @@ version and the version of it's dependencies.
 huckle create usp5
 
 huckle cli usp5 (equivalent to simply invoking "usp5")
+
+huckle pull https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf
 
 huckle --version
