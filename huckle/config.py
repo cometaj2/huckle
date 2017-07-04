@@ -1,7 +1,10 @@
 from __future__ import absolute_import, division, print_function
 
 from configparser import SafeConfigParser
-from StringIO import StringIO
+try:
+        from StringIO import StringIO
+except ImportError:
+        from io import StringIO
 
 # huckle's imports
 from . import hutils
