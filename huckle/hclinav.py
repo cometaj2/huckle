@@ -176,4 +176,4 @@ def output_chunks(response):
         with sys.stdout as f:
             for chunk in response.iter_content(16384):
                 if chunk:
-                    f.write(chunk)
+                    f.write(chunk.decode('utf-8'))
