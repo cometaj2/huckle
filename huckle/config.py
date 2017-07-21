@@ -18,7 +18,7 @@ dot_bash_profile = home + "/.bash_profile"
 
 # These next 3 variables are dynamically updated from read configuration. Be careful!
 url = ""
-cliname = ""
+cliname = "huckle"
 cli_manpage_path = "/tmp"
 
 # These hcli_ variables are taken from the semantic types found in the HCLI 1.0 specification
@@ -45,7 +45,7 @@ def parse_configuration(cli):
                     cli_manpage_path = cli_manpage_path + "/huckle." + cliname
             if url == "": sys.exit("No url defined for " + cli + " under " + config_file_path)
     else:
-        sys.exit("No cli configuration " + config_file_path + " available for " + cli) 
+        sys.exit("huckle: no cli configuration " + config_file_path + " available for " + cli) 
 
 # creates a configuration file for a named cli
 def create_configuration(cli, url):
@@ -56,6 +56,8 @@ def create_configuration(cli, url):
     if not os.path.exists(config_file):
         hutils.create_file(config_file)
         init_configuration(cli, url)
+    else:
+        raise Exception("huckle: the configuration for " + cli + " already exists. leaving the existing configuration untouched.")
 
     hutils.create_folder(cli_manpage_path + "/huckle." + cli)
 
