@@ -6,6 +6,9 @@ command line interface (HCLI) semantics.
 
 ----
 
+How does having at your disposal an instantly usable and free shell CLI for your
+API sound like?
+
 As is normally seen with any well-behaved client/server interaction under REST,
 all changes published by the server are distributed to all clients without there
 being a need to update the client as the API changes. This is used to huckle's
@@ -55,12 +58,21 @@ Install huckle
 Usage
 -----
 
+huckle pull \<url>
+
+    This attempts to auto configure a CLI via the root URL of an HCLI. If successful, the CLI
+    can be invoked by name, after restarting the terminal, as if created via "huckle create".
+    
+    Note that an existing configuration file is left alone if the command is run multiple times 
+    for the same CLI.
+
 huckle create \<cliname>
 
-    This creates an new cliname alias and configuration file. Once a CLI is created via huckle,
-    it can be invoked by name directly after restarting the terminal.
+    This manually creates a new cliname alias and configuration file. Once a CLI is created via huckle,
+    it can be invoked by name directly after restarting the terminal. Note that further manual
+    configuration of the URL of the HCLI root is required when using "huckle create".
    
-    Note that an existing configuration file is left alone if the command is run multiple times 
+    Also note that an existing configuration file is left alone if the command is run multiple times 
     for the same cliname.
 
 huckle cli \<cliname>
@@ -69,15 +81,6 @@ huckle cli \<cliname>
     
     Commands, options and parameters are presented gradually, to provide users with a way to
     incrementally discover and learn how the CLI is used.
-
-huckle pull \<url>
-
-    This attempts to auto configure a CLI via the root URL of an HCLI. If successful, the CLI can be invoked
-    by name as if created via "huckle create". However, URL is automatically set for the CLI so no manual
-    configuration is required.
-    
-    Note that an existing configuration file is left alone if the command is run multiple times 
-    for the same cliname.
 
 \<cliname> ... help
 
@@ -114,7 +117,7 @@ major.minor.patch releases will be pushed to pip from now on.
 Supports
 --------
 
-- Automatic man page document generation with the "help" command.
+- Automatic man page generation with "help" used anywhere in a CLI.
 - HCLI version 1.0 semantics for:
 
     - hal+json
@@ -131,15 +134,13 @@ Supports
 
 - SOCKS tunneling through environment variables (ALL_PROXY)
 
-- Auto configuration of an hcli when provided with a url to an HCLI document (e.g. huckle pull https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
+- Auto configuration of an HCLI when provided with a url to an HCLI root (e.g. huckle pull https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
 
 To Do
 -----
 - Fork restnavigator repo or otherwise adjust to use restnavigator with requests (single http client instead of two)
 
 - Support help docs output in the absence of man pages (e.g. git-bash on Windows)
-
-- Support immediate use of a CLI created through huckle create <cliname> (instead of having to restart the terminal)
 
 - Support HCLI version 1.0 semantics for: 
 
