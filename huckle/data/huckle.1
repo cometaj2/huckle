@@ -24,8 +24,12 @@ for the same CLI.
 This allows you to crete an alias into a new HCLI API. Manual configuration of the root HCLI URL
 is required under ~/.huckle/cliname/config and so is restarting the terminal (since we're using a ~/.bash_profile alias).
 .IP "cli <cliname>"
-Used to invoke a CLI. Note that the <cliname> alias created with
-huckle create <cliname> should be used for brevity.
+Used to invoke a CLI, the details of which are left to API implementers.
+.IP "<cliname> ..."
+The <cliname> alias created with huckle pull or huckle create can be used for brevity.
+.IP "<cliname> ... help"
+The "help" command can be used anywhere in a command line invocation to generate help pages from an HCLI document. This
+is useful to explore what a CLI can do.
 .IP help
 This help file
 .SH OPTIONS
