@@ -82,6 +82,10 @@ huckle cli \<cliname>
     Commands, options and parameters are presented gradually, to provide users with a way to
     incrementally discover and learn how the CLI is used.
 
+\<cliname> ...
+
+    For brevity, the CLI name can and should be invoked directly rather than through "huckle cli \<cliname>.
+
 \<cliname> ... help
 
     The reserved "help" command can be used anywhere in a command line sequence to have huckle generate
