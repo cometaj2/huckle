@@ -60,7 +60,7 @@ Usage
 
 huckle pull \<url>
 
-    This attempts to auto configure a CLI via the root URL of an HCLI. If successful, the CLI
+    This attempts to auto create and configure a CLI via the root URL of an HCLI. If successful, the CLI
     can be invoked by name, after restarting the terminal, as if created via "huckle create".
     
     Note that an existing configuration file is left alone if the command is run multiple times 
