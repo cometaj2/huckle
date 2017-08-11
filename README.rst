@@ -19,7 +19,7 @@ Given that most programming languages have a way to issue shell commands, such
 APIs become readily consumable anywhere, and can be experimented with quickly
 by developers, with Huckle's help.
 
-Huckle provides a dynamic view of the documentation, commands, options and
+Huckle provides a dynamic view of the documentation and of commands, options and
 parameters that can be issued to an HCLI API it interacts with.
 
 The standard HCLI Internet-Draft [1] is a work in progress by the author.
