@@ -13,7 +13,8 @@ root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
 home = os.path.expanduser("~")
 dot_huckle = "%s/.huckle" % home
-dot_huckle_profile = dot_huckle + "/huckle_profile"
+dot_huckle_scripts = dot_huckle + "/bin"
+dot_huckle_config = dot_huckle + "/etc"
 dot_bash_profile = home + "/.bash_profile"
 
 # These next 3 variables are dynamically updated from read configuration. Be careful!
@@ -30,7 +31,7 @@ hcli_unsafe_type = "unsafe-execution"
 
 # parses the configuration of a given cli to set configured execution
 def parse_configuration(cli):
-    config_file_path = dot_huckle + "/" + cli + "/config"
+    config_file_path = dot_huckle_config + "/" + cli + "/config"
     parser = SafeConfigParser()
     parser.read(config_file_path)
     if parser.has_section("default"):
@@ -49,7 +50,7 @@ def parse_configuration(cli):
 
 # creates a configuration file for a named cli
 def create_configuration(cli, url):
-    config_file_folder = dot_huckle + "/" + cli 
+    config_file_folder = dot_huckle_config + "/" + cli 
     config_file = config_file_folder + "/config"
     hutils.create_folder(config_file_folder)
     
@@ -63,21 +64,23 @@ def create_configuration(cli, url):
 
 # sets up an alias for a cli so that it can be called directly by name (instead of calling it via the explicit huckle call) 
 def alias_cli(cli):
-    if not is_configured(dot_bash_profile, ". " + dot_huckle_profile):
+    if not is_configured(dot_bash_profile, dot_huckle_scripts):
         f = open(dot_bash_profile, "a+")
         f.write("\n")
-        f.write("# we load the huckle aliases profile\n")
-        f.write(". " + dot_huckle_profile)
+        f.write("# we make sure the huckle entrypoint scripts can be located\n")
+        f.write("export PATH=$PATH:" + dot_huckle_scripts)
         f.close
-
-    if not is_configured(dot_huckle_profile, "alias " + cli + "="):
-        g = open(dot_huckle_profile, "a+")
-        g.write("alias " + cli + "=\"huckle cli " + cli + "\"\n")
+    
+    if not os.path.exists(dot_huckle_scripts + "/" + cli):
+        g = open(dot_huckle_scripts + "/" + cli, "a+")
+        os.chmod(dot_huckle_scripts + "/" + cli, 0o700)
+        g.write("#!/bin/bash\n")
+        g.write("huckle cli " + cli + " $@")
         g.close
 
 # initializes the configuration file of a given cli (initialized when a cli "created")
 def init_configuration(cli, url):
-    config_file_path = dot_huckle + "/" + cli + "/config"
+    config_file_path = dot_huckle_config + "/" + cli + "/config"
     parser = SafeConfigParser()
     parser.readfp(StringIO(u"[default]"))
 

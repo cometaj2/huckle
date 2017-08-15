@@ -60,11 +60,16 @@ Usage
 
 huckle pull \<url>
 
-    This attempts to auto create and configure a CLI via the root URL of an HCLI. If successful, the CLI
-    can be invoked by name, after restarting the terminal, as if created via "huckle create".
+    This attempts to auto create and configure a CLI if provided with the root URL of an HCLI API.
+    If successful, the CLI can be invoked by name, after restarting the terminal, as if created via
+    "huckle create".
     
     Note that an existing configuration file is left alone if the command is run multiple times 
     for the same CLI.
+
+    An example CLI that can be used with Huckle is available on hcli.io:
+        - https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf (HCLI root)  
+        - https://hcli.io/hal/#/hcli-webapp/ (HAL Browser navigation)  
 
 huckle create \<cliname>
 
@@ -98,18 +103,13 @@ huckle help
 Configuration
 -------------
 
-Huckle uses the ~/.bash_profile to defer to a ~/.huckle/huckle_profile for CLI aliases; to avoid
-crowding the ~/.bash_profile and to facilitate cleanup if huckle is uninstalled.
+Huckle uses small scripts under ~/.huckle/bin to allow for CLIs to be kicked off by name.
 
-Huckle also uses CLI configuration files (e.g. ~/.huckle/\<cliname>/config) to associate a specific
+Huckle also uses CLI configuration files (e.g. ~/.huckle/etc/\<cliname>/config) to associate a specific
 CLI to a hypermedia API URL root and other CLI specific configuration.
 
 Each CLI configuration file contains:
 - A URL to the root of the hypermedia CLI API
-
-An example CLI that can be used with Huckle is available on hcli.io:
-- https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf (HCLI root)  
-- https://hcli.io/hal/#/hcli-webapp/ (HAL Browser navigation)  
 
 Versioning
 ----------
@@ -122,6 +122,7 @@ Supports
 --------
 
 - Automatic man page generation with "help" used anywhere in a CLI.
+
 - HCLI version 1.0 semantics for:
 
     - hal+json

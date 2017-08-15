@@ -29,6 +29,14 @@ if sys.argv[-1] == 'tag':
     os.system("git tag -a %s -m 'version %s'" % ("huckle-" + package.__version__, "huckle-" + package.__version__))
     sys.exit()
 
+# requires docker to be installed on the host
+if sys.argv[-1] == 'hucker':
+    branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip()
+    if branch != "master":
+        sys.exit("tagging from a branch other than master is disallowed.")
+    os.system('docker build --no-cache -t huckle .')
+    sys.exit()
+
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
