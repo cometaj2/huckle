@@ -1,12 +1,20 @@
 You can execute:
 
-  pig (alias pig='pip install -e .')
+  - pig (alias pig='pip install -e .')
     Executed in this folder, it installs the application as if it had been isntalled through pip
     and changes to the code are immediately reflected.
 
-  tag (alias tag='python setup.py tag')
-    Tags the latest commit in the git repo to whatever __version__ is in the config.py file
+  - tag (alias tag='python setup.py tag')
+    Tags the latest commit in the git repo to whatever __version__ is at.
 
-  pub (alias pub='python setup.py publish') - maintainer only
+  - pub (alias pub='python setup.py publish') - maintainer only
     This publishes the application to PyPI, the python package manager, and tags the latest commit
-    in the git repo to whatever __version__ is in the config.py file
+    in the git repo to whatever __version__ is at.
+
+  - docker build -t hucker .
+    Creates a centos docker image if you don't want to deal with python pip and other shell
+    dependencies on your box. You'll need docker installed however.
+    Once the image is created:
+      - docker run --name hucker -dt hucker /bin/bash
+    Then execute huckle commands on the standing container:
+      - docker exec -it hucker huckle help
