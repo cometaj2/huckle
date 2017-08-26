@@ -4,17 +4,25 @@ import subprocess
 import os
 
 def test_function():
-    script = """
+    setup = """
     #!/bin/bash
 
-    shopt -s expand_aliases
     huckle pull https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf
-    . ~/.huckle/huckle_profile
-    echo {"hello":"world"} | jsonf go
+    echo '{"hello":"world"}' | jsonf go
     """
 
-    p1 = subprocess.Popen(['bash', '-c', script], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(['bash', '-c', setup], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     out, err = p1.communicate()
+
+    hello = """
+    #!/bin/bash
+
+    export PATH=$PATH:~/.huckle/bin
+    echo '{"hello":"world"}' | jsonf go
+    """
+    
+    p2 = subprocess.Popen(['bash', '-c', hello], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, err = p2.communicate()
     result = out.decode('utf-8')
 
-    assert('{\n  "hello": "world"\n}' in result)
+    assert('{\n  "hello" : "world"\n}\n' in result)
