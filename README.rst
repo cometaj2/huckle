@@ -15,19 +15,17 @@ being a need to update the client as the API changes. This is used to huckle's
 advantage and this benefit is brought to the command line interface and the
 unix/linux shell.
 
-Given that most programming languages have a way to issue shell commands, such
-APIs become readily consumable anywhere, and can be experimented with quickly
-by developers, with Huckle's help.
+Huckle provides a dynamic view of the documentation, and execution of, commands, options, and
+parameters that can be issued to an HCLI API it interacts with; and given that most
+programming languages have a way to issue shell commands, such APIs become
+readily consumable anywhere, and can be experimented with quickly by developers,
+with Huckle's help.
 
-Huckle provides a dynamic view of the documentation and of commands, options and
-parameters that can be issued to an HCLI API it interacts with.
-
-The standard HCLI Internet-Draft [1] is a work in progress by the author.
-
+The standard HCLI Internet-Draft [1] is a work in progress by the author and 
 The current implementation leverages hal+json alongside a static form of ALPS
 (semantic profile) [2] to help enable widespread cross media-type support.
 
-You can access an simple example HCLI server to play with huckle [3]
+You can access a simple example HCLI server to play with huckle [3]
 
 Help shape huckle and HCLI on the discussion list [4] or by raising issues on github!
 
