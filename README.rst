@@ -6,20 +6,17 @@ command line interface (HCLI) semantics.
 
 ----
 
-How does having at your disposal an instantly usable and free shell CLI for your
-API sound like?
+Huckle provides a dynamic view of the CLI documentation (man page style), and
+execution of commands, options, and parameters that can be issued to an API
+that exposes CLIs via HCLI semantics [1].
 
-As is normally seen with any well-behaved client/server interaction under REST,
-all changes published by the server are distributed to all clients without there
-being a need to update the client as the API changes. This is used to huckle's
-advantage and this benefit is brought to the command line interface and the
-unix/linux shell.
+Most, if not all, programming languages have a way to issue shell commands. This makes
+APIs that make use of HCLI semantics readily consumable anywhere via the familiar
+CLI mode of operation, and this, without there being a need to write a custom and dedicated CLI.
 
-Huckle provides a dynamic view of the documentation, and execution of, commands, options, and
-parameters that can be issued to an HCLI API it interacts with; and given that most
-programming languages have a way to issue shell commands, such APIs become
-readily consumable anywhere, and can be experimented with quickly by developers,
-with Huckle's help.
+With Huckle's help, developers can experiment quickly with any API that exposes HCLI
+semantics, while providing in-band access to all the API/CLI documentation which showcases options,
+command and parameters available for use.
 
 The standard HCLI Internet-Draft [1] is a work in progress by the author and 
 The current implementation leverages hal+json alongside a static form of ALPS
@@ -119,7 +116,7 @@ major.minor.patch releases will be pushed to pip from now on.
 Supports
 --------
 
-- Automatic man page generation with "help" used anywhere in a CLI.
+- Automatic man page generation with the "help" command, anywhere in a CLI.
 
 - HCLI version 1.0 semantics for:
 
