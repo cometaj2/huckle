@@ -109,8 +109,8 @@ Each CLI configuration file contains:
 Versioning
 ----------
 
-Huckle release version numbers makes use of semantic versioning (http://semver.org) and may make use of
-the "devx", "prealphax", "alphax" "betax", and "rcx" extensions where x is a number (e.g. 0.3.0-prealpha1)
+This project makes use of semantic versioning (http://semver.org) and may make use of the "devx",
+"prealphax", "alphax" "betax", and "rcx" extensions where x is a number (e.g. 0.3.0-prealpha1)
 on github. Only full major.minor.patch releases will be pushed to pip from now on.
 
 Supports
