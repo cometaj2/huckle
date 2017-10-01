@@ -116,11 +116,11 @@ major.minor.patch releases will be pushed to pip from now on.
 Supports
 --------
 
-- Automatic man page generation with the "help" command, anywhere in a CLI.
-
 - HCLI version 1.0 semantics for:
 
     - hal+json
+
+- Automatic man page generation with the "help" command, anywhere in a CLI.
 
 - Command line execution responses for:
 
