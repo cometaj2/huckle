@@ -122,7 +122,7 @@ Supports
 
 - Automatic man page generation with the "help" command, anywhere in a CLI.
 
-- Command line execution responses for:
+- Command line execution responses for
 
     - All media types
 
@@ -146,6 +146,7 @@ To Do
 
     - Collection+JSON
     - hal+xml
+    - Uber
     - HTML
     - Siren
     - JSON API
@@ -169,11 +170,17 @@ To Do
     - AWS
     - SAML 
 
+- Better implementation for huckle params/options handling
+
+- Support for realiasing a CLI with additional huckle options (e.g. adding "--ssl-no-verify" to huckle cli jsonf $@'s shell script entrypoint)
+
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
+
+- Support for viewing information about an HCLI root (e.g. huckle view https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)
 
 - Support forward proxy configuration through proxy environment variables (HTTP_PROXY, HTTPS_PROXY)
 
-- Support hcli name conflic resolution (brainstorm implementation; alias or rename?)
+- Support hcli name conflic resolution (use namespaces?)
 
 Bugs
 ----
