@@ -172,7 +172,7 @@ To Do
 
 - Better implementation for huckle params/options handling
 
-- Support for realiasing a CLI with additional huckle options (e.g. adding "--ssl-no-verify" to huckle cli jsonf $@'s shell script entrypoint)
+- Support for re-aliasing a CLI with additional huckle options (e.g. adding "--ssl-no-verify" to huckle cli jsonf's shell script)
 
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
 
