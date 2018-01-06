@@ -7,8 +7,8 @@ command line interface (HCLI) semantics.
 ----
 
 Huckle provides a way for developers to interact with, or script around, any API that exposes HCLI
-semantics, while providing in-band access to all the API/CLI documentation, man page style, which
-showcases commands, options, and parameters avaialable for execution.
+semantics, while providing dynamic and up to date in-band access to all the API/CLI documentation,
+man page style, which showcases commands, options, and parameters avaialable for execution.
 
 Most, if not all, programming languages have a way to issue shell commands. With the help
 of a generic HCLI client such as Huckle, APIs that make use of HCLI semantics are readily consumable
