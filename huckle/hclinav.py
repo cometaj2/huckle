@@ -22,7 +22,8 @@ def traverse_argument(nav, arg):
     ilength = 0
     try:
         ilength = len(nav.embedded()["item"])
-    except:
+    except Exception as warning:
+        hutils.eprint(warning)
         hutils.eprint(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad or inexistent hcli 1.0 server implementation.")
         sys.exit(1)
 
@@ -55,7 +56,7 @@ def traverse_argument(nav, arg):
                 hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
                 sys.exit(2)
 
-# attempts to traverse through a safe or unsafe execution. (only invoked when we've run out of command line arguments to parse)
+# attempts to traverse through a safe or unsafe execution. (only attempted when we've run out of command line arguments to parse)
 def traverse_execution(nav):
     for k, z in enumerate(nav.embedded()["item"]):
         tempnav = nav.embedded()["item"][k]
@@ -90,7 +91,8 @@ def pull(url):
                 print(cli + " was successfully configured.")
             except Exception as warning:
                 hutils.eprint(warning)
-    except:
+    except Exception as warning:
+        hutils.eprint(warning)
         hutils.eprint(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad or inexistent hcli 1.0 server implementation.")
 
 # displays a man page (file) located on a given path
@@ -214,7 +216,7 @@ def flexible_unsafe_executor(url):
         output_chunks(r)
         return
 
-# outputs the received response received from a safe or unsafe execution
+# outputs the response received from a safe or unsafe execution
 def output_chunks(response):
     if response.status_code >= 400:
         code = response.status_code
