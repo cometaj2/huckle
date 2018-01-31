@@ -50,11 +50,10 @@ Install huckle
 Usage
 -----
 
-huckle pull \<url>
+huckle install \<url>
 
-    This attempts to auto create and configure a CLI if provided with the root URL of an HCLI API.
-    If successful, the CLI can be invoked by name, after restarting the terminal, as if created via
-    "huckle create".
+    This attempts to auto create and configure a CLI name if provided with the root URL of an HCLI API.
+    If successful, the CLI can be invoked by name, after restarting the terminal.
     
     Note that an existing configuration file is left alone if the command is run multiple times 
     for the same CLI.
@@ -62,15 +61,6 @@ huckle pull \<url>
     An example CLI that can be used with Huckle is available on hcli.io:
         - https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf (HCLI root)  
         - https://hcli.io/hal/#/hcli-webapp/ (HAL Browser navigation)  
-
-huckle create \<cliname>
-
-    This manually creates a new cliname alias and configuration file. Once a CLI is created via huckle,
-    it can be invoked by name directly after restarting the terminal. Note that further manual
-    configuration of the URL of the HCLI root is required when using "huckle create".
-   
-    Also note that an existing configuration file is left alone if the command is run multiple times 
-    for the same cliname.
 
 huckle cli \<cliname>
 
@@ -131,7 +121,7 @@ Supports
 
 - SOCKS tunneling through environment variables (ALL_PROXY)
 
-- Auto configuration of an HCLI when provided with a url to an HCLI root (e.g. huckle pull https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
+- Auto configuration of an HCLI when provided with a url to an HCLI root (e.g. huckle install https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
 
 To Do
 -----
@@ -146,7 +136,6 @@ To Do
     - Uber
     - HTML
     - Siren
-    - JSON API
     - JSON-LD
     - Mason
 
