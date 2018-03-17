@@ -1,6 +1,5 @@
 from subprocess import call
 from restnavigator import Navigator
-#from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 # huckle's imports
 from . import config
@@ -204,12 +203,6 @@ def flexible_executor(url, method):
     if method == "post":
         if not sys.stdin.isatty():
             with sys.stdin as f:
-
-                #if config.multipart == "true":
-                #m = MultipartEncoder(fields={'field0': 'value', 'field1': 'value', 'field2': ('filename', f.read(), 'application/octet-stream')})
-                #headers = {'content-type': m.content_type}
-                #r = requests.post(url, data=m, headers=headers)
-                #else:
 
                 headers = {'content-type': 'application/octet-stream'}
                 r = requests.post(url, data=f.read(), headers=headers, stream=True)
