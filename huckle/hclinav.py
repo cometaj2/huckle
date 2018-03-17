@@ -223,7 +223,7 @@ def output_chunks(response):
         hutils.eprint(response.content)
         sys.exit(1)
     else:
-        with sys.stdout as f:
+        with sys.stdout.buffer as f:
             for chunk in response.iter_content(16384):
                 if chunk:
                     f.write(chunk)
