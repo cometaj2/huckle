@@ -11,6 +11,7 @@ import sys
 # navigate through the command line sequence for a given cliname
 def navigate(argv):
     nav = hclinav.navigator(root=config.url, apiname=config.cliname)
+
     if len(argv) == 1:
         hclinav.traverse_execution(nav)
 

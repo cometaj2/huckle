@@ -1,5 +1,6 @@
 from subprocess import call
 from restnavigator import Navigator
+#from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 # huckle's imports
 from . import config
@@ -21,15 +22,15 @@ def navigator(root, apiname):
 def traverse_argument(nav, arg):        
     ilength = 0
     try:
-        ilength = len(nav.embedded()["item"])
+        ilength = len(nav.links()["cli"])
     except Exception as warning:
-        hutils.eprint(warning)
-        hutils.eprint(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad or inexistent hcli 1.0 server implementation.")
+        #hutils.eprint(warning)
+        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics.")
         sys.exit(1)
 
-    for j, y in enumerate(nav.embedded()["item"]):
+    for j, y in enumerate(nav.links()["cli"]):
            
-        tempnav = nav.embedded()["item"][j]
+        tempnav = nav.links()["cli"][j]
             
         try:
             if tempnav()["name"] == arg:
@@ -40,7 +41,7 @@ def traverse_argument(nav, arg):
                 hcli_to_man(nav)
                 sys.exit(0)
             else:
-                hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
+                hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
                 if hcli_type == config.hcli_parameter_type:
                     nav = tempnav["cli"][0](hcli_param=urllib.quote(arg))
                     return nav
@@ -56,20 +57,16 @@ def traverse_argument(nav, arg):
                 hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
                 sys.exit(2)
 
-# attempts to traverse through a safe or unsafe execution. (only attempted when we've run out of command line arguments to parse)
+# attempts to traverse through an execution. (only attempted when we've run out of command line arguments to parse)
 def traverse_execution(nav):
-    for k, z in enumerate(nav.embedded()["item"]):
-        tempnav = nav.embedded()["item"][k]
+    for k, z in enumerate(nav.links()["cli"]):
+        tempnav = nav.links()["cli"][k]
 
-        hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
-        if hcli_type == config.hcli_safe_type:
+        hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
+        if hcli_type == config.hcli_execution_type:
+            method = tempnav()["http"]
             nav = tempnav["cli"][0]
-            flexible_safe_executor(nav.uri)
-            sys.exit(0)
-
-        if hcli_type == config.hcli_unsafe_type:
-            nav = tempnav["cli"][0]
-            flexible_unsafe_executor(nav.uri)
+            flexible_executor(nav.uri, method)
             sys.exit(0)
 
     hutils.eprint(config.cliname + ": " + "unable to execute.")
@@ -92,8 +89,8 @@ def pull(url):
             except Exception as warning:
                 hutils.eprint(warning)
     except Exception as warning:
-        hutils.eprint(warning)
-        hutils.eprint(config.cliname + ": unable to find a command, option, parameter or execution item to observe. bad or inexistent hcli 1.0 server implementation.")
+        #hutils.eprint(warning)
+        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics.")
 
 # displays a man page (file) located on a given path
 def display_man_page(path):
@@ -114,9 +111,9 @@ def options_and_commands_to_text(navigator):
     # This block outputs an OPTIONS section, in the man page, alongside each available option flag and its description
     options = ""
     option_count = 0
-    for i, x in enumerate(navigator.embedded()["item"]):
-        tempnav = navigator.embedded()["item"][i]
-        hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
+    for i, x in enumerate(navigator.links()["cli"]):
+        tempnav = navigator.links()["cli"][i]
+        hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
         if hcli_type == config.hcli_option_type:
             option_count += 1
             options = options + "       " + tempnav()["name"] + "\n"
@@ -127,9 +124,9 @@ def options_and_commands_to_text(navigator):
     # This block outputs a COMMANDS section, in the man page, alongside each available command and its description
     commands = ""
     command_count = 0
-    for i, x in enumerate(navigator.embedded()["item"]):
-        tempnav = navigator.embedded()["item"][i]
-        hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
+    for i, x in enumerate(navigator.links()["cli"]):
+        tempnav = navigator.links()["cli"][i]
+        hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
         if hcli_type == config.hcli_command_type:
             command_count += 1
             commands = commands + "       " + tempnav()["name"] + "\n"
@@ -163,9 +160,9 @@ def options_and_commands_to_man(navigator):
     # This block outputs an OPTIONS section, in the man page, alongside each available option flag and its description
     options = ""
     option_count = 0
-    for i, x in enumerate(navigator.embedded()["item"]):
-        tempnav = navigator.embedded()["item"][i]
-        hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
+    for i, x in enumerate(navigator.links()["cli"]):
+        tempnav = navigator.links()["cli"][i]
+        hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
         if hcli_type == config.hcli_option_type:
             option_count += 1
             options = options + ".IP " + tempnav()["name"] + "\n"
@@ -176,9 +173,9 @@ def options_and_commands_to_man(navigator):
     # This block outputs a COMMANDS section, in the man page, alongside each available command and its description
     commands = ""
     command_count = 0
-    for i, x in enumerate(navigator.embedded()["item"]):
-        tempnav = navigator.embedded()["item"][i]
-        hcli_type = tempnav.links()["type"][0].uri.split('#', 1)[1]
+    for i, x in enumerate(navigator.links()["cli"]):
+        tempnav = navigator.links()["cli"][i]
+        hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
         if hcli_type == config.hcli_command_type:
             command_count += 1
             commands = commands + ".IP " + tempnav()["name"] + "\n"
@@ -199,24 +196,32 @@ def for_help():
     hutils.eprint("  " + config.cliname + " <command> help")
 
 # a flexible executor that can work with the application/octet-stream media-type (per HCLI 1.0 spec)
-def flexible_safe_executor(url):
-    r = requests.get(url, stream=True)
-    output_chunks(r)
-    return
+def flexible_executor(url, method):
+    if method == "get":
+        r = requests.get(url, stream=True)
+        output_chunks(r)
+        return
+    if method == "post":
+        if not sys.stdin.isatty():
+            with sys.stdin as f:
 
-# a flexible executor that can work with the application/octet-stream media-type (per HCLI 1.0 spec)
-def flexible_unsafe_executor(url):
-    if not sys.stdin.isatty():
-        with sys.stdin as f:
-            r = requests.post(url, data=f.read().encode('utf-8'), stream=True)
-            output_chunks(r)
-            return
+                #if config.multipart == "true":
+                #m = MultipartEncoder(fields={'field0': 'value', 'field1': 'value', 'field2': ('filename', f.read(), 'application/octet-stream')})
+                #headers = {'content-type': m.content_type}
+                #r = requests.post(url, data=m, headers=headers)
+                #else:
+
+                headers = {'content-type': 'application/octet-stream'}
+                r = requests.post(url, data=f.read(), headers=headers, stream=True)
+                
+                output_chunks(r)
+                return
     else:
         r = requests.post(url, data=None, stream=True)
         output_chunks(r)
         return
 
-# outputs the response received from a safe or unsafe execution
+# outputs the response received from an execution
 def output_chunks(response):
     if response.status_code >= 400:
         code = response.status_code
@@ -228,4 +233,4 @@ def output_chunks(response):
         with sys.stdout as f:
             for chunk in response.iter_content(16384):
                 if chunk:
-                    f.write(chunk.decode('utf-8'))
+                    f.write(chunk)

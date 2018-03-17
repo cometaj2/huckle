@@ -26,8 +26,7 @@ cli_manpage_path = "/tmp"
 hcli_command_type = "command"
 hcli_option_type = "option"
 hcli_parameter_type = "parameter"
-hcli_safe_type = "safe-execution"
-hcli_unsafe_type = "unsafe-execution"
+hcli_execution_type = "execution"
 
 # parses the configuration of a given cli to set configured execution
 def parse_configuration(cli):
@@ -88,7 +87,7 @@ def init_configuration(cli, url):
         parser.set("default", "url", "")
     else:
         parser.set("default", "url", url)
-      
+    
     with open(config_file_path, "w") as config:
         parser.write(config)
 

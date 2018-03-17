@@ -177,11 +177,16 @@ To Do
     - Selecting a namespace (e.g. huckle ns use abc)
     - Remove an entire namespace and all associated CLIs (e.g. huckle ns rm abc)
 
+- Support multipart/form-data for very large uploads (see requests-toolbelt)
+
 Bugs
 ----
 
-None are known... so far.
+- There's an edge case that's not covered; when executing a cli by invoking the root of the HCLI only. And more specifically when the root is
+not valid HCLI when initially fetching the HALNavigator.
 
+- Carriage return characters "\n" in json don't get converted to line breaks in man pages.  
+  
 .. |build status| image:: https://travis-ci.org/cometaj2/huckle.svg?branch=master
 .. _build status: https://travis-ci.org/cometaj2/huckle
 .. |pypi| image:: https://badge.fury.io/py/huckle.svg
