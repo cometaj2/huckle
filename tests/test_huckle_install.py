@@ -7,7 +7,7 @@ def test_function():
     setup = """
     #!/bin/bash
 
-    huckle install https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf
+    huckle install https://hcli.io/hcli/cli/jsonf?command=jsonf
     echo '{"hello":"world"}' | jsonf go
     """
 
