@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function
 
-from subprocess import check_output
+import subprocess
 import os
 
 def test_function():
@@ -11,7 +11,8 @@ def test_function():
     echo '{"hello":"world"}' | jsonf go
     """
 
-    out = check_output(['bash', '-c', setup])
+    p1 = subprocess.Popen(['bash', '-c', setup], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, err = p1.communicate()
 
     hello = """
     #!/bin/bash
@@ -20,6 +21,8 @@ def test_function():
     echo '{"hello":"world"}' | jsonf go
     """
     
-    out = check_output(['bash', '-c', hello])
+    p2 = subprocess.Popen(['bash', '-c', hello], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, err = p2.communicate()
+    result = out.decode('utf-8')
 
-    assert('{\n  "hello" : "world"\n}\n' in out)
+    assert('{\n  "hello" : "world"\n}\n' in result)
