@@ -8,15 +8,15 @@ command line interface (HCLI) semantics.
 
 Huckle provides a way for developers to interact with, or script around, any API that exposes HCLI
 semantics, while providing dynamic and up to date in-band access to all the API/CLI documentation,
-man page style, which showcases commands, options, and parameters avaialable for execution.
+man page style, which showcases commands, options, and parameters available for execution.
 
 Most, if not all, programming languages have a way to issue shell commands. With the help
 of a generic HCLI client such as Huckle, APIs that make use of HCLI semantics are readily consumable
 anywhere via the familiar CLI mode of operation, and this, without there being a need to write
 a custom and dedicated CLI to interact with a specific API.
 
-The standard HCLI Internet-Draft [1] is a work in progress by the author and 
-The current implementation leverages hal+json alongside a static form of ALPS
+The HCLI Internet-Draft [1] is a work in progress by the author and 
+the current implementation leverages hal+json alongside a static form of ALPS
 (semantic profile) [2] to help enable widespread cross media-type support.
 
 You can access a simple example HCLI server to play with huckle [3]
@@ -117,8 +117,6 @@ Supports
  
     - Handles very large stdin/stdout streams (fixed chunk size of 16834)
 
-- Error output to stderr on client response status code >= 400
-
 - SOCKS tunneling through environment variables (ALL_PROXY)
 
 - Auto configuration of an HCLI when provided with a url to an HCLI root (e.g. huckle install https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
@@ -137,6 +135,7 @@ To Do
     - HTML
     - Siren
     - JSON-LD
+    - JSON API
     - Mason
 
 - Support stream configuration
@@ -147,7 +146,7 @@ To Do
 
 - Support non-stream send/receive (via CLI configuration)
 
-- Support various authentication per CLI configuration  
+- Support various authentication and/or passthrough per CLI configuration  
 
     - HTTP Basic Auth  
     - HTTP Digest  
@@ -178,6 +177,10 @@ To Do
     - Remove an entire namespace and all associated CLIs (e.g. huckle ns rm abc)
 
 - Support multipart/form-data for very large uploads (see requests-toolbelt)
+
+- Support HCLI nativization
+
+- Support for Huckle DEBUG mode
 
 Bugs
 ----
