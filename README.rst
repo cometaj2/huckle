@@ -62,7 +62,7 @@ huckle cli install \<url>
         - https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf (HCLI root)  
         - https://hcli.io/hal/#/hcli-webapp/ (HAL Browser navigation)  
 
-huckle cli \<cliname>
+huckle cli run \<cliname>
 
     This invokes the cliname to issue HCLI API calls; the details of which are left to API implementers.
     
@@ -71,7 +71,7 @@ huckle cli \<cliname>
 
 \<cliname> ...
 
-    For brevity, the CLI name can and should be invoked directly rather than through "huckle cli \<cliname>.
+    For brevity, the CLI name can and should be invoked directly rather than through "huckle cli run \<cliname>.
 
 \<cliname> ... help
 
@@ -85,13 +85,10 @@ huckle help
 Configuration
 -------------
 
-Huckle uses small scripts under ~/.huckle/bin to allow for CLIs to be kicked off by name.
+Huckle uses small scripts under ~/.huckle/bin to enable CLIs to be invoked by name.
 
 Huckle also uses CLI configuration files (e.g. ~/.huckle/etc/\<cliname>/config) to associate a specific
-CLI to a hypermedia API URL root and other CLI specific configuration.
-
-Each CLI configuration file contains:
-- A URL to the root of the hypermedia CLI API
+CLI to an HCLI API root URL and other CLI specific configuration.
 
 Versioning
 ----------
@@ -119,7 +116,7 @@ Supports
 
 - SOCKS tunneling through environment variables (ALL_PROXY)
 
-- Auto configuration of an HCLI when provided with a url to an HCLI root (e.g. huckle install https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
+- Auto configuration of an HCLI when provided with an HCLI root URL (e.g. huckle cli install https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
 
 To Do
 -----

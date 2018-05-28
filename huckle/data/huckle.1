@@ -17,16 +17,16 @@ the standard version 1.0 hypertext command line interface (HCLI) semantics.
 A terminal restart is required after the creation of the very first CLI alias. CLI aliases created thereafter are immediately usable.
 
 .SH COMMANDS
-.IP "install <url>"
+.IP "cli install <url>"
 This attempts to auto configure a CLI if provided with the root URL of an HCLI API. If successful, the CLI
 can be invoked by name, and its configuration is located under ~/.huckle/etc/<cliname>/config.
 
 Note that an existing configuration file is left alone if the command is run multiple times
 for the same CLI.
-.IP "cli <cliname>"
+.IP "cli run <cliname>"
 Used to invoke a CLI by name, the details of which are otherwise left to API implementers.
 .IP "<cliname> ..."
-The <cliname> alias created for brevity, via huckle install.
+The <cliname> alias created for brevity, via huckle cli install.
 .IP "<cliname> ... help"
 The "help" command can be used anywhere in a command line invocation to generate help pages from an HCLI document. This
 is useful to explore what a CLI can do.
@@ -37,7 +37,7 @@ This help file.
 .B huckle
 version and the version of it's dependencies.
 .SH EXAMPLE
-huckle install https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf
+huckle cli install https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf
 
 huckle cli jsonf (equivalent to simply invoking "jsonf" after terminal restart)
 

@@ -24,25 +24,35 @@ def navigate(argv):
 
 # huckle's minimal set of commands
 def cli():
+
     if len(sys.argv) > 2:
-        if sys.argv[1] == "cli":
-            if sys.argv[2] == "install":
-                hclinav.pull(sys.argv[3])
+    
+        if sys.argv[1] == "cli" and sys.argv[2] == "install":
             
+            if len(sys.argv) > 3:
+                hclinav.pull(sys.argv[3])
+                
             else:
-                config.parse_configuration(sys.argv[2])
-                navigate(sys.argv[2:])
+                huckle_help()
+            
+        elif sys.argv[1] == "cli" and sys.argv[2] == "run":
+                
+            if len(sys.argv) > 3:
+                config.parse_configuration(sys.argv[3])
+                navigate(sys.argv[3:])
+
+            else:
+                huckle_help()
 
         elif sys.argv[1] == "help":
             hclinav.display_man_page(config.huckle_manpage_path)
             sys.exit(0)
 
         else:
-            hutils.eprint("huckle: " + sys.argv[1] + ": command not found.")
-            hclinav.for_help()
-            sys.exit(2)
+            huckle_help()
 
     elif len(sys.argv) == 2:
+
         if sys.argv[1] == "--version":
             show_dependencies() 
 
@@ -51,13 +61,15 @@ def cli():
             sys.exit(0)
 
         else:
-            hutils.eprint("huckle: " + sys.argv[1] + ": command not found.")
-            hclinav.for_help()
-            sys.exit(2)
+            huckle_help()
+
     else:
-        hutils.eprint("for help, use:\n")
-        hutils.eprint("  huckle help")
-        sys.exit(2)
+        huckle_help()
+
+def huckle_help():
+    hutils.eprint("for help, use:\n")
+    hutils.eprint("  huckle help")
+    sys.exit(2)
 
 # show huckle's version and the version of its dependencies
 def show_dependencies():
