@@ -2,6 +2,8 @@ from __future__ import absolute_import, division, print_function
 
 from configparser import SafeConfigParser
 from io import StringIO
+from os import listdir
+from os.path import isfile, join
 
 # huckle's imports
 from . import hutils
@@ -97,3 +99,8 @@ def is_configured(file_path, contains):
         return True
     else:
         return False
+
+def list_clis():
+    files = [f for f in listdir(dot_huckle_scripts) if isfile(join(dot_huckle_scripts, f))]
+    for f in files:
+        print(f) 

@@ -47,7 +47,7 @@ Install huckle
 
   - pip install huckle
 
-Usage
+Basic usage
 -----
 
 huckle cli install \<url>
@@ -118,6 +118,8 @@ Supports
 
 - Auto configuration of an HCLI when provided with an HCLI root URL (e.g. huckle cli install https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
 
+- Support listing of installed CLIs
+
 To Do
 -----
 - Fork restnavigator repo or otherwise adjust to use restnavigator with requests (single http client instead of two)
@@ -161,8 +163,6 @@ To Do
 - Support for viewing information about an HCLI root (e.g. huckle view https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)
 
 - Support forward proxy configuration through proxy environment variables (HTTP_PROXY, HTTPS_PROXY)
-
-- Support listing of configured CLIs (e.g huckle list)
 
 - Support removal of a configured CLI for the currently selected namespace (e.g. huckle rm jsonf)
 
