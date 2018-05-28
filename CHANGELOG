@@ -7,3 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - added a CHANGELOG
 - removed docker remains in NOTES.txt and setup.py
+
+## [2.0.0] - 2018-05-27
+#### Changed [BREAKING]
+- Aggregated install and run commands under "cli" in preparation for additional cli commands; updated the documentation to match.
+
+#### Fixed
+- Cleaned up around the huckle specific help prompt logic which was incorrectly referencing a cli's help prompt.
+- Fixed 2 empty parameters edge case
