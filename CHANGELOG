@@ -6,12 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 #### Added
-- added a CHANGELOG
-- allow for listing of installed CLIs
-- allow for the removal of installed CLIs
+- Added a CHANGELOG
+- Allow for listing of installed CLIs
+- Allow for the removal of installed CLIs
+
+#### Changed
+- Updated the huckle documentation to reflect the new features
 
 #### Removed
-- removed docker build remainders in NOTES.txt and setup.py
+- Removed docker build remainders in NOTES.txt and setup.py
 
 ## [2.0.0] - 2018-05-27
 #### Changed [BREAKING]
