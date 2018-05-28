@@ -50,7 +50,7 @@ Install huckle
 Usage
 -----
 
-huckle install \<url>
+huckle cli install \<url>
 
     This attempts to auto create and configure a CLI name if provided with the root URL of an HCLI API.
     If successful, the CLI can be invoked by name, after restarting the terminal.

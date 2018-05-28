@@ -26,11 +26,12 @@ def navigate(argv):
 def cli():
     if len(sys.argv) > 2:
         if sys.argv[1] == "cli":
-            config.parse_configuration(sys.argv[2])
-            navigate(sys.argv[2:])
-
-        elif sys.argv[1] == "install":
-            hclinav.pull(sys.argv[2])
+            if sys.argv[2] == "install":
+                hclinav.pull(sys.argv[3])
+            
+            else:
+                config.parse_configuration(sys.argv[2])
+                navigate(sys.argv[2:])
 
         elif sys.argv[1] == "help":
             hclinav.display_man_page(config.huckle_manpage_path)
