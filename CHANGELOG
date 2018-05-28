@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 #### Added
 - added a CHANGELOG
 - allow for listing of installed CLIs
+- allow for the removal of installed CLIs
 
 #### Removed
 - removed docker build remainders in NOTES.txt and setup.py

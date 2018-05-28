@@ -10,6 +10,7 @@ from . import hutils
 
 import os
 import sys
+import shutil
 
 root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
@@ -104,3 +105,8 @@ def list_clis():
     files = [f for f in listdir(dot_huckle_scripts) if isfile(join(dot_huckle_scripts, f))]
     for f in files:
         print(f) 
+
+def uninstall_cli(cli):
+    os.remove(dot_huckle_scripts + "/" + cli)
+    shutil.rmtree(dot_huckle_config + "/" + cli)
+    print(cli + " was successfully uninstalled.")

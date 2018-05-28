@@ -47,6 +47,13 @@ def cli():
         elif sys.argv[1] == "cli" and sys.argv[2] == "list":
             config.list_clis()
 
+        elif sys.argv[1] == "cli" and sys.argv[2] == "uninstall":
+            if len(sys.argv) > 3:
+                config.uninstall_cli(sys.argv[3])
+
+            else:
+                huckle_help()
+
         elif sys.argv[1] == "help":
             hclinav.display_man_page(config.huckle_manpage_path)
             sys.exit(0)
