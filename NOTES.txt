@@ -10,11 +10,3 @@ You can execute:
   - pub (alias pub='python setup.py publish') - maintainer only
     This publishes the application to PyPI, the python package manager, and tags the latest commit
     in the git repo to whatever __version__ is at.
-
-  - docker build -t hucker .
-    Creates a centos docker image if you don't want to deal with python pip and other shell
-    dependencies on your box. You'll need docker installed however.
-    Once the image is created:
-      - docker run --name hucker -dt hucker /bin/bash
-    Then execute huckle commands on the standing container:
-      - docker exec -it hucker huckle help
