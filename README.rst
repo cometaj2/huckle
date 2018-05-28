@@ -1,5 +1,5 @@
 Huckle (hypermedia unified CLI... with a kick) |build status|_ |pypi|_ 
-============================================
+======================================================================
 
 Huckle is a CLI that can act as an impostor for any CLI expressed via hypertext
 command line interface (HCLI) semantics.
@@ -32,7 +32,7 @@ Help shape huckle and HCLI on the discussion list [4] or by raising issues on gi
 [4] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
 
 Install Python, pip and huckle
--------------------
+------------------------------
 
 Huckle requires bash with access to man pages, Python 2.7, 3.3-3.6 and pip
 
@@ -183,7 +183,7 @@ Bugs
 ----
 
 - There's an edge case that's not covered; when executing a cli by invoking the root of the HCLI only. And more specifically when the root is
-not valid HCLI when initially fetching the HALNavigator.
+  not valid HCLI when initially fetching the HALNavigator.
 
 - Carriage return characters "\n" in json don't get converted to line breaks in man pages.  
   
