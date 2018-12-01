@@ -4,7 +4,7 @@ You can execute:
     Executed in this folder, it installs the application as if it had been isntalled through pip
     and changes to the code are immediately reflected.
 
-  - tag (alias tag='python setup.py tag')
+  - tag (alias tag='python setup.py tag') - maintainer only
     Tags the latest commit in the git repo to whatever __version__ is at.
 
   - pub (alias pub='python setup.py publish') - maintainer only
