@@ -23,8 +23,8 @@ can be invoked by name, and its configuration is located under ~/.huckle/etc/<cl
 
 Note that an existing configuration file is left alone if the command is run multiple times
 for the same CLI.
-.IP "cli uninstall <cliname>"
-Uninstalls a CLI.
+.IP "cli rm <cliname>"
+Removes an installed CLI.
 .IP "cli run <cliname>"
 Used to invoke a CLI by name, the details of which are otherwise left to API implementers. This is equivalent to invoking
 <cliname> directly after CLI installation.
@@ -49,5 +49,7 @@ huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
 huckle cli run jsonf (equivalent to simply invoking "jsonf" after terminal restart)
 
 huckle cli config list jsonf
+
+huckle cli rm jsonf
 
 huckle --version

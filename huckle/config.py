@@ -107,11 +107,11 @@ def list_clis():
     for f in files:
         print(f) 
 
-# uninstall a cli
-def uninstall_cli(cli):
+# remove a cli
+def remove_cli(cli):
     os.remove(dot_huckle_scripts + "/" + cli)
     shutil.rmtree(dot_huckle_config + "/" + cli)
-    print(cli + " was successfully uninstalled.")
+    print(cli + " was successfully removed.")
 
 # lists all the configuration parameters of a cli
 def config_list(cli):

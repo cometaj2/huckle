@@ -14,14 +14,14 @@ import urllib
 
 # produces a navigator that starts navigating from the root and with an api display name of apiname
 def navigator(root, apiname):
-    #import warnings
-    #from urllib3.exceptions import InsecureRequestWarning
-    #warnings.simplefilter('ignore', InsecureRequestWarning)
-    #session = requests.Session()
-    #session.verify = False
-    #nav = Navigator.hal(root=root, apiname=apiname, session=session)
+    import warnings
+    from urllib3.exceptions import InsecureRequestWarning
+    warnings.simplefilter('ignore', InsecureRequestWarning)
+    session = requests.Session()
+    session.verify = False
+    nav = Navigator.hal(root=root, apiname=apiname, session=session)
     
-    nav = Navigator.hal(root=root, apiname=apiname)
+    #nav = Navigator.hal(root=root, apiname=apiname)
     return nav
 
 # attempts to traverse through an hcli document with a command line argument

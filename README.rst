@@ -116,9 +116,11 @@ Supports
 
 - SOCKS tunneling through environment variables (ALL_PROXY)
 
-- Auto configuration of an HCLI when provided with an HCLI root URL (e.g. huckle cli install https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)  
+- Auto configuration of a CLI when provided with an HCLI API root URL (e.g. huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf)  
 
 - Support listing of installed CLIs
+
+- Supports listing of the configuration of a CLI
 
 To Do
 -----

@@ -47,9 +47,9 @@ def cli():
         elif sys.argv[1] == "cli" and sys.argv[2] == "list":
             config.list_clis()
 
-        elif sys.argv[1] == "cli" and sys.argv[2] == "uninstall":
+        elif sys.argv[1] == "cli" and sys.argv[2] == "rm":
             if len(sys.argv) > 3:
-                config.uninstall_cli(sys.argv[3])
+                config.remove_cli(sys.argv[3])
 
             else:
                 huckle_help()
