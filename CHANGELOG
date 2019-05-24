@@ -1,25 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-#### Added
+## [2.1.0]
 - Added a CHANGELOG
 - Allow for listing of installed CLIs
 - Allow for the removal of installed CLIs
-
-#### Changed
 - Updated the huckle documentation to reflect the new features
-
-#### Removed
 - Removed docker build remainders in NOTES.txt and setup.py
+- Added additional warning context on exception
+- Allow for listing of CLI configuration
 
-## [2.0.0] - 2018-05-27
-#### Changed [BREAKING]
+## [2.0.0]
 - Aggregated install and run commands under "cli" in preparation for additional cli commands; updated the documentation to match.
-
-#### Fixed
 - Cleaned up around the huckle specific help prompt logic which was incorrectly referencing a cli's help prompt.
-- Fixed 2 empty parameters edge case
+- Fixed 2 empty parameters edge cases

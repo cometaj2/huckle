@@ -54,6 +54,13 @@ def cli():
             else:
                 huckle_help()
 
+        elif sys.argv[1] == "cli" and sys.argv[2] == "config" and sys.argv[3] == "list":
+            if len(sys.argv) > 4:
+                config.config_list(sys.argv[4])
+
+            else:
+                huckle_help()
+
         elif sys.argv[1] == "help":
             hclinav.display_man_page(config.huckle_manpage_path)
             sys.exit(0)

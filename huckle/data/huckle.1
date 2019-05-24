@@ -24,12 +24,14 @@ can be invoked by name, and its configuration is located under ~/.huckle/etc/<cl
 Note that an existing configuration file is left alone if the command is run multiple times
 for the same CLI.
 .IP "cli uninstall <cliname>"
-Uninstalls a Huckle CLI.
+Uninstalls a CLI.
 .IP "cli run <cliname>"
 Used to invoke a CLI by name, the details of which are otherwise left to API implementers. This is equivalent to invoking
 <cliname> directly after CLI installation.
 .IP "cli list"
 Lists all the installed CLIs.
+.IP "cli config list <cliname>"
+Lists the configuration options of an installed CLI.
 .IP "<cliname> ..."
 The <cliname> alias created for brevity, via huckle cli install.
 .IP "<cliname> ... help"
@@ -45,5 +47,7 @@ version and the version of it's dependencies.
 huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
 
 huckle cli run jsonf (equivalent to simply invoking "jsonf" after terminal restart)
+
+huckle cli config list jsonf
 
 huckle --version

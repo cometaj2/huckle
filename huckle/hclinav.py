@@ -14,6 +14,13 @@ import urllib
 
 # produces a navigator that starts navigating from the root and with an api display name of apiname
 def navigator(root, apiname):
+    #import warnings
+    #from urllib3.exceptions import InsecureRequestWarning
+    #warnings.simplefilter('ignore', InsecureRequestWarning)
+    #session = requests.Session()
+    #session.verify = False
+    #nav = Navigator.hal(root=root, apiname=apiname, session=session)
+    
     nav = Navigator.hal(root=root, apiname=apiname)
     return nav
 
@@ -23,7 +30,7 @@ def traverse_argument(nav, arg):
     try:
         ilength = len(nav.links()["cli"])
     except Exception as warning:
-        #hutils.eprint(warning)
+        hutils.eprint(warning)
         hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics.")
         sys.exit(1)
 
@@ -88,7 +95,7 @@ def pull(url):
             except Exception as warning:
                 hutils.eprint(warning)
     except Exception as warning:
-        #hutils.eprint(warning)
+        hutils.eprint(warning)
         hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics.")
 
 # displays a man page (file) located on a given path

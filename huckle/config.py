@@ -101,12 +101,27 @@ def is_configured(file_path, contains):
     else:
         return False
 
+# list all the installed clis
 def list_clis():
     files = [f for f in listdir(dot_huckle_scripts) if isfile(join(dot_huckle_scripts, f))]
     for f in files:
         print(f) 
 
+# uninstall a cli
 def uninstall_cli(cli):
     os.remove(dot_huckle_scripts + "/" + cli)
     shutil.rmtree(dot_huckle_config + "/" + cli)
     print(cli + " was successfully uninstalled.")
+
+# lists all the configuration parameters of a cli
+def config_list(cli):
+    config_file_path = dot_huckle_config + "/" + cli + "/config"
+    parser = SafeConfigParser()
+    parser.read(config_file_path)
+
+    for section_name in parser.sections():
+        print("[" + section_name + "]")
+        for name, value in parser.items(section_name):
+            print('%s = %s' % (name, value))
+        print
+
