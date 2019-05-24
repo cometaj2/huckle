@@ -166,14 +166,13 @@ To Do
 
 - Support forward proxy configuration through proxy environment variables (HTTP_PROXY, HTTPS_PROXY)
 
-- Support removal of a configured CLI for the currently selected namespace (e.g. huckle rm jsonf)
-
 - Support hcli name conflic resolution (use namespaces?)
   
     - View currently selected namespace (e.g. huckle ns)
     - Viewing namespace list (e.g. huckle ns list)
     - Selecting a namespace (e.g. huckle ns use abc)
     - Remove an entire namespace and all associated CLIs (e.g. huckle ns rm abc)
+    - Support adding and removing CLIs to namespaces
 
 - Support multipart/form-data for very large uploads (see requests-toolbelt)
 
