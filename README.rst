@@ -34,9 +34,9 @@ Help shape huckle and HCLI on the discussion list [4] or by raising issues on gi
 Install Python, pip and huckle
 ------------------------------
 
-Huckle requires bash with access to man pages, Python 2.7, 3.3-3.6 and pip
+Huckle requires bash with access to man pages, Python 2.7, 3.4-3.6 and pip
 
-  - Install any one version of Python 2.7, 3.3-3.6 for your system
+  - Install any one version of Python 2.7, 3.4-3.6 for your system
 
 Install pip (if it didn't get install alongside Python). For example:
 
@@ -58,7 +58,7 @@ huckle cli install \<url>
     Note that an existing configuration file is left alone if the command is run multiple times 
     for the same CLI.
 
-    An example CLI that can be used with Huckle is available on hcli.io:
+    An example HCLI that can be used with Huckle is available on hcli.io:
         - https://hcli.io/hcli/cli/jsonf?command=jsonf (HCLI root)  
         - https://hcli.io/hal/#/hcli/ (HAL Browser navigation)  
 
