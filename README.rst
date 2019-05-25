@@ -48,7 +48,7 @@ Install huckle
   - pip install huckle
 
 Basic usage
------
+-----------
 
 huckle cli install \<url>
 
