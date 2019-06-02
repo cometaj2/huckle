@@ -187,6 +187,8 @@ Bugs
   not valid HCLI when initially fetching the HALNavigator.
 
 - Carriage return characters "\n" in json don't get converted to line breaks in man pages.  
+
+- Disgraceful handling of huckle cli rm <cliname> when the cliname doesn't exist
   
 .. |build status| image:: https://travis-ci.org/cometaj2/huckle.svg?branch=master
 .. _build status: https://travis-ci.org/cometaj2/huckle
