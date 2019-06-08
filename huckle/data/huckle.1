@@ -28,9 +28,9 @@ Removes an installed CLI.
 .IP "cli run <cliname>"
 Used to invoke a CLI by name, the details of which are otherwise left to API implementers. This is equivalent to invoking
 <cliname> directly after CLI installation.
-.IP "cli list"
+.IP "cli ls"
 Lists all the installed CLIs.
-.IP "cli config list <cliname>"
+.IP "cli config <cliname>"
 Lists the configuration options of an installed CLI.
 .IP "<cliname> ..."
 The <cliname> alias created for brevity, via huckle cli install.
@@ -46,9 +46,11 @@ version and the version of it's dependencies.
 .SH EXAMPLE
 huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
 
-huckle cli run jsonf (equivalent to simply invoking "jsonf" after terminal restart)
+huckle cli run jsonf (equivalent to simply invoking "jsonf" after a successful cli installation and a terminal restart)
 
-huckle cli config list jsonf
+huckle cli ls
+
+huckle cli config jsonf
 
 huckle cli rm jsonf
 

@@ -189,6 +189,8 @@ Bugs
 - Carriage return characters "\n" in json don't get converted to line breaks in man pages.  
 
 - Disgraceful handling of huckle cli rm <cliname> when the cliname doesn't exist
+
+- Disgraceful handling when a cli is invoked when the associated HCLI service is down
   
 .. |build status| image:: https://travis-ci.org/cometaj2/huckle.svg?branch=master
 .. _build status: https://travis-ci.org/cometaj2/huckle

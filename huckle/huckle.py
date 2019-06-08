@@ -44,7 +44,7 @@ def cli():
             else:
                 huckle_help()
 
-        elif sys.argv[1] == "cli" and sys.argv[2] == "list":
+        elif sys.argv[1] == "cli" and sys.argv[2] == "ls":
             config.list_clis()
 
         elif sys.argv[1] == "cli" and sys.argv[2] == "rm":
@@ -54,9 +54,9 @@ def cli():
             else:
                 huckle_help()
 
-        elif sys.argv[1] == "cli" and sys.argv[2] == "config" and sys.argv[3] == "list":
-            if len(sys.argv) > 4:
-                config.config_list(sys.argv[4])
+        elif sys.argv[1] == "cli" and sys.argv[2] == "config":
+            if len(sys.argv) > 3:
+                config.config_list(sys.argv[3])
 
             else:
                 huckle_help()

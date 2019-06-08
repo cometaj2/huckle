@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.2.0]
+- Switched to huckle cli ls from huckle cli list for brevity
+- Switched to huckle cli config <cliname> from huckle cli config list <cliname> for brevity
+- Added more examples in the huckle man page
+- Cleaned up the README
+- Added a note on disgraceful handling of cli invocation to the README (when an HCLI service is down)
+
 ## [2.1.0]
 - Added a CHANGELOG
 - Allow for listing of installed CLIs
