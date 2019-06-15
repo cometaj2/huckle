@@ -49,7 +49,7 @@ def traverse_argument(nav, arg):
             else:
                 hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
                 if hcli_type == config.hcli_parameter_type:
-                    nav = tempnav["cli"][0](hcli_param=urllib.quote(arg))
+                    nav = tempnav["cli"][0](hcli_param=urllib.quote("\'" + arg + "\'"))
                     return nav
                 else:
                     hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
