@@ -1,11 +1,16 @@
+from __future__ import absolute_import, division, print_function
+
 from subprocess import call
 from restnavigator import Navigator
+from functools import partial
 
 # huckle's imports
 from . import config
 from . import hutils
 
 import sys
+import os
+import fcntl
 import json
 import subprocess
 import time
@@ -209,13 +214,12 @@ def flexible_executor(url, method):
         return
     if method == "post":
         if not sys.stdin.isatty():
-            with sys.stdin as f:
-
-                headers = {'content-type': 'application/octet-stream'}
-                r = requests.post(url, data=f.read(), headers=headers, stream=True)
+            
+            headers = {'content-type': 'application/octet-stream'}
+            r = requests.post(url, data=nbstdin().read(), headers=headers, stream=True)
                 
-                output_chunks(r)
-                return
+            output_chunks(r)
+            return
     else:
         r = requests.post(url, data=None, stream=True)
         output_chunks(r)
@@ -234,3 +238,17 @@ def output_chunks(response):
             for chunk in response.iter_content(16384):
                 if chunk:
                     f.write(chunk)
+
+class nbstdin():
+    def __init__(self):
+        None
+        
+    def read(self):
+        fd = sys.stdin.fileno()
+        fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+        fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+
+        fis = os.fdopen(fd, 'rb', 0)
+        with fis as openfileobject:
+            for chunk in iter(partial(openfileobject.read, 16384), b''):
+                yield chunk

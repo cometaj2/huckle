@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [2.3.0]
 - Add support for passing quoted HCLI parameters
 - Update to requests 2.22.0
+- Add very large stdin streaming support
 
 ## [2.2.0]
 - Switched to huckle cli ls from huckle cli list for brevity
