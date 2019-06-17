@@ -16,6 +16,8 @@ import subprocess
 import time
 import requests
 import urllib
+import errno
+import socket
 
 # produces a navigator that starts navigating from the root and with an api display name of apiname
 def navigator(root, apiname):
@@ -216,7 +218,8 @@ def flexible_executor(url, method):
         if not sys.stdin.isatty():
             
             headers = {'content-type': 'application/octet-stream'}
-            r = requests.post(url, data=nbstdin().read(), headers=headers, stream=True)
+            stream = nbstdin()
+            r = requests.post(url, data=stream.read(), headers=headers, stream=True)
                 
             output_chunks(r)
             return
@@ -239,16 +242,13 @@ def output_chunks(response):
                 if chunk:
                     f.write(chunk)
 
-class nbstdin():
+# wraps stdin into a unbuffered generator
+class nbstdin:
     def __init__(self):
         None
         
     def read(self):
-        fd = sys.stdin.fileno()
-        fl = fcntl.fcntl(fd, fcntl.F_GETFL)
-        fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
-
-        fis = os.fdopen(fd, 'rb', 0)
-        with fis as openfileobject:
-            for chunk in iter(partial(openfileobject.read, 16384), b''):
+        f = os.fdopen(sys.stdin.fileno(), 'rb', 0)
+        with f as fis:
+            for chunk in iter(partial(fis.read, 16384), b''):
                 yield chunk
