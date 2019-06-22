@@ -186,8 +186,6 @@ Bugs
 - There's an edge case that's not covered; when executing a cli by invoking the root of the HCLI only. And more specifically when the root is
   not valid HCLI when initially fetching the HALNavigator.
 
-- Carriage return characters "\n" in json don't get converted to line breaks in man pages.  
-
 - Disgraceful handling of huckle cli rm <cliname> when the cliname doesn't exist
 
 - Disgraceful handling when a cli is invoked when the associated HCLI service is down
