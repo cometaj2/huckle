@@ -162,7 +162,7 @@ def hcli_to_man(navigator):
         if section["name"].upper() == "EXAMPLES":
             f.write(options_and_commands_to_man(navigator))
         f.write(".SH " + section["name"].upper() + "\n")
-        f.write(section["description"] + "\n")
+        f.write(section["description"].replace("\\n", "\n") + "\n")
     
     f.close()
     display_man_page(dynamic_doc_path)
@@ -179,7 +179,7 @@ def options_and_commands_to_man(navigator):
         if hcli_type == config.hcli_option_type:
             option_count += 1
             options = options + ".IP " + tempnav()["name"] + "\n"
-            options = options + tempnav()["description"] + "\n"
+            options = options + tempnav()["description"].replace("\\n", "\n") + "\n"
     if option_count > 0:
         options = ".SH OPTIONS\n" + options
 
@@ -192,7 +192,7 @@ def options_and_commands_to_man(navigator):
         if hcli_type == config.hcli_command_type:
             command_count += 1
             commands = commands + ".IP " + tempnav()["name"] + "\n"
-            commands = commands + tempnav()["description"] + "\n"
+            commands = commands + tempnav()["description"].replace("\\n", "\n") + "\n"
     if command_count > 0:
         commands = ".SH COMMANDS\n" + commands
  
