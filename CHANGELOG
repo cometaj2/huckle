@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [2.3.0]
 - Add support for passing quoted HCLI parameters
-- Update to requests 2.22.0
+- Update to requests 2.21.0
 - Add very large stdin streaming support
 - Fix man page output to properly break on carriage return character from hcli-document json
 
