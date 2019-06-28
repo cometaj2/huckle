@@ -113,10 +113,9 @@ def display_man_page(path):
 def hcli_to_text(navigator):
     for i, x in enumerate(navigator()["section"]):
         section = navigator()["section"][i]
-        if section["name"].upper() == "EXAMPLES":
-            print(options_and_commands_to_text(navigator))
         print(section["name"].upper())
         print("       " + section["description"] + "\n")
+    print(options_and_commands_to_text(navigator))
 
 # generates an OPTIONS and COMMANDS section to add to a text page
 def options_and_commands_to_text(navigator):
@@ -159,17 +158,15 @@ def hcli_to_man(navigator):
     f.write(".TH " + navigator()["name"] + " 1 \n")
     for i, x in enumerate(navigator()["section"]):
         section = navigator()["section"][i]
-        if section["name"].upper() == "EXAMPLES":
-            f.write(options_and_commands_to_man(navigator))
         f.write(".SH " + section["name"].upper() + "\n")
         f.write(section["description"].replace("\\n", "\n") + "\n")
+    f.write(options_and_commands_to_man(navigator))
     
     f.close()
     display_man_page(dynamic_doc_path)
 
 # generates an OPTIONS and COMMANDS section to add to a man page
 def options_and_commands_to_man(navigator):
-
     # This block outputs an OPTIONS section, in the man page, alongside each available option flag and its description
     options = ""
     option_count = 0
