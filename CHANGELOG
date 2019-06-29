@@ -4,15 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [2.4.0]
-- Add support for python 3.7 xenial
-
 ## [2.3.0]
 - Add support for passing quoted HCLI parameters
 - Update to requests 2.21.0
 - Add very large stdin streaming support
 - Fix man page output to properly break on carriage return character from hcli-document json
 - Removed EXAMPLES section sequence constraint on COMMANDS and OPTIONS output
+- Add support for python 3.7 xenial
 
 ## [2.2.0]
 - Switched to huckle cli ls from huckle cli list for brevity
