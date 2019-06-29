@@ -122,6 +122,8 @@ Supports
 
 - Supports listing of the configuration of a CLI
 
+- Support auto discovery of cli link relations when attempting to install from a root resource that isn't an hcli-document.
+
 To Do
 -----
 - Fork restnavigator repo or otherwise adjust to use restnavigator with requests (single http client instead of two)
@@ -180,7 +182,6 @@ To Do
 
 - Support for Huckle DEBUG mode
 
-- Support attempting to install one or more HCLIs from a root resource that may contain one or more top level cli link relations.
 
 Bugs
 ----

@@ -102,8 +102,12 @@ def pull(url):
             except Exception as warning:
                 hutils.eprint(warning)
     except Exception as warning:
-        hutils.eprint(warning)
-        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics.")
+        try:
+            for k, z in enumerate(nav.links()["cli"]):
+                pull(nav.links()["cli"][k].uri)
+        except Exception as warning:
+            hutils.eprint(warning)
+            hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics.")
 
 # displays a man page (file) located on a given path
 def display_man_page(path):

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix man page output to properly break on carriage return character from hcli-document json
 - Removed EXAMPLES section sequence constraint on COMMANDS and OPTIONS output
 - Add support for python 3.7 xenial
+- Add auto discovery of cli link relations on attempted CLI installation from a root resource that isn't an hcli-document
 
 ## [2.2.0]
 - Switched to huckle cli ls from huckle cli list for brevity
