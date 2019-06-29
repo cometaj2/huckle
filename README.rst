@@ -180,6 +180,8 @@ To Do
 
 - Support for Huckle DEBUG mode
 
+- Support attempting to install one or more HCLIs from a root resource that may contain one or more top level cli link relations.
+
 Bugs
 ----
 
