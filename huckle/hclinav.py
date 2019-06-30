@@ -4,6 +4,10 @@ from subprocess import call
 from restnavigator import Navigator
 from functools import partial
 
+# avoid broken pipe signal crashing the program
+from signal import signal, SIGPIPE, SIG_DFL 
+signal(SIGPIPE,SIG_DFL) 
+
 # huckle's imports
 from . import config
 from . import hutils
@@ -15,9 +19,13 @@ import json
 import subprocess
 import time
 import requests
-import urllib
 import errno
 import socket
+
+try:
+        from urllib import quote  # Python 2.X
+except ImportError:
+        from urllib.parse import quote  # Python 3+
 
 # produces a navigator that starts navigating from the root and with an api display name of apiname
 def navigator(root, apiname):
@@ -56,7 +64,7 @@ def traverse_argument(nav, arg):
             else:
                 hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
                 if hcli_type == config.hcli_parameter_type:
-                    nav = tempnav["cli"][0](hcli_param=urllib.quote(arg))
+                    nav = tempnav["cli"][0](hcli_param=quote(arg))
                     return nav
                 else:
                     hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")

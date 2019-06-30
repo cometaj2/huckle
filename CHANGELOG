@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.3.2]
+- Fix SIGPIPE signal that causes huckle to crash prematurely
+
+## [2.3.1]
+- Fix python 2 vs python 3 urllib quote defect
+
 ## [2.3.0]
 - Add support for passing quoted HCLI parameters
 - Update to requests 2.21.0
