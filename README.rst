@@ -15,19 +15,19 @@ of a generic HCLI client such as Huckle, APIs that make use of HCLI semantics ar
 anywhere via the familiar CLI mode of operation, and this, without there being a need to write
 a custom and dedicated CLI to interact with a specific API.
 
-The HCLI Internet-Draft [1] is a work in progress by the author and 
-the current implementation leverages hal+json alongside a static form of ALPS
-(semantic profile) [2] to help enable widespread cross media-type support.
+You can access a simple example HCLI service to play with huckle on http://hcli.io [1]
 
-You can access a simple example HCLI server to play with huckle [3]
+The HCLI Internet-Draft [2] is a work in progress by the author and 
+the current implementation leverages hal+json alongside a static form of ALPS
+(semantic profile) [3] to help enable widespread cross media-type support.
 
 Help shape huckle and HCLI on the discussion list [4] or by raising issues on github!
 
-[1] https://github.com/cometaj2/I-D/tree/master/hcli
+[1] https://hcli.io
 
-[2] http://alps.io
+[2] https://github.com/cometaj2/I-D/tree/master/hcli
 
-[3] https://hcli.io
+[3] http://alps.io
 
 [4] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
 
@@ -38,12 +38,7 @@ Huckle requires bash with access to man pages, Python 2.7, 3.4-3.7 and pip
 
   - Install any one version of Python 2.7, 3.4-3.7 for your system
 
-Install pip (if it didn't get install alongside Python). For example:
-
-  - curl -O https://bootstrap.pypa.io/get-pip.py
-  - python get-pip.py
-
-Install huckle
+Install huckle via Python's pip:
 
   - pip install huckle
 
