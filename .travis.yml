@@ -18,4 +18,4 @@ install:
   - "pip install -e ."
 
 # command to run tests
-script: python -m pytest
+script: python -m pytest -v
