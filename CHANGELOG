@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [2.3.2]
 - Fix SIGPIPE signal that causes huckle to crash prematurely
 - Update install instructions to remove Python's pip installation
+- Update test to use a locally deployed hcli connector for testing huckle
 
 ## [2.3.1]
 - Fix python 2 vs python 3 urllib quote defect

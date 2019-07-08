@@ -7,8 +7,8 @@ def test_function():
     setup = """
     #!/bin/bash
 
-    huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
-    echo '{"hello":"world"}' | jsonf go
+    gunicorn --workers=1 --threads=1 --chdir `hcli_core path` "hcli_core:HCLI().connector" --daemon
+    huckle cli install http://127.0.0.1:8000
     """
 
     p1 = subprocess.Popen(['bash', '-c', setup], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -25,4 +25,4 @@ def test_function():
     out, err = p2.communicate()
     result = out.decode('utf-8')
 
-    assert('{\n  "hello" : "world"\n}\n' in result)
+    assert('{\n    "hello": "world"\n}\n' in result)
