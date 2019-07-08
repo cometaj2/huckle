@@ -14,7 +14,7 @@ install:
   - "pip install --upgrade pytest"
   - "pip install --upgrade --force-reinstall setuptools"
   - "pip install gunicorn==19.9.0"
-  - "pip install huckle==2.3.1"
+  - "pip install hcli_core==0.2.1"
   - "pip install -e ."
 
 # command to run tests
