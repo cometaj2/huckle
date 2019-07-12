@@ -55,8 +55,7 @@ huckle cli install \<url>
 
     An example HCLI that can be used with Huckle is available on hcli.io:
         - http://hcli.io/hcli/cli/jsonf?command=jsonf (HCLI root)  
-        - [HAL Browser navigation](http://hcli.io/hal/#/hcli/cli/jsonf?command=jsonf)
-          Test hyperlink: `<http://stackoverflow.com/>`_.
+        - `http://hcli.io/hal/#/hcli/cli/jsonf?command=jsonf`_ (HAL Browser navigation)
 
 huckle cli run \<cliname>
 
@@ -112,7 +111,7 @@ Supports
 
 - SOCKS tunneling through environment variables (ALL_PROXY)
 
-- Auto configuration of a CLI when provided with an HCLI API root URL (e.g. huckle cli install http://hcli.io/hcli/cli/jsonf?command=jsonf&noprocess)  
+- Auto configuration of a CLI when provided with an HCLI API root URL (e.g. huckle cli install `http://hcli.io/hcli/cli/jsonf?command=jsonf`_  
 
 - Support listing of installed CLIs
 
@@ -160,7 +159,7 @@ To Do
 
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
 
-- Support for viewing information about an HCLI root (e.g. huckle view http://hcli.io/hcli/cli/jsonf?command=jsonf&noprocess)
+- Support for viewing information about an HCLI root (e.g. huckle view `http://hcli.io/hcli/cli/jsonf?command=jsonf`_
 
 - Support forward proxy configuration through proxy environment variables (HTTP_PROXY, HTTPS_PROXY)
 
