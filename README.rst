@@ -55,7 +55,7 @@ huckle cli install \<url>
 
     An example HCLI that can be used with Huckle is available on hcli.io:
         - http://hcli.io/hcli/cli/jsonf?command=jsonf (HCLI root)  
-        - `http://hcli.io/hal/#/hcli/cli/jsonf?command=jsonf`_. (HAL Browser navigation)
+        - `<http://hcli.io/hal/#/hcli/cli/jsonf?command=jsonf>`_ (HAL Browser navigation)
 
 huckle cli run \<cliname>
 
