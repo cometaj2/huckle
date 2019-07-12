@@ -4,6 +4,7 @@ from configparser import SafeConfigParser
 from io import StringIO
 from os import listdir
 from os.path import isfile, join
+from os import path
 
 # huckle's imports
 from . import hutils
@@ -109,9 +110,12 @@ def list_clis():
 
 # remove a cli
 def remove_cli(cli):
-    os.remove(dot_huckle_scripts + "/" + cli)
-    shutil.rmtree(dot_huckle_config + "/" + cli)
-    print(cli + " was successfully removed.")
+    if(path.exists(dot_huckle_scripts + "/" + cli)):
+        os.remove(dot_huckle_scripts + "/" + cli)
+        shutil.rmtree(dot_huckle_config + "/" + cli)
+        print(cli + " was successfully removed.")
+    else:
+        print(cli + " is not installed.")
 
 # lists all the configuration parameters of a cli
 def config_list(cli):

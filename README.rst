@@ -23,7 +23,7 @@ the current implementation leverages hal+json alongside a static form of ALPS
 
 Help shape huckle and HCLI on the discussion list [4] or by raising issues on github!
 
-[1] https://hcli.io
+[1] http://hcli.io
 
 [2] https://github.com/cometaj2/I-D/tree/master/hcli
 
@@ -54,8 +54,8 @@ huckle cli install \<url>
     for the same CLI.
 
     An example HCLI that can be used with Huckle is available on hcli.io:
-        - https://hcli.io/hcli/cli/jsonf?command=jsonf (HCLI root)  
-        - https://hcli.io/hal/#/hcli/ (HAL Browser navigation)  
+        - http://hcli.io/hcli/cli/jsonf?command=jsonf (HCLI root)  
+        - http://hcli.io/hal/#/hcli/cli/jsonf?command=jsonf (HAL Browser navigation)  
 
 huckle cli run \<cliname>
 
@@ -111,7 +111,7 @@ Supports
 
 - SOCKS tunneling through environment variables (ALL_PROXY)
 
-- Auto configuration of a CLI when provided with an HCLI API root URL (e.g. huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf)  
+- Auto configuration of a CLI when provided with an HCLI API root URL (e.g. huckle cli install http://hcli.io/hcli/cli/jsonf?command=jsonf)  
 
 - Support listing of installed CLIs
 
@@ -159,7 +159,7 @@ To Do
 
 - Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
 
-- Support for viewing information about an HCLI root (e.g. huckle view https://hcli.io/hcli-webapp/cli/jsonf?command=jsonf)
+- Support for viewing information about an HCLI root (e.g. huckle view http://hcli.io/hcli/cli/jsonf?command=jsonf)
 
 - Support forward proxy configuration through proxy environment variables (HTTP_PROXY, HTTPS_PROXY)
 
@@ -183,8 +183,6 @@ Bugs
 
 - There's an edge case that's not covered; when executing a cli by invoking the root of the HCLI only. And more specifically when the root is
   not valid HCLI when initially fetching the HALNavigator.
-
-- Disgraceful handling of huckle cli rm <cliname> when the cliname doesn't exist
 
 - Disgraceful handling when a cli is invoked when the associated HCLI service is down
   
