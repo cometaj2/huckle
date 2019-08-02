@@ -50,9 +50,18 @@ def traverse_argument(nav, arg):
         sys.exit(1)
 
     for j, y in enumerate(nav.links()["cli"]):
-           
-        tempnav = nav.links()["cli"][j]
+          
+        # we give precedence to parameter traversal to help avoid double quoting on the command line
+        try:
+            for k, l in enumerate(nav.links()["cli"][j]):
+                hcli_type = l.links()["profile"][0].uri.split('#', 1)[1]
+                if hcli_type == config.hcli_parameter_type:
+                    nav = l["cli"][0](hcli_param=quote('\"' + arg + '\"'))
+                    return nav
+        except:
+            pass
 
+        tempnav = nav.links()["cli"][j]
         try:
             if tempnav()["name"] == arg:
                 nav = tempnav["cli"][0]
@@ -62,13 +71,8 @@ def traverse_argument(nav, arg):
                 hcli_to_man(nav)
                 sys.exit(0)
             else:
-                hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
-                if hcli_type == config.hcli_parameter_type:
-                    nav = tempnav["cli"][0](hcli_param=quote(arg))
-                    return nav
-                else:
-                    hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
-                    sys.exit(2)
+                hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
+                sys.exit(2)
 
         if j == ilength - 1:
             if arg == "help":
@@ -232,10 +236,12 @@ def flexible_executor(url, method):
                 
             output_chunks(r)
             return
-    else:
-        r = requests.post(url, data=None, stream=True)
-        output_chunks(r)
-        return
+        else:
+            r = requests.post(url, data=None, stream=True)
+            output_chunks(r)
+            return
+
+    return
 
 # outputs the response received from an execution
 def output_chunks(response):

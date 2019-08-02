@@ -4,11 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.4.2]
+- Give precedence to parameter navigation if present so that we can avoid double quoting param on the command line
+
 ## [2.3.2]
 - Fix SIGPIPE signal that causes huckle to crash prematurely
 - Update install instructions to remove Python's pip installation
 - Update to handle removal of an already removed cli
 - Update README links to hcli.io to http from https
+- Fix bug that prevents post when there's no input stream to send to the server
 
 ## [2.3.1]
 - Fix python 2 vs python 3 urllib quote defect
