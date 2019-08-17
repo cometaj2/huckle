@@ -50,8 +50,13 @@ def traverse_argument(nav, arg):
         sys.exit(1)
 
     for j, y in enumerate(nav.links()["cli"]):
-          
-        # we give precedence to parameter traversal to help avoid double quoting on the command line
+
+        # we give first precedence to help so that help is easily accessible at all time.
+        if arg == "help":
+            hcli_to_man(nav)
+            sys.exit(0)
+
+        # we give precedence to parameter traversal to help avoid forcing double quoting on the command line
         try:
             for k, l in enumerate(nav.links()["cli"][j]):
                 hcli_type = l.links()["profile"][0].uri.split('#', 1)[1]
@@ -67,20 +72,12 @@ def traverse_argument(nav, arg):
                 nav = tempnav["cli"][0]
                 return nav
         except:
-            if arg == "help":
-                hcli_to_man(nav)
-                sys.exit(0)
-            else:
-                hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
-                sys.exit(2)
+            hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
+            sys.exit(2)
 
         if j == ilength - 1:
-            if arg == "help":
-                hcli_to_man(nav)
-                sys.exit(0)
-            else:
-                hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
-                sys.exit(2)
+            hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
+            sys.exit(2)
 
 # attempts to traverse through an execution. (only attempted when we've run out of command line arguments to parse)
 def traverse_execution(nav):
