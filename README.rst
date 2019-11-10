@@ -48,7 +48,8 @@ Basic usage
 huckle cli install \<url>
 
     This attempts to auto create and configure a CLI name if provided with the root URL of an HCLI API.
-    If successful, the CLI can be invoked by name, after restarting the terminal.
+    If successful, the CLI can be invoked by name, after restarting the terminal. huckle attempts to update
+    the PATH under .bash_profile and .bashrc to account for login and non-login terminal use.
     
     Note that an existing configuration file is left alone if the command is run multiple times 
     for the same CLI.

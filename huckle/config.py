@@ -20,6 +20,7 @@ dot_huckle = "%s/.huckle" % home
 dot_huckle_scripts = dot_huckle + "/bin"
 dot_huckle_config = dot_huckle + "/etc"
 dot_bash_profile = home + "/.bash_profile"
+dot_bashrc = home + "/.bashrc"
 
 # These next 3 variables are dynamically updated from read configuration. Be careful!
 url = ""
@@ -73,7 +74,14 @@ def alias_cli(cli):
         f.write("# we make sure the huckle entrypoint scripts can be located\n")
         f.write("export PATH=$PATH:" + dot_huckle_scripts)
         f.close
-    
+
+    if not is_configured(dot_bashrc, dot_huckle_scripts):
+        f = open(dot_bashrc, "a+")
+        f.write("\n")
+        f.write("# we make sure the huckle entrypoint scripts can be located\n")
+        f.write("export PATH=$PATH:" + dot_huckle_scripts)
+        f.close
+
     if not os.path.exists(dot_huckle_scripts + "/" + cli):
         g = open(dot_huckle_scripts + "/" + cli, "a+")
         os.chmod(dot_huckle_scripts + "/" + cli, 0o700)
