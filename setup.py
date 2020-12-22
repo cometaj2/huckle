@@ -12,7 +12,7 @@ from huckle import hutils
 
 if sys.argv[-1] == 'publish':
     branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip()
-    if branch != "master":
+    if branch.decode('ASCII') != "master":
         sys.exit("publishing from a branch other than master is disallowed.")
     os.system("rm -rf dist")
     os.system("python setup.py sdist")
@@ -59,7 +59,9 @@ setup(
     packages=find_packages(exclude=['__pycache__', 'tests']),
     install_requires=[package.dependencies[0],
                       package.dependencies[1],
-                      package.dependencies[2]],
+                      package.dependencies[2],
+                      package.dependencies[3],
+                      package.dependencies[4]],
     package_data={'huckle': ['data/*']},
     include_package_data=True,
     entry_points={

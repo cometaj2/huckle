@@ -26,6 +26,7 @@ dot_bashrc = home + "/.bashrc"
 url = ""
 cliname = "huckle"
 cli_manpage_path = "/tmp"
+ssl_verify = "verify"
 
 # These hcli_ variables are taken from the semantic types found in the HCLI 1.0 specification
 hcli_command_type = "command"
@@ -48,6 +49,9 @@ def parse_configuration(cli):
                     cliname = cli
                     global cli_manpage_path
                     cli_manpage_path = cli_manpage_path + "/huckle." + cliname
+                if name == "ssl.verify":
+                    global ssl_verify
+                    ssl_verify = value
             if url == "": sys.exit("No url defined for " + cli + " under " + config_file_path)
     else:
         sys.exit("huckle: no cli configuration " + config_file_path + " available for " + cli) 
@@ -99,7 +103,9 @@ def init_configuration(cli, url):
         parser.set("default", "url", "")
     else:
         parser.set("default", "url", url)
-    
+   
+    parser.set("default", "ssl.verify", "verify")
+
     with open(config_file_path, "w") as config:
         parser.write(config)
 

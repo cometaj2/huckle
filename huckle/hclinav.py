@@ -21,6 +21,7 @@ import time
 import requests
 import errno
 import socket
+import certifi
 
 try:
         from urllib import quote  # Python 2.X
@@ -29,14 +30,17 @@ except ImportError:
 
 # produces a navigator that starts navigating from the root and with an api display name of apiname
 def navigator(root, apiname):
-    #import warnings
-    #from urllib3.exceptions import InsecureRequestWarning
-    #warnings.simplefilter('ignore', InsecureRequestWarning)
-    #session = requests.Session()
-    #session.verify = False
-    #nav = Navigator.hal(root=root, apiname=apiname, session=session)
+    s = requests.Session()
     
-    nav = Navigator.hal(root=root, apiname=apiname)
+    if config.ssl_verify == "verify":
+        s.verify = certifi.where()
+    elif config.ssl_verify == "skip":
+        #import warnings
+        #from urllib3.exceptions import InsecureRequestWarning
+        #warnings.simplefilter('ignore', InsecureRequestWarning)
+        s.verify = False
+
+    nav = Navigator.hal(root=root, apiname=apiname, session=s)
     return nav
 
 # attempts to traverse through an hcli document with a command line argument
@@ -220,8 +224,15 @@ def for_help():
 
 # a flexible executor that can work with the application/octet-stream media-type (per HCLI 1.0 spec)
 def flexible_executor(url, method):
+    # we take into account how a CLI should interact with SSL verification
+    ssl_verify = "verify"
+    if config.ssl_verify == "verify":
+        ssl_verify = certifi.where()
+    elif config.ssl_verify == "skip":
+        ssl_verify = False
+
     if method == "get":
-        r = requests.get(url, stream=True)
+        r = requests.get(url, stream=True, verify=ssl_verify)
         output_chunks(r)
         return
     if method == "post":
@@ -229,12 +240,12 @@ def flexible_executor(url, method):
             
             headers = {'content-type': 'application/octet-stream'}
             stream = nbstdin()
-            r = requests.post(url, data=stream.read(), headers=headers, stream=True)
+            r = requests.post(url, data=stream.read(), headers=headers, stream=True, verify=ssl_verify)
                 
             output_chunks(r)
             return
         else:
-            r = requests.post(url, data=None, stream=True)
+            r = requests.post(url, data=None, stream=True, verify=ssl_verify)
             output_chunks(r)
             return
 
