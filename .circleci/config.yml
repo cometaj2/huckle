@@ -5,7 +5,7 @@ orbs:
 
 workflows:
   main:
-    jobs
+    jobs:
       - test:
           name: "Python 3.7"
           v: "3.7"
