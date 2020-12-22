@@ -1,0 +1,25 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  build-and-test:
+    executor: python/default
+    steps:
+      - checkout
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
+      - run: |
+	     pip install --upgrade pip"
+             pip install --upgrade pytest"
+             pip install --upgrade --force-reinstall setuptools"
+             pip install gunicorn==19.9.0"
+             pip install -e ."
+             python -m pytest -v
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
