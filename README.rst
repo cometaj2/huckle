@@ -187,7 +187,7 @@ Bugs
 
 - Disgraceful handling when a cli is invoked when the associated HCLI service is down
   
-.. |build status| image:: https://travis-ci.org/cometaj2/huckle.svg?branch=master
-.. _build status: https://travis-ci.org/cometaj2/huckle
+.. |build status| image:: https://circleci.com/gh/cometaj2/huckle.svg?style=shield
+.. _build status: https://circleci.com/gh/cometaj2/huckle
 .. |pypi| image:: https://badge.fury.io/py/huckle.svg
 .. _pypi: https://badge.fury.io/py/huckle
