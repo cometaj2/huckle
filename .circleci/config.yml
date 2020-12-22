@@ -4,9 +4,10 @@ orbs:
   python: circleci/python@0.2.1
 
 jobs:
-  build-and-test:
-    executor: python/default
-    steps:
+  Python_2.7:
+    docker:
+      - image: circleci/python:2.7
+    steps: &steps
       - checkout
       - run: |
           pip install --upgrade pip
@@ -16,8 +17,13 @@ jobs:
           pip install gunicorn==19.9.0
           pip install -e .
           python -m pytest -v
+  Python_3.6:
+      docker:
+        - image: circleci/python:3.6
+      steps: *steps
 
 workflows:
   main:
-    jobs:
-      - build-and-test
+    jobs
+      - Python_2.7
+      - python_3.6
