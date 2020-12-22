@@ -18,12 +18,6 @@ workflows:
       - test:
           name: "Python 3.5"
           v: "3.5"
-      - test:
-          name: "Python 3.4"
-          v: "3.4"
-      - test:
-          name: "Python 2.7"
-          v: "2.7"
 
 jobs:
   test:
