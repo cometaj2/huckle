@@ -26,4 +26,4 @@ workflows:
   main:
     jobs
       - Python_2.7
-      - python_3.6
+      - Python_3.6
