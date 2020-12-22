@@ -3,6 +3,16 @@ version: 2.1
 orbs:
   python: circleci/python@0.2.1
 
+workflows:
+  main:
+    jobs
+      - test:
+          name: "Python 3.7"
+          v: "3.7"
+      - test:
+          name: "Python 3.6"
+          v: "3.6"
+
 jobs:
   test:
     parameters:
@@ -22,12 +32,3 @@ jobs:
           pip install -e .
           python -m pytest -v
 
-workflows:
-  main:
-    jobs
-      - test:
-          name: "Python 3.7"
-          v: "3.7"
-      - test:
-          name: "Python 3.6"
-          v: "3.6"
