@@ -8,9 +8,6 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
       - run: |
           pip install --upgrade pip"
           pip install --upgrade pytest"
