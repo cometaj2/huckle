@@ -100,6 +100,8 @@ Supports
 
     - hal+json
 
+- Supports HTTP/HTTPS
+
 - Automatic man page generation with the "help" command, anywhere in a CLI.
 
 - Command line execution responses for
@@ -178,6 +180,7 @@ To Do
 
 - Support for Huckle DEBUG mode
 
+- Support HTTPS client authentication  
 
 Bugs
 ----
