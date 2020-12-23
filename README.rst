@@ -34,9 +34,9 @@ Help shape huckle and HCLI on the discussion list [4] or by raising issues on gi
 Install Python, pip and huckle
 ------------------------------
 
-Huckle requires bash with access to man pages, Python 3.5-3.8 and pip
+Huckle requires bash with access to man pages, Python 3.5-3.9 and pip
 
-  - Install any one version of Python 3.5-3.8 for your system
+  - Install any one version of Python 3.5-3.9 for your system
 
 Install huckle via Python's pip:
 
@@ -57,6 +57,8 @@ huckle cli install \<url>
     An example HCLI that can be used with Huckle is available on hcli.io:
         - `<http://hcli.io/hcli/cli/jsonf?command=jsonf>`_ (HCLI root)  
         - `<http://hcli.io/hal/#/hcli/cli/jsonf?command=jsonf>`_ (HAL Browser navigation)
+
+    Alternatively, a WSGI application can be stood up very quickly using sample HCLIs available via hcli_core `<https://pypi.org/project/hcli-core/>`_
 
 huckle cli run \<cliname>
 
@@ -96,11 +98,11 @@ on github. Only full major.minor.patch releases will be pushed to pip from now o
 Supports
 --------
 
+- Supports HTTP/HTTPS
+
 - HCLI version 1.0 semantics for:
 
     - hal+json
-
-- Supports HTTP/HTTPS
 
 - Automatic man page generation with the "help" command, anywhere in a CLI.
 
