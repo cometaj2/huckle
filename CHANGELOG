@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.5.9]
+- Update config.py to include coverage for python 3.9 testing
+- Update CHANGELOG with missing entries
+
+## [2.5.8]
+- Update requests dependency to latest version and remove requests toolbox which isn't used.
+
+## [2.5.7]
+- Update README with reference to hcli_core for huckle testing.
+
+## [2.5.6]
+- Fix package bug preventing huckle --version from working properly
+
+## [2.5.5]
+- Update config.yml to remove python 2.7 and 3.4
+
 ## [2.5.4]
 - Add support for HTTPS and certifi package CA authority trust.
 - Update test to run on local hcli service rather than against hcli.io
