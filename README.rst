@@ -153,7 +153,7 @@ To Do
 
     - HTTP Basic Auth  
     - HTTP Digest  
-    - Oauth  
+    - Oauth2  
     - X509 (HTTPS mutual authentication)  
     - AWS
     - SAML 

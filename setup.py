@@ -16,6 +16,7 @@ if sys.argv[-1] == 'publish':
         sys.exit("publishing from a branch other than master is disallowed.")
     os.system("rm -rf dist")
     os.system("python setup.py sdist")
+    os.system("python setup.py bdist_wheel")
     os.system("twine upload dist/* -r pypi")
     os.system("git tag -a %s -m 'version %s'" % ("huckle-" + package.__version__, "huckle-" + package.__version__))
     os.system("git push")
@@ -54,6 +55,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10'
     ],
     keywords='cli client hypermedia rest generic development',
     packages=find_packages(exclude=['__pycache__', 'tests']),
