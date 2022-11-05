@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function
 
-__version__ = "2.6.1"
+__version__ = "2.6.2"
 dependencies = ["restnavigator==1.0.1",
-                "requests[socks]==2.25.1",
-                "configparser==3.5.0",
-                "certifi==2020.12.5"]
+                "requests[socks]==2.28.1",
+                "configparser==5.3.0",
+                "certifi==2022.9.24"]

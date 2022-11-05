@@ -34,9 +34,9 @@ Help shape huckle and HCLI on the discussion list [4] or by raising issues on gi
 Install Python, pip and huckle
 ------------------------------
 
-Huckle requires bash with access to man pages, Python 3.5-3.9 and pip
+Huckle requires bash with access to man pages, Python and pip
 
-  - Install any one version of Python 3.5-3.9 for your system
+  - Install a supported of Python for your system
 
 Install huckle via Python's pip:
 
