@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@0.2.1
+  python: circleci/python@2.0.3
 
 workflows:
   main:
@@ -18,12 +18,6 @@ workflows:
       - test:
           name: "Python 3.7"
           v: "3.7"
-      - test:
-          name: "Python 3.6"
-          v: "3.6"
-      - test:
-          name: "Python 3.5"
-          v: "3.5"
 
 jobs:
   test:
