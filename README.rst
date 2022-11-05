@@ -36,7 +36,7 @@ Install Python, pip and huckle
 
 Huckle requires bash with access to man pages, Python and pip
 
-  - Install a supported of Python for your system
+  - Install a supported version of Python for your system
 
 Install huckle via Python's pip:
 
