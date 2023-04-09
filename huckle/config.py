@@ -72,20 +72,6 @@ def create_configuration(cli, url):
 
 # sets up an alias for a cli so that it can be called directly by name (instead of calling it via the explicit huckle call) 
 def alias_cli(cli):
-    if not is_configured(dot_bash_profile, dot_huckle_scripts):
-        f = open(dot_bash_profile, "a+")
-        f.write("\n")
-        f.write("# we make sure the huckle entrypoint scripts can be located\n")
-        f.write("export PATH=$PATH:" + dot_huckle_scripts)
-        f.close
-
-    if not is_configured(dot_bashrc, dot_huckle_scripts):
-        f = open(dot_bashrc, "a+")
-        f.write("\n")
-        f.write("# we make sure the huckle entrypoint scripts can be located\n")
-        f.write("export PATH=$PATH:" + dot_huckle_scripts)
-        f.close
-
     if not os.path.exists(dot_huckle_scripts + "/" + cli):
         g = open(dot_huckle_scripts + "/" + cli, "a+")
         os.chmod(dot_huckle_scripts + "/" + cli, 0o700)

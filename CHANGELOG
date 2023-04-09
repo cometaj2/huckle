@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.0]
+- Update to use huckle env like minikube docker-env to help export unassuming environment configuration
+
 ## [2.6.2]
 - Update to use latest version of requests, configparser and certifi.
 - Update to use a more recent version of python orbs in circleci

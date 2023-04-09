@@ -10,10 +10,24 @@ from os import path
 from huckle import package
 from huckle import hutils
 
+if sys.argv[-1] == 'dry-run':
+    branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip().decode("utf-8")
+    if branch != "master":
+        sys.exit("dry-run from a branch other than master is disallowed.")
+    os.system("rm -rf huckle.egg-info")
+    os.system("rm -rf build")
+    os.system("rm -rf dist")
+    os.system("python setup.py sdist --dry-run")
+    os.system("python setup.py bdist_wheel --dry-run")
+    os.system("twine check dist/*")
+    sys.exit()
+
 if sys.argv[-1] == 'publish':
     branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip()
     if branch.decode('ASCII') != "master":
         sys.exit("publishing from a branch other than master is disallowed.")
+    os.system("rm -rf huckle.egg-info")
+    os.system("rm -rf build")
     os.system("rm -rf dist")
     os.system("python setup.py sdist")
     os.system("python setup.py bdist_wheel")
@@ -40,6 +54,7 @@ setup(
     name='huckle',
     version=package.__version__,
     description='A CLI that can act as an impostor for any CLI expressed through hypertext command line interface (HCLI) semantics.',
+    long_description_content_type="text/x-rst",    
     long_description=long_description,
     url='https://github.com/cometaj2/huckle',
     author='Jeff Michaud',
@@ -50,8 +65,6 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Software Development',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',

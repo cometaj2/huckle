@@ -1,5 +1,5 @@
-Huckle (hypermedia unified CLI... with a kick) |build status|_ |pypi|_ 
-======================================================================
+Huckle (hypermedia unified CLI... with a kick) |pyver|_ |build status|_ |pypi|_ 
+===============================================================================
 
 Huckle is a CLI that can act as an impostor for any CLI expressed via hypertext
 command line interface (HCLI) semantics.
@@ -194,3 +194,5 @@ Bugs
 .. _build status: https://circleci.com/gh/cometaj2/huckle
 .. |pypi| image:: https://badge.fury.io/py/huckle.svg
 .. _pypi: https://badge.fury.io/py/huckle
+.. |pyver| image:: https://img.shields.io/pypi/pyversions/huckle.svg
+.. _pyver: https://pypi.python.org/pypi/huckle

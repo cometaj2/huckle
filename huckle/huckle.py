@@ -73,6 +73,12 @@ def cli():
         if sys.argv[1] == "--version":
             show_dependencies() 
 
+        elif sys.argv[1] == "env":
+            print("export PATH=$PATH:" + config.dot_huckle_scripts)
+            print("")
+            print("# To point your shell to huckle's HCLI entrypoint scripts, run:")
+            print("# eval $(huckle env)")
+
         elif sys.argv[1] == "help":
             hclinav.display_man_page(config.huckle_manpage_path)
             sys.exit(0)

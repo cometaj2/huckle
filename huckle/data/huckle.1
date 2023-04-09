@@ -17,6 +17,10 @@ the standard version 1.0 hypertext command line interface (HCLI) semantics.
 A terminal restart is required after the creation of the very first CLI alias. CLI aliases created thereafter are immediately usable.
 
 .SH COMMANDS
+.IP "env"
+This outputs the HCLI entry scripts path to export to enable direct HCLI execution by name (i.e. <cliname>. Equivalent to huckle cli run <cliname>).
+
+"eval $(huckle env)" can be setup in ~/.bashrc, ~/.bash_profile or ~/.profile to ensure the path is always loaded on shell start.
 .IP "cli install <url>"
 This attempts to install/auto configure a CLI if provided with the root URL of an HCLI API. If successful, the CLI
 can be invoked by name, and its configuration is located under ~/.huckle/etc/<cliname>/config.
@@ -27,7 +31,7 @@ for the same CLI.
 Removes an installed CLI.
 .IP "cli run <cliname>"
 Used to invoke a CLI by name, the details of which are otherwise left to API implementers. This is equivalent to invoking
-<cliname> directly after CLI installation.
+<cliname> directly after CLI installation and after exporting the huckle env path (see "huckle env").
 .IP "cli ls"
 Lists all the installed CLIs.
 .IP "cli config <cliname>"
