@@ -14,7 +14,8 @@ huckle \- A generic hypertext command line interface (HCLI) client
 is a generic CLI that can be used with any API that abides by
 the standard version 1.0 hypertext command line interface (HCLI) semantics.
 
-A terminal restart is required after the creation of the very first CLI alias. CLI aliases created thereafter are immediately usable.
+CLI aliases are directly invoked by name provided the HCLI entry scripts are locatable in your shell PATH.
+See 'huckle env' for details to make your environment configuration more permanent.
 
 .SH COMMANDS
 .IP "env"
@@ -23,7 +24,10 @@ This outputs the HCLI entry scripts path to export to enable direct HCLI executi
 "eval $(huckle env)" can be setup in ~/.bashrc, ~/.bash_profile or ~/.profile to ensure the path is always loaded on shell start.
 .IP "cli install <url>"
 This attempts to install/auto configure a CLI if provided with the root URL of an HCLI API. If successful, the CLI
-can be invoked by name, and its configuration is located under ~/.huckle/etc/<cliname>/config.
+can be invoked by name.
+
+Its entry script is located under ~/.huckle/bin/<cliname>.
+Its configuration is located under ~/.huckle/etc/<cliname>/config.
 
 Note that an existing configuration file is left alone if the command is run multiple times
 for the same CLI.
@@ -50,7 +54,7 @@ version and the version of it's dependencies.
 .SH EXAMPLE
 huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
 
-huckle cli run jsonf (equivalent to simply invoking "jsonf" after a successful cli installation and a terminal restart)
+huckle cli run jsonf (equivalent to simply invoking "jsonf" in the shell after a successful cli installation and setup via 'eval $(huckle env)')
 
 huckle cli ls
 

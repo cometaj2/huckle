@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [3.0.0]
 - Update to use huckle env like minikube docker-env to help export unassuming environment configuration
+- Update documentation to mache huckle env change
+- Update circleci orb configuration per deprecation comments and add python 3.11 support
 
 ## [2.6.2]
 - Update to use latest version of requests, configparser and certifi.

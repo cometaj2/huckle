@@ -34,22 +34,28 @@ Help shape huckle and HCLI on the discussion list [4] or by raising issues on gi
 Install Python, pip and huckle
 ------------------------------
 
-Huckle requires bash with access to man pages, Python and pip
-
-  - Install a supported version of Python for your system
+Huckle requires bash with access to man pages, Python and pip. Install a supported version of Python for your system.
 
 Install huckle via Python's pip:
 
-  - pip install huckle
+.. code-block:: console
+
+    pip install huckle
 
 Basic usage
 -----------
 
+huckle env
+
+    This provides a sample environment configuration for your PATH environment variable. This can be permanently configured
+    for your environment by adding the command 'eval $(huckle env) in your shell startup configuration
+    (e.g. .bashrc, .bash_profile, .profile)
+
 huckle cli install \<url>
 
     This attempts to auto create and configure a CLI name if provided with the root URL of an HCLI API.
-    If successful, the CLI can be invoked by name, after restarting the terminal. huckle attempts to update
-    the PATH under .bash_profile and .bashrc to account for login and non-login terminal use.
+    If successful, the CLI can be invoked by name, after updating the path (see 'huckle env'). You can permanently enable
+    HCLI entrypoint scripts by adding 'eval $(huckle env) to your a ~/.bashrc, ~/.bash_profile, or ~/.profile.
     
     Note that an existing configuration file is left alone if the command is run multiple times 
     for the same CLI.
