@@ -76,7 +76,7 @@ def alias_cli(cli):
         g = open(dot_huckle_scripts + "/" + cli, "a+")
         os.chmod(dot_huckle_scripts + "/" + cli, 0o700)
         g.write("#!/bin/bash\n")
-        g.write("huckle cli run " + cli + "\ "$@\"")
+        g.write("huckle cli run " + cli + " \"$@\"")
         g.close
 
 # initializes the configuration file of a given cli (initialized when a cli "created")
