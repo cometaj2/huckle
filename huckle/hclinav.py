@@ -65,7 +65,9 @@ def traverse_argument(nav, arg):
             for k, l in enumerate(nav.links()["cli"][j]):
                 hcli_type = l.links()["profile"][0].uri.split('#', 1)[1]
                 if hcli_type == config.hcli_parameter_type:
-                    nav = l["cli"][0](hcli_param=quote('\"' + arg + '\"'))
+                    if not (arg.startswith('\"') and arg.endswith('\"')):
+                        arg = '\"' + arg + '\"'
+                    nav = l["cli"][0](hcli_param=quote(arg))
                     return nav
         except:
             pass
@@ -85,15 +87,20 @@ def traverse_argument(nav, arg):
 
 # attempts to traverse through an execution. (only attempted when we've run out of command line arguments to parse)
 def traverse_execution(nav):
-    for k, z in enumerate(nav.links()["cli"]):
-        tempnav = nav.links()["cli"][k]
+    try:
+        for k, z in enumerate(nav.links()["cli"]):
+            tempnav = nav.links()["cli"][k]
 
-        hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
-        if hcli_type == config.hcli_execution_type:
-            method = tempnav()["http"]
-            nav = tempnav["cli"][0]
-            flexible_executor(nav.uri, method)
-            sys.exit(0)
+            hcli_type = tempnav.links()["profile"][0].uri.split('#', 1)[1]
+            if hcli_type == config.hcli_execution_type:
+                method = tempnav()["http"]
+                nav = tempnav["cli"][0]
+                flexible_executor(nav.uri, method)
+                sys.exit(0)
+    except KeyError:
+        hutils.eprint(config.cliname + ": " + "command/parameter confusion. try escaping parameter: e.g., \\\"param\\\" or \\\'param\\\'.")
+        for_help()
+        sys.exit(2)
 
     hutils.eprint(config.cliname + ": " + "unable to execute.")
     for_help()

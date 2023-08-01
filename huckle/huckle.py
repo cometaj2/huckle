@@ -26,17 +26,17 @@ def navigate(argv):
 def cli():
 
     if len(sys.argv) > 2:
-    
+
         if sys.argv[1] == "cli" and sys.argv[2] == "install":
-            
+
             if len(sys.argv) > 3:
                 hclinav.pull(sys.argv[3])
-                
+
             else:
                 huckle_help()
-            
+
         elif sys.argv[1] == "cli" and sys.argv[2] == "run":
-                
+
             if len(sys.argv) > 3:
                 config.parse_configuration(sys.argv[3])
                 navigate(sys.argv[3:])

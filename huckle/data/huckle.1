@@ -36,6 +36,30 @@ Removes an installed CLI.
 .IP "cli run <cliname>"
 Used to invoke a CLI by name, the details of which are otherwise left to API implementers. This is equivalent to invoking
 <cliname> directly after CLI installation and after exporting the huckle env path (see "huckle env").
+
+Note that in certain exceptional cases where a parameter might be passed on the command line, if the parameter value matches exactly an available command,
+huckle will not be able to distinguish between an intent to pass a command or a parameter and will require additional information; notably escapement via backslash double quote or single quote.
+
+Huckle accept lazy parameters (without quotes), and this works most of the time, however if ambiguity arises, additional information must be provided.
+
+For example, assuming an "hc" HCLI, an hc "connect" command and otherwise valid "-j" option; the following will fail:
+
+echo '$$' | hc -j "connect"
+
+echo '$$' | hc -j 'connect'
+
+The following however would succeed:
+
+echo '$$'| hc -j \\'connect\\'
+
+echo '$$'| hc -j \\"connect\\"
+
+This would also succeed if multiple words must be passed as a parameter:
+
+echo '$$'| hc -j 'connect me'
+
+echo '$$'| hc -j "connect me"
+
 .IP "cli ls"
 Lists all the installed CLIs.
 .IP "cli config <cliname>"
