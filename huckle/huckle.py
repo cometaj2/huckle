@@ -5,12 +5,25 @@ from . import package
 from . import config
 from . import hutils
 from . import hclinav
+from . import logger
 
 import sys
+
+logging = logger.Logger()
+
 
 # navigate through the command line sequence for a given cliname
 def navigate(argv):
     nav = hclinav.navigator(root=config.url, apiname=config.cliname)
+
+    # if we're configured for url pinning, we try to get a cache hit
+    if config.url_pinning == "pin":
+        command = reconstruct_command(argv)
+        url, method = config.get_pinned_url(command)
+        if url:
+            logging.debug("found: [" + command + "] " + url + " " + method)
+            hclinav.flexible_executor(url, method)
+            sys.exit(0)
 
     if len(argv) == 1:
         hclinav.traverse_execution(nav)
@@ -50,6 +63,13 @@ def cli():
         elif sys.argv[1] == "cli" and sys.argv[2] == "rm":
             if len(sys.argv) > 3:
                 config.remove_cli(sys.argv[3])
+
+            else:
+                huckle_help()
+
+        elif sys.argv[1] == "cli" and sys.argv[2] == "flush":
+            if len(sys.argv) > 3:
+                config.flush_pinned_urls(sys.argv[3])
 
             else:
                 huckle_help()
@@ -102,3 +122,11 @@ def show_dependencies():
         dependencies += package.dependencies[i].rsplit('==', 1)[0] + "/"
         dependencies += package.dependencies[i].rsplit('==', 1)[1]
     print("huckle/" + package.__version__ + dependencies)
+
+def reconstruct_command(args):
+    reconstructed = []
+    for arg in args:
+        # escape every single quote
+        arg = arg.replace("'", "\\'")
+        reconstructed.append(arg)
+    return ' '.join(reconstructed)

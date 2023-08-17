@@ -33,6 +33,8 @@ Note that an existing configuration file is left alone if the command is run mul
 for the same CLI.
 .IP "cli rm <cliname>"
 Removes an installed CLI.
+.IP "cli flush <cliname>"
+Flushes pinned urls (url cache of final/non-HCLI/API surface urls). The cache is used to increase speed to API surface use and to reduce quantity of network calls.
 .IP "cli run <cliname>"
 Used to invoke a CLI by name, the details of which are otherwise left to API implementers. This is equivalent to invoking
 <cliname> directly after CLI installation and after exporting the huckle env path (see "huckle env").

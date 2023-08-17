@@ -12,6 +12,7 @@ from . import hutils
 import os
 import sys
 import shutil
+import json
 
 root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
@@ -27,6 +28,10 @@ url = ""
 cliname = "huckle"
 cli_manpage_path = "/tmp"
 ssl_verify = "verify"
+url_pinning = "dynamic"
+
+# URL Pinning lookup
+pinned_urls = {}
 
 # These hcli_ variables are taken from the semantic types found in the HCLI 1.0 specification
 hcli_command_type = "command"
@@ -52,16 +57,46 @@ def parse_configuration(cli):
                 if name == "ssl.verify":
                     global ssl_verify
                     ssl_verify = value
+                if name == "url.pinning":
+                    global url_pinning
+                    url_pinning = value
             if url == "": sys.exit("No url defined for " + cli + " under " + config_file_path)
     else:
         sys.exit("huckle: no cli configuration " + config_file_path + " available for " + cli) 
 
+    pinned_file_path = dot_huckle_config + "/" + cli + "/pinned.json"
+    try:
+        with open(pinned_file_path, 'r') as file:
+            global pinned_urls
+            pinned_urls = json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        pinned_urls = {}
+
+def pin_url(command, url, method):
+    if command not in pinned_urls:
+        pinned_urls[command] = {}
+    pinned_urls[command]["url"] = url
+    pinned_urls[command]["method"] = method
+    save_pinned_urls()
+
+# return a url and method if there's a cache hit.
+def get_pinned_url(command):
+    if command in pinned_urls:
+        return pinned_urls[command]["url"], pinned_urls[command]["method"]
+    else:
+        return None, None
+
+def save_pinned_urls():
+    pinned_file_path = dot_huckle_config + "/" + cliname + "/pinned.json"
+    with open(pinned_file_path, 'w') as file:
+        json.dump(pinned_urls, file)
+
 # creates a configuration file for a named cli
 def create_configuration(cli, url):
-    config_file_folder = dot_huckle_config + "/" + cli 
+    config_file_folder = dot_huckle_config + "/" + cli
     config_file = config_file_folder + "/config"
     hutils.create_folder(config_file_folder)
-    
+
     if not os.path.exists(config_file):
         hutils.create_file(config_file)
         init_configuration(cli, url)
@@ -89,8 +124,9 @@ def init_configuration(cli, url):
         parser.set("default", "url", "")
     else:
         parser.set("default", "url", url)
-   
+
     parser.set("default", "ssl.verify", "verify")
+    parser.set("default", "url.pinning", "dynamic")
 
     with open(config_file_path, "w") as config:
         parser.write(config)
@@ -117,6 +153,15 @@ def remove_cli(cli):
     else:
         print(cli + " is not installed.")
 
+# remove a pinned url cache
+def flush_pinned_urls(cli):
+    pinned_file_path = dot_huckle_config + "/" + cli + "/pinned.json"
+    if(path.exists(pinned_file_path)):
+        os.remove(pinned_file_path)
+        print(cli + ": pinned url cache was successfully flushed.")
+    else:
+        print(cli + ": no pinned url cache to flush.")
+
 # lists all the configuration parameters of a cli
 def config_list(cli):
     config_file_path = dot_huckle_config + "/" + cli + "/config"
@@ -128,4 +173,3 @@ def config_list(cli):
         for name, value in parser.items(section_name):
             print('%s = %s' % (name, value))
         print
-

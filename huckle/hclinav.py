@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function
 from subprocess import call
 from restnavigator import Navigator
 from functools import partial
+from urllib.parse import urlparse, parse_qs, unquote
 
 # avoid broken pipe signal crashing the program
 from signal import signal, SIGPIPE, SIG_DFL 
@@ -11,6 +12,7 @@ signal(SIGPIPE,SIG_DFL)
 # huckle's imports
 from . import config
 from . import hutils
+from . import logger
 
 import sys
 import os
@@ -28,10 +30,13 @@ try:
 except ImportError:
         from urllib.parse import quote  # Python 3+
 
+logging = logger.Logger()
+
+
 # produces a navigator that starts navigating from the root and with an api display name of apiname
 def navigator(root, apiname):
     s = requests.Session()
-    
+
     if config.ssl_verify == "verify":
         s.verify = certifi.where()
     elif config.ssl_verify == "skip":
@@ -41,16 +46,25 @@ def navigator(root, apiname):
         s.verify = False
 
     nav = Navigator.hal(root=root, apiname=apiname, session=s)
+
+    # we try to fail fast if the service isn't reachable
+    try:
+        nav()["name"]
+    except Exception as warning:
+        #hutils.eprint(warning)
+        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't up? " + str(nav.uri))
+        sys.exit(1)
+
     return nav
 
 # attempts to traverse through an hcli document with a command line argument
-def traverse_argument(nav, arg):        
+def traverse_argument(nav, arg):
     ilength = 0
     try:
         ilength = len(nav.links()["cli"])
     except Exception as warning:
-        hutils.eprint(warning)
-        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics.")
+        #hutils.eprint(warning)
+        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't up? " + str(nav.uri))
         sys.exit(1)
 
     for j, y in enumerate(nav.links()["cli"]):
@@ -185,7 +199,7 @@ def hcli_to_man(navigator):
         f.write(".SH " + section["name"].upper() + "\n")
         f.write(section["description"].replace("\\n", "\n") + "\n")
     f.write(options_and_commands_to_man(navigator))
-    
+
     f.close()
     display_man_page(dynamic_doc_path)
 
@@ -238,17 +252,29 @@ def flexible_executor(url, method):
     elif config.ssl_verify == "skip":
         ssl_verify = False
 
+    # if we're configured to pin final urls, we setup the cache for future hits
+    if config.url_pinning == "pin":
+        parsed_url = urlparse(url)
+        params = parse_qs(parsed_url.query)
+        command_encoded = params.get('command', [None])[0]  # Returns a list, so take the first item
+        if command_encoded:
+            final_command = unquote(unquote(command_encoded))
+
+            # Replace characters to match original format and pin the url
+            final_command = final_command.replace('"', '').replace("'", r"\'")
+            config.pin_url(final_command, url, method)
+            logging.debug("pinned: [" + final_command + "] " + url + " " + method)
+
     if method == "get":
         r = requests.get(url, stream=True, verify=ssl_verify)
         output_chunks(r)
         return
     if method == "post":
         if not sys.stdin.isatty():
-            
+
             headers = {'content-type': 'application/octet-stream'}
             stream = nbstdin()
             r = requests.post(url, data=stream.read(), headers=headers, stream=True, verify=ssl_verify)
-                
             output_chunks(r)
             return
         else:
@@ -276,7 +302,7 @@ def output_chunks(response):
 class nbstdin:
     def __init__(self):
         None
-        
+
     def read(self):
         f = os.fdopen(sys.stdin.fileno(), 'rb', 0)
         with f as fis:
