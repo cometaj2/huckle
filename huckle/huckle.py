@@ -16,6 +16,14 @@ logging = logger.Logger()
 def navigate(argv):
     nav = hclinav.navigator(root=config.url, apiname=config.cliname)
 
+    # we try to fail fast if the service isn't reachable
+    try:
+        nav()["name"]
+    except Exception as warning:
+        #hutils.eprint(warning)
+        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't up? " + str(nav.uri))
+        sys.exit(1)
+
     # if we're configured for url pinning, we try to get a cache hit
     if config.url_pinning == "pin":
         command = reconstruct_command(argv)

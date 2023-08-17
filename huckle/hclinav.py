@@ -47,14 +47,6 @@ def navigator(root, apiname):
 
     nav = Navigator.hal(root=root, apiname=apiname, session=s)
 
-    # we try to fail fast if the service isn't reachable
-    try:
-        nav()["name"]
-    except Exception as warning:
-        #hutils.eprint(warning)
-        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't up? " + str(nav.uri))
-        sys.exit(1)
-
     return nav
 
 # attempts to traverse through an hcli document with a command line argument
@@ -140,8 +132,8 @@ def pull(url):
             for k, z in enumerate(nav.links()["cli"]):
                 pull(nav.links()["cli"][k].uri)
         except Exception as warning:
-            hutils.eprint(warning)
-            hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics.")
+            #hutils.eprint(warning)
+            hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't up? " + str(nav.uri))
 
 # displays a man page (file) located on a given path
 def display_man_page(path):
