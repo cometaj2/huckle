@@ -198,7 +198,7 @@ Bugs
   
 .. |build status| image:: https://circleci.com/gh/cometaj2/huckle.svg?style=shield
 .. _build status: https://circleci.com/gh/cometaj2/huckle
-.. |pypi| image:: https://badge.fury.io/py/huckle?label=huckle
+.. |pypi| image:: https://img.shields.io/pypi/v/huckle?label=huckle
 .. _pypi: https://pypi.org/project/huckle
 .. |pyver| image:: https://img.shields.io/pypi/pyversions/huckle.svg
 .. _pyver: https://pypi.org/project/huckle
