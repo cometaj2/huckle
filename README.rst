@@ -104,7 +104,7 @@ on github. Only full major.minor.patch releases will be pushed to pip from now o
 Supports
 --------
 
-- Supports HTTP/HTTPS
+- HTTP/HTTPS
 
 - HCLI version 1.0 semantics for:
 
@@ -124,11 +124,13 @@ Supports
 
 - Auto configuration of a CLI when provided with an HCLI API root URL (e.g. huckle cli install `<http://hcli.io/hcli/cli/jsonf?command=jsonf>`_  
 
-- Support listing of installed CLIs
+- Listing of installed CLIs
 
-- Supports listing of the configuration of a CLI
+- Listing of the configuration of a CLI
 
-- Support auto discovery of cli link relations when attempting to install from a root resource that isn't an hcli-document.
+- Auto discovery of cli link relations when attempting to install from a root resource that isn't an hcli-document.
+
+- URL pinning/caching, and cache flushing, of successfully traversed final execution URLs, to speed up execution of already executed command sequences.
 
 To Do
 -----
