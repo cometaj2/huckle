@@ -1,5 +1,7 @@
-Huckle |pypi|_ |build status|_ |pyver|_
-=======================================
+|pypi|_ |build status|_ |pyver|_
+
+Huckle
+======
 
 Huckle is a CLI that can act as an impostor for any CLI expressed via hypertext
 command line interface (HCLI) semantics.
