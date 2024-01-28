@@ -55,9 +55,8 @@ def traverse_argument(nav, arg):
     try:
         ilength = len(nav.links()["cli"])
     except Exception as warning:
-        #hutils.eprint(warning)
-        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't up? " + str(nav.uri))
-        sys.exit(1)
+        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't running? " + str(nav.uri)
+        raise Exception(error)
 
     for j, y in enumerate(nav.links()["cli"]):
 
@@ -84,12 +83,12 @@ def traverse_argument(nav, arg):
                 nav = tempnav["cli"][0]
                 return nav
         except:
-            hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
-            sys.exit(2)
+            error = config.cliname + ": " + arg + ": " + "command not found."
+            raise Exception(error)
 
         if j == ilength - 1:
-            hutils.eprint(config.cliname + ": " + arg + ": " + "command not found.")
-            sys.exit(2)
+            error = config.cliname + ": " + arg + ": " + "command not found."
+            raise Exception(error)
 
 # attempts to traverse through an execution. (only attempted when we've run out of command line arguments to parse)
 def traverse_execution(nav):
@@ -101,16 +100,15 @@ def traverse_execution(nav):
             if hcli_type == config.hcli_execution_type:
                 method = tempnav()["http"]
                 nav = tempnav["cli"][0]
-                flexible_executor(nav.uri, method)
-                sys.exit(0)
+                return flexible_executor(nav.uri, method)
     except KeyError:
-        hutils.eprint(config.cliname + ": " + "command/parameter confusion. try escaping parameter: e.g., \\\"param\\\" or \\\'param\\\'.")
-        for_help()
-        sys.exit(2)
+        error = config.cliname + ": " + "command/parameter confusion. try escaping parameter: e.g., \\\"param\\\" or \\\'param\\\'.\n"
+        error += for_help()
+        raise Exception(error)
 
-    hutils.eprint(config.cliname + ": " + "unable to execute.")
-    for_help()
-    sys.exit(2)
+    error = config.cliname + ": " + "unable to execute.\n"
+    error += for_help()
+    raise Exception(error)
 
 # attempts to pull at the root of the hcli to auto configure the cli
 def pull(url):
@@ -120,20 +118,20 @@ def pull(url):
         if version == "1.0":
             cli = nav()["name"]
 
+            text = ""
             try:
-                hcli_to_text(nav)
-                config.create_configuration(cli, url)
-                config.alias_cli(cli)
-                print(cli + " was successfully configured.")
-            except Exception as warning:
-                hutils.eprint(warning)
+                text += hcli_to_text(nav)
+                configuration = config.create_configuration(cli, url)
+                return text + configuration
+            except Exception as error:
+                raise Exception(error)
     except Exception as warning:
         try:
             for k, z in enumerate(nav.links()["cli"]):
-                pull(nav.links()["cli"][k].uri)
+                return pull(nav.links()["cli"][k].uri)
         except Exception as warning:
-            #hutils.eprint(warning)
-            hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't up? " + str(nav.uri))
+            error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't running? " + str(nav.uri)
+            raise Exception(error)
 
 # displays a man page (file) located on a given path
 def display_man_page(path):
@@ -141,11 +139,13 @@ def display_man_page(path):
 
 # converts an hcli document to a text and displays it
 def hcli_to_text(navigator):
+    text = ""
     for i, x in enumerate(navigator()["section"]):
         section = navigator()["section"][i]
-        print(section["name"].upper())
-        print("       " + section["description"] + "\n")
-    print(options_and_commands_to_text(navigator))
+        text += section["name"].upper() + "\n"
+        text += "       " + section["description"] + "\n\n"
+    text += options_and_commands_to_text(navigator)
+    return text
 
 # generates an OPTIONS and COMMANDS section to add to a text page
 def options_and_commands_to_text(navigator):
@@ -175,7 +175,7 @@ def options_and_commands_to_text(navigator):
             commands = commands + "              " + tempnav()["description"] + "\n"
     if command_count > 0:
         commands = "COMMANDS\n" + commands
- 
+
     return options + commands
 
 # converts an hcli document to a man page and displays it
@@ -222,7 +222,7 @@ def options_and_commands_to_man(navigator):
             commands = commands + tempnav()["description"].replace("\\n", "\n") + "\n"
     if command_count > 0:
         commands = ".SH COMMANDS\n" + commands
- 
+
     return options + commands
 
 # pretty json dump
@@ -231,9 +231,11 @@ def pretty_json(json):
 
 # standard error message to tell users to go check the help pages (man pages)
 def for_help():
-    hutils.eprint("for help, use:\n")
-    hutils.eprint("  " + config.cliname + " help")
-    hutils.eprint("  " + config.cliname + " <command> help")
+    text = ""
+    text += "for help, use:\n\n"
+    text += "  " + config.cliname + " help\n"
+    text += "  " + config.cliname + " <command> help"
+    return text
 
 # a flexible executor that can work with the application/octet-stream media-type (per HCLI 1.0 spec)
 def flexible_executor(url, method):
@@ -259,20 +261,17 @@ def flexible_executor(url, method):
 
     if method == "get":
         r = requests.get(url, stream=True, verify=ssl_verify)
-        output_chunks(r)
-        return
+        return output_chunks(r)
     if method == "post":
         if not sys.stdin.isatty():
 
             headers = {'content-type': 'application/octet-stream'}
             stream = nbstdin()
             r = requests.post(url, data=stream.read(), headers=headers, stream=True, verify=ssl_verify)
-            output_chunks(r)
-            return
+            return output_chunks(r)
         else:
             r = requests.post(url, data=None, stream=True, verify=ssl_verify)
-            output_chunks(r)
-            return
+            return output_chunks(r)
 
     return
 
@@ -280,15 +279,15 @@ def flexible_executor(url, method):
 def output_chunks(response):
     if response.status_code >= 400:
         code = response.status_code
-        hutils.eprint(code, requests.status_codes._codes[code][0])
-        hutils.eprint(response.headers)
-        hutils.eprint(response.content)
-        sys.exit(1)
+        error = code + " " + requests.status_codes._codes[code][0] + "\n"
+        error += response.headers + "\n"
+        error += response.content
+        raise Exception(error)
     else:
-        with getattr(sys.stdout, 'buffer', sys.stdout) as f:
-            for chunk in response.iter_content(16384):
-                if chunk:
-                    f.write(chunk)
+        f = getattr(sys.stdout, 'buffer', sys.stdout)
+        for chunk in response.iter_content(16384):
+            if chunk:
+                yield chunk
 
 # wraps stdin into a unbuffered generator
 class nbstdin:

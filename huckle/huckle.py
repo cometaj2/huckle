@@ -1,13 +1,13 @@
 from __future__ import absolute_import, division, print_function
 
+import sys
+import shlex
+
 # huckle's imports
 from . import package
 from . import config
-from . import hutils
 from . import hclinav
 from . import logger
-
-import sys
 
 logging = logger.Logger()
 
@@ -20,9 +20,8 @@ def navigate(argv):
     try:
         nav()["name"]
     except Exception as warning:
-        #hutils.eprint(warning)
-        hutils.eprint(config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't up? " + str(nav.uri))
-        sys.exit(1)
+        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't running? " + str(nav.uri)
+        raise Exception(error)
 
     # if we're configured for url pinning, we try to get a cache hit
     if config.url_pinning == "pin":
@@ -30,97 +29,98 @@ def navigate(argv):
         url, method = config.get_pinned_url(command)
         if url:
             logging.debug("found: [" + command + "] " + url + " " + method)
-            hclinav.flexible_executor(url, method)
-            sys.exit(0)
+            return hclinav.flexible_executor(url, method)
 
     if len(argv) == 1:
-        hclinav.traverse_execution(nav)
+        return hclinav.traverse_execution(nav)
 
     length = len(argv[1:])
     for i, x in enumerate(argv[1:]):
         nav = hclinav.traverse_argument(nav, x)
 
         if i == length - 1:
-            hclinav.traverse_execution(nav)
+            return hclinav.traverse_execution(nav)
 
 # huckle's minimal set of commands
-def cli():
+def cli(commands):
 
-    if len(sys.argv) > 2:
+    if commands is not None:
+        argv = shlex.split(commands)
+    else:
+        argv = sys.argv
+        argv[0] = "huckle"
 
-        if sys.argv[1] == "cli" and sys.argv[2] == "install":
+    if len(argv) > 2:
 
-            if len(sys.argv) > 3:
-                hclinav.pull(sys.argv[3])
+        if argv[1] == "cli" and argv[2] == "install":
 
-            else:
-                huckle_help()
-
-        elif sys.argv[1] == "cli" and sys.argv[2] == "run":
-
-            if len(sys.argv) > 3:
-                config.parse_configuration(sys.argv[3])
-                navigate(sys.argv[3:])
+            if len(argv) > 3:
+                return hclinav.pull(argv[3])
 
             else:
-                huckle_help()
+                return huckle_help()
 
-        elif sys.argv[1] == "cli" and sys.argv[2] == "ls":
-            config.list_clis()
+        elif argv[1] == "cli" and argv[2] == "run":
 
-        elif sys.argv[1] == "cli" and sys.argv[2] == "rm":
-            if len(sys.argv) > 3:
-                config.remove_cli(sys.argv[3])
-
-            else:
-                huckle_help()
-
-        elif sys.argv[1] == "cli" and sys.argv[2] == "flush":
-            if len(sys.argv) > 3:
-                config.flush_pinned_urls(sys.argv[3])
+            if len(argv) > 3:
+                config.parse_configuration(argv[3])
+                return navigate(argv[3:])
 
             else:
-                huckle_help()
+                return huckle_help()
 
-        elif sys.argv[1] == "cli" and sys.argv[2] == "config":
-            if len(sys.argv) > 3:
-                config.config_list(sys.argv[3])
+        elif argv[1] == "cli" and argv[2] == "ls":
+            return config.list_clis()
+
+        elif argv[1] == "cli" and argv[2] == "rm":
+            if len(argv) > 3:
+                return config.remove_cli(argv[3])
 
             else:
-                huckle_help()
+                return huckle_help()
 
-        elif sys.argv[1] == "help":
-            hclinav.display_man_page(config.huckle_manpage_path)
-            sys.exit(0)
+        elif argv[1] == "cli" and argv[2] == "flush":
+            if len(argv) > 3:
+                return config.flush_pinned_urls(argv[3])
+
+            else:
+                return huckle_help()
+
+        elif argv[1] == "cli" and argv[2] == "config":
+            if len(argv) > 3:
+                return config.config_list(argv[3])
+
+            else:
+                return huckle_help()
+
+        elif argv[1] == "help":
+            return hclinav.display_man_page(config.huckle_manpage_path)
 
         else:
-            huckle_help()
+            return huckle_help()
 
-    elif len(sys.argv) == 2:
+    elif len(argv) == 2:
 
-        if sys.argv[1] == "--version":
-            show_dependencies() 
+        if argv[1] == "--version":
+            return show_dependencies() 
 
-        elif sys.argv[1] == "env":
-            print("export PATH=$PATH:" + config.dot_huckle_scripts)
-            print("")
-            print("# To point your shell to huckle's HCLI entrypoint scripts, run:")
-            print("# eval $(huckle env)")
+        elif argv[1] == "env":
+            text = "export PATH=$PATH:" + config.dot_huckle_scripts + "\n\n"
+            text += "# To point your shell to huckle's HCLI entrypoint scripts, run:\n"
+            text += "# eval $(huckle env)"
+            return text
 
-        elif sys.argv[1] == "help":
-            hclinav.display_man_page(config.huckle_manpage_path)
-            sys.exit(0)
+        elif argv[1] == "help":
+            return hclinav.display_man_page(config.huckle_manpage_path)
 
         else:
-            huckle_help()
+            return huckle_help()
 
     else:
-        huckle_help()
+        return huckle_help()
 
 def huckle_help():
-    hutils.eprint("for help, use:\n")
-    hutils.eprint("  huckle help")
-    sys.exit(2)
+    return "for help, use:\n\n  huckle help"
 
 # show huckle's version and the version of its dependencies
 def show_dependencies():
@@ -129,7 +129,7 @@ def show_dependencies():
         dependencies += " "
         dependencies += package.dependencies[i].rsplit('==', 1)[0] + "/"
         dependencies += package.dependencies[i].rsplit('==', 1)[1]
-    print("huckle/" + package.__version__ + dependencies)
+    return "huckle/" + package.__version__ + dependencies
 
 def reconstruct_command(args):
     reconstructed = []

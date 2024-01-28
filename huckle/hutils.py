@@ -24,7 +24,7 @@ def create_file(path):
         else:
             with os.fdopen(file_handle, 'w') as file_obj:
                 file_obj.write("")
-                file_obj.close        
+                file_obj.close
 
 # helps with printing error messages to STDERR
 def eprint(*args, **kwargs):

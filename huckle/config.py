@@ -101,9 +101,14 @@ def create_configuration(cli, url):
         hutils.create_file(config_file)
         init_configuration(cli, url)
     else:
-        raise Exception("huckle: the configuration for " + cli + " already exists. leaving the existing configuration untouched.")
+        text = "huckle: the configuration for " + cli + " already exists. leaving the existing configuration untouched."
+        return text
 
     hutils.create_folder(cli_manpage_path + "/huckle." + cli)
+    alias_cli(cli)
+
+    text = cli + " was successfully configured."
+    return text
 
 # sets up an alias for a cli so that it can be called directly by name (instead of calling it via the explicit huckle call) 
 def alias_cli(cli):

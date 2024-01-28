@@ -3,7 +3,7 @@
 Huckle
 ======
 
-Huckle is a CLI that can act as an impostor for any CLI expressed via hypertext
+Huckle is a python library and CLI that can act as an impostor for any CLI expressed via hypertext
 command line interface (HCLI) semantics.
 
 ----
@@ -16,6 +16,9 @@ Most, if not all, programming languages have a way to issue shell commands. With
 of a generic HCLI client such as Huckle, APIs that make use of HCLI semantics are readily consumable
 anywhere via the familiar CLI mode of operation, and this, without there being a need to write
 a custom and dedicated CLI to interact with a specific API.
+
+Huckle can also be used as a python library to interact with HCLI APIs via python code in much the
+same way as would be the case in a bash terminal.
 
 You can access a simple example HCLI service to play with huckle on http://hcli.io [1]
 
@@ -58,7 +61,7 @@ huckle cli install \<url>
     This attempts to auto create and configure a CLI name if provided with the root URL of an HCLI API.
     If successful, the CLI can be invoked by name, after updating the path (see 'huckle env'). You can permanently enable
     HCLI entrypoint scripts by adding 'eval $(huckle env) to your a ~/.bashrc, ~/.bash_profile, or ~/.profile.
-    
+
     Note that an existing configuration file is left alone if the command is run multiple times 
     for the same CLI.
 
@@ -71,7 +74,7 @@ huckle cli install \<url>
 huckle cli run \<cliname>
 
     This invokes the cliname to issue HCLI API calls; the details of which are left to API implementers.
-    
+
     Commands, options and parameters are presented gradually, to provide users with a way to
     incrementally discover and learn how the CLI is used.
 
@@ -87,6 +90,63 @@ huckle cli run \<cliname>
 huckle help
 
     This opens up a man page that describes how to use huckle.
+
+Python Library - Basic Usage
+----------------------------
+
+Here's a basic flask PWA example that incorporates huckle usage as a python library to get data
+from an HCLI data aggregation service called 'hleg':
+
+.. code-block:: python
+
+    from __future__ import absolute_import, division, print_function
+
+    import flask
+    import config
+    import json
+    import logger
+
+    from huckle.huckle import cli
+    from flask import Flask, render_template, send_file, jsonify, Response
+
+    logging = logger.Logger()
+    logging.setLevel(logger.INFO)
+
+
+    def webapp():
+        app = Flask(__name__)
+
+        @app.route('/')
+        def index():
+            return render_template('index.html')
+
+        @app.route('/manifest.json')
+        def serve_manifest():
+            return app.send_static_file('manifest.json')
+
+        @app.route('/sw.js')
+        def serve_sw():
+            return app.send_static_file('sw.js')
+
+        @app.route('/ls')
+        def ls():
+            try:
+                logging.info(cli("huckle --version"))
+                logging.info(cli("huckle cli install 127.0.0.1:9000"))
+
+                chunks = cli("huckle cli run hleg ls")
+                json_string = ''.join(chunk.decode('utf-8') for chunk in chunks)
+                data = json.loads(json_string)
+
+                return render_template('table.html', bills=data)
+
+            except Exception as error:
+                logging.error(error)
+
+            return render_template('table.html')
+
+        return app
+
 
 Configuration
 -------------
@@ -133,6 +193,8 @@ Supports
 - Auto discovery of cli link relations when attempting to install from a root resource that isn't an hcli-document.
 
 - URL pinning/caching, and cache flushing, of successfully traversed final execution URLs, to speed up execution of already executed command sequences.
+
+- Use as a Python library
 
 To Do
 -----
@@ -191,6 +253,12 @@ To Do
 - Support HCLI nativization
 
 - Support for Huckle DEBUG mode
+
+- Support better help output for python library use
+
+- Support better Huckle configuration and HCLI customization for python library use
+
+- Support full in memory configuration use to avoid filesystem files in a python library use context
 
 Bugs
 ----
