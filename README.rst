@@ -263,10 +263,8 @@ To Do
 Bugs
 ----
 
-- There's an edge case that's not covered; when executing a cli by invoking the root of the HCLI only. And more specifically when the root is
-  not valid HCLI when initially fetching the HALNavigator.
+- TBD
 
-- Disgraceful handling when a cli is invoked when the associated HCLI service is down
   
 .. |build status| image:: https://circleci.com/gh/cometaj2/huckle.svg?style=shield
 .. _build status: https://circleci.com/gh/cometaj2/huckle
