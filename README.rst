@@ -260,6 +260,8 @@ To Do
 
 - Support full in memory configuration use to avoid filesystem files in a python library use context
 
+- Add circleci tests for python library use
+
 Bugs
 ----
 
