@@ -53,7 +53,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='huckle',
     version=package.__version__,
-    description='A CLI that can act as an impostor for any CLI expressed through hypertext command line interface (HCLI) semantics.',
+    description='A CLI, and python library, that can act as an impostor for any CLI expressed through hypertext command line interface (HCLI) semantics.',
     long_description_content_type="text/x-rst",    
     long_description=long_description,
     url='https://github.com/cometaj2/huckle',

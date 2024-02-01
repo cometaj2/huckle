@@ -3,7 +3,7 @@
 Huckle
 ======
 
-Huckle is a python library and CLI that can act as an impostor for any CLI expressed via hypertext
+Huckle is a CLI, and python library, that can act as an impostor for any CLI expressed via hypertext
 command line interface (HCLI) semantics.
 
 ----
@@ -199,7 +199,7 @@ Supports
 
 - URL pinning/caching, and cache flushing, of successfully traversed final execution URLs, to speed up execution of already executed command sequences.
 
-- Use as a Python library along with simple stdin-and-stdout-like data streaming.
+- Use as a python library along with simple stdin-and-stdout-like data streaming.
 
 To Do
 -----
