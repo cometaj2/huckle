@@ -11,8 +11,8 @@ logging = logger.Logger()
 logging.setLevel(logger.INFO)
 
 
-# prototype generator to identity as a type
-def gen():
+# prototype generator to identity generators as a type
+def generator():
     yield
 
 def main():
@@ -25,7 +25,7 @@ def main():
 
         if isinstance(output, str):
             print(output)
-        elif isinstance(output, type(gen())):
+        elif isinstance(output, type(generator())):
             f = getattr(sys.stdout, 'buffer', sys.stdout)
             for chunk in output:
                 if chunk:
@@ -34,5 +34,5 @@ def main():
             f.flush()
         else:
             pass
-    except Exception as e:
-        hutils.eprint(e)
+    except Exception as error:
+        hutils.eprint(error)

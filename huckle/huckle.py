@@ -2,12 +2,15 @@ from __future__ import absolute_import, division, print_function
 
 import sys
 import shlex
+import io
 
 # huckle's imports
 from . import package
 from . import config
 from . import hclinav
 from . import logger
+
+from contextlib import contextmanager
 
 logging = logger.Logger()
 
@@ -40,6 +43,16 @@ def navigate(argv):
 
         if i == length - 1:
             return hclinav.traverse_execution(nav)
+
+@contextmanager
+def stdin(stream):
+    sys.stdin = stream # Redirect sys.stdin to a provided io stream (e.g. io.BytesIO)
+
+    try:
+        yield
+
+    finally:
+        sys.stdin = sys.__stdin__
 
 # huckle's minimal set of commands
 def cli(commands):
@@ -102,7 +115,7 @@ def cli(commands):
     elif len(argv) == 2:
 
         if argv[1] == "--version":
-            return show_dependencies() 
+            return show_dependencies()
 
         elif argv[1] == "env":
             text = "export PATH=$PATH:" + config.dot_huckle_scripts + "\n\n"

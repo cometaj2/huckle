@@ -95,7 +95,7 @@ Python Library - Basic Usage
 ----------------------------
 
 Here's a basic flask PWA example that incorporates huckle usage as a python library to get data
-from an HCLI data aggregation service called 'hleg':
+from an HCLI data aggregation service called 'hleg' running locally on port 9000 and a jsonf HCLI hosted on hcli.io:
 
 .. code-block:: python
 
@@ -105,8 +105,9 @@ from an HCLI data aggregation service called 'hleg':
     import config
     import json
     import logger
+    import io
 
-    from huckle.huckle import cli
+    from huckle.huckle import cli, stdin
     from flask import Flask, render_template, send_file, jsonify, Response
 
     logging = logger.Logger()
@@ -118,21 +119,17 @@ from an HCLI data aggregation service called 'hleg':
 
         @app.route('/')
         def index():
-            return render_template('index.html')
-
-        @app.route('/manifest.json')
-        def serve_manifest():
-            return app.send_static_file('manifest.json')
-
-        @app.route('/sw.js')
-        def serve_sw():
-            return app.send_static_file('sw.js')
-
-        @app.route('/ls')
-        def ls():
             try:
+                cli("huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf")
+
+                hello = io.BytesIO(b'{"hello":"world"}')
+                with stdin(hello):
+                    chunks = cli("huckle cli run jsonf go")
+                    json_string = ''.join(chunk.decode('utf-8') for chunk in chunks)
+                    logging.info(json_string)
+
                 logging.info(cli("huckle --version"))
-                logging.info(cli("huckle cli install 127.0.0.1:9000"))
+                cli("huckle cli install 127.0.0.1:9000")
 
                 chunks = cli("huckle cli run hleg ls")
                 json_string = ''.join(chunk.decode('utf-8') for chunk in chunks)
@@ -143,7 +140,15 @@ from an HCLI data aggregation service called 'hleg':
             except Exception as error:
                 logging.error(error)
 
-            return render_template('table.html')
+            return render_template('index.html')
+
+        @app.route('/manifest.json')
+        def serve_manifest():
+            return app.send_static_file('manifest.json')
+
+        @app.route('/sw.js')
+        def serve_sw():
+            return app.send_static_file('sw.js')
 
         return app
 
@@ -194,7 +199,7 @@ Supports
 
 - URL pinning/caching, and cache flushing, of successfully traversed final execution URLs, to speed up execution of already executed command sequences.
 
-- Use as a Python library
+- Use as a Python library along with simple stdin-and-stdout-like data streaming.
 
 To Do
 -----
@@ -260,7 +265,7 @@ To Do
 
 - Support full in memory configuration use to avoid filesystem files in a python library use context
 
-- Add circleci tests for python library use
+- Add circleci tests for python library use (intput and output streaming)
 
 Bugs
 ----

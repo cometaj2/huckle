@@ -267,6 +267,7 @@ def flexible_executor(url, method):
 
             headers = {'content-type': 'application/octet-stream'}
             stream = nbstdin()
+
             r = requests.post(url, data=stream.read(), headers=headers, stream=True, verify=ssl_verify)
             return output_chunks(r)
         else:
@@ -295,7 +296,11 @@ class nbstdin:
         None
 
     def read(self):
-        f = os.fdopen(sys.stdin.fileno(), 'rb', 0)
-        with f as fis:
-            for chunk in iter(partial(fis.read, 16384), b''):
+        try:
+            f = os.fdopen(sys.stdin.fileno(), 'rb', 0)
+            with f as fis:
+                for chunk in iter(partial(fis.read, 16384), b''):
+                    yield chunk
+        except Exception as e:
+            for chunk in iter(partial(sys.stdin.read, 16384), b''):
                 yield chunk
