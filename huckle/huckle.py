@@ -63,6 +63,11 @@ def cli(commands):
         argv = sys.argv
         argv[0] = "huckle"
 
+    if argv[0] == "huckle":
+        pass
+    else:
+        return huckle_help()
+
     if len(argv) > 2:
 
         if argv[1] == "cli" and argv[2] == "install":
