@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function
 
-from configparser import SafeConfigParser
+from configparser import ConfigParser
 from io import StringIO
 from os import listdir
 from os.path import isfile, join
@@ -42,7 +42,7 @@ hcli_execution_type = "execution"
 # parses the configuration of a given cli to set configured execution
 def parse_configuration(cli):
     config_file_path = dot_huckle_config + "/" + cli + "/config"
-    parser = SafeConfigParser()
+    parser = ConfigParser()
     parser.read(config_file_path)
     if parser.has_section("default"):
         for section_name in parser.sections():
@@ -122,7 +122,7 @@ def alias_cli(cli):
 # initializes the configuration file of a given cli (initialized when a cli "created")
 def init_configuration(cli, url):
     config_file_path = dot_huckle_config + "/" + cli + "/config"
-    parser = SafeConfigParser()
+    parser = ConfigParser()
     parser.readfp(StringIO(u"[default]"))
 
     if url is None:
@@ -170,7 +170,7 @@ def flush_pinned_urls(cli):
 # lists all the configuration parameters of a cli
 def config_list(cli):
     config_file_path = dot_huckle_config + "/" + cli + "/config"
-    parser = SafeConfigParser()
+    parser = ConfigParser()
     parser.read(config_file_path)
 
     for section_name in parser.sections():
