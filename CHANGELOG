@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [3.3.2]
 - Add python 3.12 circleci test
 - Switch to ConfigParser from SafeConfigParser since it's no longer aliased in python 3.12
-- Updated to configparser 6.0.0
 
 ## [3.3.1]
 - Add check to make sure the first command is "huckle" in cli library call.
