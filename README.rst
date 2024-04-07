@@ -267,10 +267,12 @@ To Do
 
 - Add circleci tests for python library use (intput and output streaming)
 
+- Support for clear hcli parameter values documentation (e.g. ssl & pin)
+
 Bugs
 ----
 
-- TBD
+- An old cache (pinned urls) can sometimes yield unexpected failures. This has been observed with hcli_hc.
 
   
 .. |build status| image:: https://circleci.com/gh/cometaj2/huckle.svg?style=shield

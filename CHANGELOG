@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [3.3.3]
 - Remove python 3.12 circleci test because of compatibility issue for now.
+- Fix string concatenation bug on HTTP 4xx error.
 
 ## [3.3.2]
 - Add python 3.12 circleci test

@@ -280,9 +280,9 @@ def flexible_executor(url, method):
 def output_chunks(response):
     if response.status_code >= 400:
         code = response.status_code
-        error = code + " " + requests.status_codes._codes[code][0] + "\n"
-        error += response.headers + "\n"
-        error += response.content
+        error = str(code) + " " + requests.status_codes._codes[code][0] + "\n"
+        error += str(response.headers) + "\n"
+        error += str(response.content)
         raise Exception(error)
     else:
         f = getattr(sys.stdout, 'buffer', sys.stdout)
