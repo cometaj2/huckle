@@ -1,4 +1,4 @@
-|pypi|_ |build status|_ |pyver|_
+|pypi| |build status| |pyver|
 
 Huckle
 ======
@@ -274,10 +274,9 @@ Bugs
 
 - An old cache (pinned urls) can sometimes yield unexpected failures. This has been observed with hcli_hc.
 
-  
 .. |build status| image:: https://circleci.com/gh/cometaj2/huckle.svg?style=shield
-.. _build status: https://circleci.com/gh/cometaj2/huckle
+   :target: https://circleci.com/gh/cometaj2/huckle
 .. |pypi| image:: https://img.shields.io/pypi/v/huckle?label=huckle
-.. _pypi: https://pypi.org/project/huckle
+   :target: https://pypi.org/project/huckle
 .. |pyver| image:: https://img.shields.io/pypi/pyversions/huckle.svg
-.. _pyver: https://pypi.org/project/huckle
+   :target: https://pypi.org/project/huckle
