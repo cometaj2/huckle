@@ -107,7 +107,7 @@ from an HCLI data aggregation service called 'hleg' running locally on port 9000
     import logger
     import io
 
-    from huckle.huckle import cli, stdin
+    from huckle import cli, stdin
     from flask import Flask, render_template, send_file, jsonify, Response
 
     logging = logger.Logger()
