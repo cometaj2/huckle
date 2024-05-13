@@ -45,7 +45,7 @@ class Logger:
     def __init__(self, *args, **kwargs):
         with self.lock:
             if not self.initialized:
-                self.instance = logging.getLogger("crumbs")
+                self.instance = logging.getLogger("huckle")
 
                 date_format = "%Y-%m-%d %H:%M:%S %z"
                 message_format = "[%(asctime)s] [%(levelname)-5s] [%(filename)13s:%(lineno)-3s] %(message)s"
@@ -63,7 +63,7 @@ class Logger:
                 self.initialized = True
 
     def setLevel(self, level):
-        logging.getLogger("crumbs").setLevel(level)
+        logging.getLogger("huckle").setLevel(level)
         return
 
     def info(self, msg, *args, **kwargs):
