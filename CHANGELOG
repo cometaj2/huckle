@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.5.0]
+- Support str and bytes on stdin (convert to io.BytesIO)
+- Support calling hclis directly like on the command line instead of requiring the full 'huckle cli run' call with python library.
+
 ## [3.4.2]
 - Fix logger name
 

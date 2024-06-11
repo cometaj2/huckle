@@ -46,6 +46,11 @@ def navigate(argv):
 
 @contextmanager
 def stdin(stream):
+    if isinstance(stream, (str, bytes)):
+        stream = io.BytesIO(stream.encode() if isinstance(stream, str) else stream)
+    elif not hasattr(stream, 'read'):
+        stream = io.BytesIO(b''.join(stream))
+
     sys.stdin = stream # Redirect sys.stdin to a provided io stream (e.g. io.BytesIO)
 
     try:
@@ -55,8 +60,7 @@ def stdin(stream):
         sys.stdin = sys.__stdin__
 
 # huckle's minimal set of commands
-def cli(commands):
-
+def cli(commands=None):
     if commands is not None:
         argv = shlex.split(commands)
     else:
@@ -66,7 +70,11 @@ def cli(commands):
     if argv[0] == "huckle":
         pass
     else:
-        return huckle_help()
+        try:
+            config.parse_configuration(argv[0])
+            return navigate(argv[0:])
+        except Exception as e:
+            pass
 
     if len(argv) > 2:
 

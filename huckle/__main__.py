@@ -21,7 +21,7 @@ def main():
     hutils.create_file(config.dot_bash_profile)
 
     try:
-        output = huckle.cli(None)
+        output = huckle.cli()
 
         if isinstance(output, str):
             print(output)
