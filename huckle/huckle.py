@@ -1,11 +1,9 @@
-from __future__ import absolute_import, division, print_function
-
+import tomllib
 import sys
 import shlex
 import io
 
 # huckle's imports
-from . import package
 from . import config
 from . import hclinav
 from . import logger
@@ -149,13 +147,21 @@ def huckle_help():
     return "for help, use:\n\n  huckle help"
 
 # show huckle's version and the version of its dependencies
+
 def show_dependencies():
+    data = None
+    with open(config.root + "/../pyproject.toml", "rb") as f:
+        data = tomllib.load(f)
+
+    version = data['project']['version']
+    d = data['project']['dependencies']
+
     dependencies = ""
-    for i, x in enumerate(package.dependencies):
+    for i, x in enumerate(d):
         dependencies += " "
-        dependencies += package.dependencies[i].rsplit('==', 1)[0] + "/"
-        dependencies += package.dependencies[i].rsplit('==', 1)[1]
-    return "huckle/" + package.__version__ + dependencies
+        dependencies += d[i].rsplit('==', 1)[0] + "/"
+        dependencies += d[i].rsplit('==', 1)[1]
+    return "huckle/" + version + dependencies
 
 def reconstruct_command(args):
     reconstructed = []

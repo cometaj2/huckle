@@ -1,5 +1,3 @@
-from __future__ import absolute_import, division, print_function
-
 from configparser import ConfigParser
 from io import StringIO
 from os import listdir
