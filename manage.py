@@ -10,6 +10,12 @@ def write_requirements():
         for dep in package.dependencies:
             f.write(f"{dep}\n")
 
+if sys.argv[-1] == 'write-requirements':
+    branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip().decode("utf-8")
+    if branch != "master":
+        sys.exit("dry-run from a branch other than master is disallowed.")
+    write_requirements()
+
 if sys.argv[-1] == 'dry-run':
     branch = subprocess.check_output('git rev-parse --abbrev-ref HEAD', shell=True).strip().decode("utf-8")
     if branch != "master":
