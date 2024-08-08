@@ -33,12 +33,13 @@ jobs:
     steps: &steps
       - checkout
       - run: |
+          pwd
           pip install --upgrade pip
           pip install --upgrade pytest
           pip install --upgrade --force-reinstall setuptools
           pip install hcli_core
           pip install gunicorn==20.1.0
-          pip install -r requirements.txt
+          pip install -r $(find . -name requirements.txt)
           pip install -e .
           python -m pytest -v
 
