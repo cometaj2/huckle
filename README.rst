@@ -124,14 +124,14 @@ from an HCLI data aggregation service called 'hleg' running locally on port 9000
 
                 hello = io.BytesIO(b'{"hello":"world"}')
                 with stdin(hello):
-                    chunks = cli("huckle cli run jsonf go")
+                    chunks = cli("jsonf go")
                     json_string = ''.join(chunk.decode('utf-8') for chunk in chunks)
                     logging.info(json_string)
 
                 logging.info(cli("huckle --version"))
                 cli("huckle cli install 127.0.0.1:9000")
 
-                chunks = cli("huckle cli run hleg ls")
+                chunks = cli("hleg ls")
                 json_string = ''.join(chunk.decode('utf-8') for chunk in chunks)
                 data = json.loads(json_string)
 
