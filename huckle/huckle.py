@@ -1,7 +1,11 @@
-import tomllib
 import sys
 import shlex
 import io
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 # huckle's imports
 from . import config
