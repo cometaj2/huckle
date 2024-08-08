@@ -34,6 +34,7 @@ jobs:
       - checkout
       - run: |
           pwd
+          ls
           pip install --upgrade pip
           pip install --upgrade pytest
           pip install --upgrade --force-reinstall setuptools
