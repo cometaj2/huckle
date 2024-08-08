@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "huckle"
-version = "3.5.1"
+dynamic = ["version", "dependencies"]
 description = "A CLI, and python library, that can act as an impostor for any CLI expressed through hypertext command line interface (HCLI) semantics."
 readme = "README.rst"
 authors = [{name = "Jeff Michaud", email = "cometaj2@comcast.net"}]
@@ -21,19 +21,16 @@ classifiers = [
     "Programming Language :: Python :: 3.11"
 ]
 keywords = ["cli", "client", "hypermedia", "rest", "generic", "development"]
-dependencies = [
-    "restnavigator==1.0.1",
-    "requests[socks]==2.28.1",
-    "configparser==5.3.0",
-    "certifi==2022.9.24",
-    "tomli==2.0.1"
-]
 
 [project.urls]
 Homepage = "https://github.com/cometaj2/huckle"
 
 [project.scripts]
 huckle = "huckle.__main__:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "huckle.package.__version__"}
+dependencies = {file = "requirements.txt"}
 
 [tool.setuptools]
 packages = ["huckle"]

@@ -2,13 +2,9 @@ import sys
 import shlex
 import io
 
-if sys.version_info >= (3, 11):
-    import tomllib
-else:
-    import tomli as tomllib
-
 # huckle's imports
 from . import config
+from . import package
 from . import hclinav
 from . import logger
 
@@ -153,19 +149,12 @@ def huckle_help():
 # show huckle's version and the version of its dependencies
 
 def show_dependencies():
-    data = None
-    with open(config.root + "/../pyproject.toml", "rb") as f:
-        data = tomllib.load(f)
-
-    version = data['project']['version']
-    d = data['project']['dependencies']
-
     dependencies = ""
-    for i, x in enumerate(d):
+    for i, x in enumerate(package.dependencies):
         dependencies += " "
-        dependencies += d[i].rsplit('==', 1)[0] + "/"
-        dependencies += d[i].rsplit('==', 1)[1]
-    return "huckle/" + version + dependencies
+        dependencies += package.dependencies[i].rsplit('==', 1)[0] + "/"
+        dependencies += package.dependencies[i].rsplit('==', 1)[1]
+    return "huckle/" + package.__version__ + dependencies
 
 def reconstruct_command(args):
     reconstructed = []
