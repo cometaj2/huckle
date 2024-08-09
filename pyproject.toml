@@ -10,7 +10,7 @@ readme = "README.rst"
 authors = [{name = "Jeff Michaud", email = "cometaj2@comcast.net"}]
 license = {text = "MIT"}
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Topic :: Software Development",
     "License :: OSI Approved :: MIT License",
@@ -34,4 +34,4 @@ dependencies = {file = "requirements.txt"}
 
 [tool.setuptools]
 packages = ["huckle"]
-package-data = {"huckle" = ["data/*"]}
+package-data = {"huckle" = ["**/*"]}
