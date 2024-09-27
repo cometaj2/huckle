@@ -24,7 +24,7 @@ dot_bashrc = home + "/.bashrc"
 # These next 3 variables are dynamically updated from read configuration. Be careful!
 url = ""
 cliname = "huckle"
-cli_manpage_path = "/tmp"
+cli_manpage_path = dot_huckle + "/tmp"
 ssl_verify = "verify"
 url_pinning = "dynamic"
 
