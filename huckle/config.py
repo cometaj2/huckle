@@ -121,7 +121,7 @@ def alias_cli(cli):
 def init_configuration(cli, url):
     config_file_path = dot_huckle_config + "/" + cli + "/config"
     parser = ConfigParser()
-    parser.readfp(StringIO(u"[default]"))
+    parser.read_file(StringIO(u"[default]"))
 
     if url is None:
         parser.set("default", "url", "")
