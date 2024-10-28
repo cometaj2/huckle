@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.1.1]
+- Update README with future support for HTTP API Problem Details per spec to help with STDERR [RFC9457].
+
 ## [4.1.0]
 - Update to move location of cached man pages to avoid permission issues when multiple users on the same computer try to use help.
 

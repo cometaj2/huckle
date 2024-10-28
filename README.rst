@@ -203,6 +203,8 @@ Supports
 
 To Do
 -----
+- Support HTTP, RFC 9457 to help yield consistent stderr output.
+
 - Fork restnavigator repo or otherwise adjust to use restnavigator with requests (single http client instead of two)
 
 - Support help docs output in the absence of man pages (e.g. git-bash on Windows)
