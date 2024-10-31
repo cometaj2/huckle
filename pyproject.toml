@@ -33,5 +33,10 @@ version = {attr = "huckle.package.__version__"}
 dependencies = {file = "requirements.txt"}
 
 [tool.setuptools]
-packages = ["huckle"]
+packages = ["huckle",
+            "huckle.data"
+           ]
 package-data = {"huckle" = ["**/*"]}
+
+[tool.setuptools.exclude-package-data]
+"*" = ["*.pyc", "*.pyo", "*.pyd", "__pycache__"]
