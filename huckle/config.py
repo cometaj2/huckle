@@ -20,13 +20,16 @@ dot_huckle_scripts = dot_huckle + "/bin"
 dot_huckle_config = dot_huckle + "/etc"
 dot_bash_profile = home + "/.bash_profile"
 dot_bashrc = home + "/.bashrc"
+credentials_file_path = None
 
-# These next 3 variables are dynamically updated from read configuration. Be careful!
+# These next variables are dynamically updated from read configuration. Be careful!
 url = ""
 cliname = "huckle"
 cli_manpage_path = dot_huckle + "/tmp"
 ssl_verify = "verify"
 url_pinning = "dynamic"
+auth_mode = "skip"
+auth_profile = "default"
 
 # URL Pinning lookup
 pinned_urls = {}
@@ -39,7 +42,11 @@ hcli_execution_type = "execution"
 
 # parses the configuration of a given cli to set configured execution
 def parse_configuration(cli):
+    global credentials_file_path
+    credentials_file_path = dot_huckle_config + "/" + cli + "/credentials"
+
     config_file_path = dot_huckle_config + "/" + cli + "/config"
+
     parser = ConfigParser()
     parser.read(config_file_path)
     if parser.has_section("default"):
@@ -58,7 +65,13 @@ def parse_configuration(cli):
                 if name == "url.pinning":
                     global url_pinning
                     url_pinning = value
-            if url == "": sys.exit("No url defined for " + cli + " under " + config_file_path)
+                if name == "auth.mode":
+                    global auth_mode
+                    auth_mode = value
+                if name == "auth.profile":
+                    global auth_profile
+                    auth_profile = value
+            if url == "": sys.exit("huckle: no url defined for " + cli + " under " + config_file_path)
     else:
         sys.exit("huckle: no cli configuration " + config_file_path + " available for " + cli) 
 
@@ -91,6 +104,9 @@ def save_pinned_urls():
 
 # creates a configuration file for a named cli
 def create_configuration(cli, url):
+    global credentials_file_path
+    credentials_file_path = dot_huckle_config + "/" + cli + "/credentials"
+
     config_file_folder = dot_huckle_config + "/" + cli
     config_file = config_file_folder + "/config"
     hutils.create_folder(config_file_folder)
@@ -105,7 +121,7 @@ def create_configuration(cli, url):
     hutils.create_folder(cli_manpage_path + "/huckle." + cli)
     alias_cli(cli)
 
-    text = cli + " was successfully configured."
+    text = "huckle: " + cli + " was successfully configured."
     return text
 
 # sets up an alias for a cli so that it can be called directly by name (instead of calling it via the explicit huckle call) 
@@ -119,6 +135,9 @@ def alias_cli(cli):
 
 # initializes the configuration file of a given cli (initialized when a cli "created")
 def init_configuration(cli, url):
+    global credentials_file_path
+    credentials_file_path = dot_huckle_config + "/" + cli + "/credentials"
+
     config_file_path = dot_huckle_config + "/" + cli + "/config"
     parser = ConfigParser()
     parser.read_file(StringIO(u"[default]"))
@@ -130,6 +149,8 @@ def init_configuration(cli, url):
 
     parser.set("default", "ssl.verify", "verify")
     parser.set("default", "url.pinning", "dynamic")
+    parser.set("default", "auth.mode", "skip")
+    parser.set("default", "auth.profile", "default")
 
     with open(config_file_path, "w") as config:
         parser.write(config)
@@ -152,18 +173,18 @@ def remove_cli(cli):
     if(path.exists(dot_huckle_scripts + "/" + cli)):
         os.remove(dot_huckle_scripts + "/" + cli)
         shutil.rmtree(dot_huckle_config + "/" + cli)
-        print(cli + " was successfully removed.")
+        print("huckle: " + cli + " was successfully removed.")
     else:
-        print(cli + " is not installed.")
+        print("huckle: " + cli + " is not installed.")
 
 # remove a pinned url cache
 def flush_pinned_urls(cli):
     pinned_file_path = dot_huckle_config + "/" + cli + "/pinned.json"
     if(path.exists(pinned_file_path)):
         os.remove(pinned_file_path)
-        print(cli + ": pinned url cache was successfully flushed.")
+        print("huckle: the pinned url cache was successfully flushed for " + cli + ".")
     else:
-        print(cli + ": no pinned url cache to flush.")
+        print("huckle: no pinned url cache to flush for " + cli + ".")
 
 # lists all the configuration parameters of a cli
 def config_list(cli):

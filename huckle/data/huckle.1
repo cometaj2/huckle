@@ -13,22 +13,25 @@ huckle \- A generic hypertext command line interface (HCLI) client
 .B huckle
 is a generic CLI, and python library, that can be used with any API that abides by
 the standard version 1.0 hypertext command line interface (HCLI) semantics.
-
+.sp
 CLI aliases are directly invoked by name provided the HCLI entry scripts are locatable in your shell PATH.
 See 'huckle env' for details to make your environment configuration more permanent.
-
+.sp
 .SH COMMANDS
 .IP "env"
 This outputs the HCLI entry scripts path to export to enable direct HCLI execution by name (i.e. <cliname>. Equivalent to huckle cli run <cliname>).
-
+.sp
 "eval $(huckle env)" can be setup in ~/.bashrc, ~/.bash_profile or ~/.profile to ensure the path is always loaded on shell start.
 .IP "cli install <url>"
 This attempts to install/auto configure a CLI if provided with the root URL of an HCLI API. If successful, the CLI
 can be invoked by name.
-
-Its entry script is located under ~/.huckle/bin/<cliname>.
-Its configuration is located under ~/.huckle/etc/<cliname>/config.
-
+.sp
+Its entry script is located under ~/.huckle/bin/<cliname> (huckle managed).
+.br
+Its configuration is located under ~/.huckle/etc/<cliname>/config (huckle managed).
+.br
+Its credentials file should be placed under ~/.huckle/etc/<cliname>/credentials (user managed).
+.sp
 Note that an existing configuration file is left alone if the command is run multiple times
 for the same CLI.
 .IP "cli rm <cliname>"
@@ -38,30 +41,30 @@ Flushes pinned urls (url cache of final/non-HCLI/API surface urls). The cache is
 .IP "cli run <cliname>"
 Used to invoke a CLI by name, the details of which are otherwise left to API implementers. This is equivalent to invoking
 <cliname> directly after CLI installation and after exporting the huckle env path (see "huckle env").
-
+.sp
 Note that in certain exceptional cases where a parameter might be passed on the command line, if the parameter value matches exactly an available command,
 huckle will not be able to distinguish between an intent to pass a command or a parameter and will require additional information; notably escapement via backslash double quote or single quote.
-
+.sp
 Huckle accept lazy parameters (without quotes), and this works most of the time, however if ambiguity arises, additional information must be provided.
-
+.sp
 For example, assuming an "hc" HCLI, an hc "connect" command and otherwise valid "-j" option; the following will fail:
-
+.sp
 echo '$$' | hc -j "connect"
-
+.sp
 echo '$$' | hc -j 'connect'
-
+.sp
 The following however would succeed:
-
+.sp
 echo '$$'| hc -j \\'connect\\'
-
+.sp
 echo '$$'| hc -j \\"connect\\"
-
+.sp
 This would also succeed if multiple words must be passed as a parameter:
-
+.sp
 echo '$$'| hc -j 'connect me'
-
+.sp
 echo '$$'| hc -j "connect me"
-
+.sp
 .IP "cli ls"
 Lists all the installed CLIs.
 .IP "cli config <cliname>"
@@ -77,15 +80,33 @@ This help file.
 .IP --version
 .B huckle
 version and the version of it's dependencies.
+.SH EXAMPLE CONFIGURATION FILE
+[default]
+.br
+url = <url>
+.br
+ssl.verify = <skip | verify>
+.br
+url.pinning = <dynamic | pin>
+.br
+auth = <skip | basic>
+.br
+.SH EXAMPLE CREDENTIALS FILE
+[default]
+.br
+username = <username>
+.br
+password = <password>
+.br
 .SH EXAMPLE
 huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
-
+.sp
 huckle cli run jsonf (equivalent to simply invoking "jsonf" in the shell after a successful cli installation and setup via 'eval $(huckle env)')
-
+.sp
 huckle cli ls
-
+.sp
 huckle cli config jsonf
-
+.sp
 huckle cli rm jsonf
-
+.sp
 huckle --version

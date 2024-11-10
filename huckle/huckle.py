@@ -21,7 +21,7 @@ def navigate(argv):
     try:
         nav()["name"]
     except Exception as warning:
-        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't running? " + str(nav.uri)
+        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. unauthenticated, wrong url, or the service isn't running? " + str(nav.uri)
         raise Exception(error)
 
     # if we're configured for url pinning, we try to get a cache hit

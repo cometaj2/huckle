@@ -13,6 +13,7 @@ signal(SIGPIPE,SIG_DFL)
 from . import config
 from . import hutils
 from . import logger
+from . import credential
 
 import sys
 import os
@@ -37,6 +38,7 @@ logging = logger.Logger()
 def navigator(root, apiname):
     s = requests.Session()
 
+    # ssl verify configuration check
     if config.ssl_verify == "verify":
         s.verify = certifi.where()
     elif config.ssl_verify == "skip":
@@ -44,6 +46,10 @@ def navigator(root, apiname):
         #from urllib3.exceptions import InsecureRequestWarning
         #warnings.simplefilter('ignore', InsecureRequestWarning)
         s.verify = False
+
+    if config.auth_mode == "basic":
+        credentials = credential.CredentialManager()
+        s.auth = requests.auth.HTTPBasicAuth(*(credentials.find()))
 
     nav = Navigator.hal(root=root, apiname=apiname, session=s)
 
@@ -55,7 +61,7 @@ def traverse_argument(nav, arg):
     try:
         ilength = len(nav.links()["cli"])
     except Exception as warning:
-        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't running? " + str(nav.uri)
+        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. unauthenticated, wrong url, or the service isn't running? " + str(nav.uri)
         raise Exception(error)
 
     for j, y in enumerate(nav.links()["cli"]):
@@ -130,7 +136,7 @@ def pull(url):
             for k, z in enumerate(nav.links()["cli"]):
                 return pull(nav.links()["cli"][k].uri)
         except Exception as warning:
-            error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong HCLI or the service isn't running? " + str(nav.uri)
+            error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. unauthenticated, wrong url, or the service isn't running? " + str(nav.uri)
             raise Exception(error)
 
 # displays a man page (file) located on a given path
@@ -259,8 +265,14 @@ def flexible_executor(url, method):
             config.pin_url(final_command, url, method)
             logging.debug("pinned: [" + final_command + "] " + url + " " + method)
 
+    # if we're configured for basic authentication, we setup user credentials
+    auth_mode = None
+    if config.auth_mode == "basic":
+        credentials = credential.CredentialManager()
+        auth_mode = requests.auth.HTTPBasicAuth(*(credentials.find()))
+
     if method == "get":
-        r = requests.get(url, stream=True, verify=ssl_verify)
+        r = requests.get(url, stream=True, verify=ssl_verify, auth=auth_mode)
         return output_chunks(r)
     if method == "post":
         if not sys.stdin.isatty():
@@ -268,10 +280,10 @@ def flexible_executor(url, method):
             headers = {'content-type': 'application/octet-stream'}
             stream = nbstdin()
 
-            r = requests.post(url, data=stream.read(), headers=headers, stream=True, verify=ssl_verify)
+            r = requests.post(url, data=stream.read(), headers=headers, stream=True, verify=ssl_verify, auth=auth_mode)
             return output_chunks(r)
         else:
-            r = requests.post(url, data=None, stream=True, verify=ssl_verify)
+            r = requests.post(url, data=None, stream=True, verify=ssl_verify, auth=auth_mode)
             return output_chunks(r)
 
     return
