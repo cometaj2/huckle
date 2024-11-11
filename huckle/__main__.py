@@ -2,10 +2,10 @@ from __future__ import absolute_import, division, print_function
 
 import sys
 
-from . import hutils
-from . import config
-from . import huckle
-from . import logger
+from huckle import hutils
+from huckle import config
+from huckle import huckle
+from huckle import logger
 
 logging = logger.Logger()
 logging.setLevel(logger.INFO)

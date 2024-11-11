@@ -10,10 +10,11 @@ from signal import signal, SIGPIPE, SIG_DFL
 signal(SIGPIPE,SIG_DFL) 
 
 # huckle's imports
-from . import config
-from . import hutils
-from . import logger
-from . import credential
+from huckle import config
+from huckle import hutils
+from huckle import logger
+from huckle.auth import credential
+from huckle.auth import authenticator
 
 import sys
 import os
@@ -50,6 +51,10 @@ def navigator(root, apiname):
     if config.auth_mode == "basic":
         credentials = credential.CredentialManager()
         s.auth = requests.auth.HTTPBasicAuth(*(credentials.find()))
+
+    elif config.auth_mode == "hcoak":
+        credentials = credential.CredentialManager()
+        s.auth = authenticator.BearerAuth(credentials.hcoak_find())
 
     nav = Navigator.hal(root=root, apiname=apiname, session=s)
 
@@ -270,6 +275,10 @@ def flexible_executor(url, method):
     if config.auth_mode == "basic":
         credentials = credential.CredentialManager()
         auth_mode = requests.auth.HTTPBasicAuth(*(credentials.find()))
+
+    elif config.auth_mode == "hcoak":
+        credentials = credential.CredentialManager()
+        auth_mode = authenticator.BearerAuth(credentials.hcoak_find())
 
     if method == "get":
         r = requests.get(url, stream=True, verify=ssl_verify, auth=auth_mode)

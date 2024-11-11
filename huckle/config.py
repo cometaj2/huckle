@@ -5,7 +5,7 @@ from os.path import isfile, join
 from os import path
 
 # huckle's imports
-from . import hutils
+from huckle import hutils
 
 import os
 import sys
@@ -29,7 +29,8 @@ cli_manpage_path = dot_huckle + "/tmp"
 ssl_verify = "verify"
 url_pinning = "dynamic"
 auth_mode = "skip"
-auth_profile = "default"
+auth_user_profile = "default"
+auth_apikey_profile = "default"
 
 # URL Pinning lookup
 pinned_urls = {}
@@ -68,9 +69,12 @@ def parse_configuration(cli):
                 if name == "auth.mode":
                     global auth_mode
                     auth_mode = value
-                if name == "auth.profile":
-                    global auth_profile
-                    auth_profile = value
+                if name == "auth.user.profile":
+                    global auth_user_profile
+                    auth_user_profile = value
+                if name == "auth.apikey.profile":
+                    global auth_apikey_profile
+                    auth_apikey_profile = value
             if url == "": sys.exit("huckle: no url defined for " + cli + " under " + config_file_path)
     else:
         sys.exit("huckle: no cli configuration " + config_file_path + " available for " + cli) 
@@ -150,7 +154,8 @@ def init_configuration(cli, url):
     parser.set("default", "ssl.verify", "verify")
     parser.set("default", "url.pinning", "dynamic")
     parser.set("default", "auth.mode", "skip")
-    parser.set("default", "auth.profile", "default")
+    parser.set("default", "auth.user.profile", "default")
+    parser.set("default", "auth.apikey.profile", "default")
 
     with open(config_file_path, "w") as config:
         parser.write(config)

@@ -26,11 +26,9 @@ This outputs the HCLI entry scripts path to export to enable direct HCLI executi
 This attempts to install/auto configure a CLI if provided with the root URL of an HCLI API. If successful, the CLI
 can be invoked by name.
 .sp
-Its entry script is located under ~/.huckle/bin/<cliname> (huckle managed).
+- Its entry script is located under ~/.huckle/bin/<cliname> (huckle created).
 .br
-Its configuration is located under ~/.huckle/etc/<cliname>/config (huckle managed).
-.br
-Its credentials file should be placed under ~/.huckle/etc/<cliname>/credentials (user managed).
+- Its configuration is located under ~/.huckle/etc/<cliname>/config (huckle created). See EXAMPLE CONFIGURATION FILE.
 .sp
 Note that an existing configuration file is left alone if the command is run multiple times
 for the same CLI.
@@ -80,6 +78,18 @@ This help file.
 .IP --version
 .B huckle
 version and the version of it's dependencies.
+.SH AUTHENTICATION
+Huckle supports three authentication modes:
+.PP
+- No Authentication - See auth.mode
+.br
+- HTTP Basic Authentication - See auth.mode and auth.user.profile configuration.
+.br
+- HCOAK (HCLI Core API Key Authentication) - See auth.mode and auth.apikey.profile configuration
+.PP
+A user created credential file should be stored under ~/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
+.PP
+Both authentication modes are supported via the use of [profile] in a credentials file referenced by auth.user.profile or auth.apikey.profile configuration, as appropriate. See EXAMPLE CREDENTIAL FILE.
 .SH EXAMPLE CONFIGURATION FILE
 [default]
 .br
@@ -89,7 +99,11 @@ ssl.verify = <skip | verify>
 .br
 url.pinning = <dynamic | pin>
 .br
-auth = <skip | basic>
+auth.mode = <skip | basic | hcoak>
+.br
+auth.user.profile = <profile>
+.br
+auth.apikey.profile = <profile>
 .br
 .SH EXAMPLE CREDENTIALS FILE
 [default]
@@ -97,7 +111,19 @@ auth = <skip | basic>
 username = <username>
 .br
 password = <password>
+.PP
+[anotherprofile]
 .br
+username = <anotherusername>
+.br
+password = <anotherpassword>
+.PP
+[user_apikeyprofile]
+.br
+keyid = <apikeyid>
+.br
+apikey = <apikey>
+.PP
 .SH EXAMPLE
 huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
 .sp

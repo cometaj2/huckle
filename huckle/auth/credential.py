@@ -4,8 +4,8 @@ import threading
 from configparser import ConfigParser
 from contextlib import suppress
 
-from . import logger
-from . import config
+from huckle import logger
+from huckle import config
 
 log = logger.Logger()
 
@@ -70,6 +70,30 @@ class CredentialManager:
                 self._credentials = None
                 raise Exception(error)
 
+    def hcoak_find(self):
+        with self._lock:
+            try:
+                if not self._credentials:
+                    return None
+
+                for section, cred_list in self._credentials.items():
+                    if section == config.auth_apikey_profile:
+                        section_apikey = None
+                        for cred in cred_list:
+                            if 'apikey' in cred:
+                                section_apikey = cred['apikey']
+
+                        if section_apikey is not None:
+                            return section_apikey
+
+                error = f"unable to find apikey credentials for the [{config.auth_apikey_profile}] profile under {self.credentials_file_path}."
+                raise Exception(error)
+
+            except Exception as e:
+                error = f"huckle: error retrieving credentials: {str(e)}"
+                raise Exception(error)
+
+
     def find(self):
         with self._lock:
             try:
@@ -77,7 +101,7 @@ class CredentialManager:
                     return None
 
                 for section, cred_list in self._credentials.items():
-                    if section == config.auth_profile:
+                    if section == config.auth_user_profile:
                         section_username = None
                         section_password = None
                         for cred in cred_list:
@@ -89,7 +113,7 @@ class CredentialManager:
                         if section_username is not None and section_password is not None:
                             return section_username, section_password
 
-                error = f"unable to find username and password credentials for the [{config.auth_profile}] profile under {self.credentials_file_path}."
+                error = f"unable to find username and password credentials for the [{config.auth_user_profile}] profile under {self.credentials_file_path}."
                 raise Exception(error)
 
             except Exception as e:

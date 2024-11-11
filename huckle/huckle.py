@@ -3,10 +3,10 @@ import shlex
 import io
 
 # huckle's imports
-from . import config
-from . import package
-from . import hclinav
-from . import logger
+from huckle import config
+from huckle import package
+from huckle import hclinav
+from huckle import logger
 
 from contextlib import contextmanager
 

@@ -34,7 +34,8 @@ dependencies = {file = "requirements.txt"}
 
 [tool.setuptools]
 packages = ["huckle",
-            "huckle.data"
+            "huckle.data",
+            "huckle.auth"
            ]
 package-data = {"huckle" = ["**/*"]}
 
