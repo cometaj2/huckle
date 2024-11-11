@@ -1,10 +1,14 @@
 from requests.auth import AuthBase
+import base64
 
 
-class BearerAuth(AuthBase):
-    def __init__(self, token):
-        self.token = token
+class HCOAKBearerAuth(AuthBase):
+    def __init__(self, keyid, apikey):
+        self.keyid = keyid
+        self.apikey = apikey
+        self.auth_string = f"{keyid}:{apikey}"
 
     def __call__(self, r):
-        r.headers["authorization"] = f"Bearer {self.token}"
+        encoded = base64.b64encode(self.auth_string.encode()).decode()
+        r.headers["authorization"] = f"Bearer {encoded}"
         return r

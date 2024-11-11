@@ -78,15 +78,18 @@ class CredentialManager:
 
                 for section, cred_list in self._credentials.items():
                     if section == config.auth_apikey_profile:
+                        section_keyid = None
                         section_apikey = None
                         for cred in cred_list:
+                            if 'keyid' in cred:
+                                section_keyid = cred['keyid']
                             if 'apikey' in cred:
                                 section_apikey = cred['apikey']
 
-                        if section_apikey is not None:
-                            return section_apikey
+                        if section_keyid is not None and section_apikey is not None:
+                            return section_keyid, section_apikey
 
-                error = f"unable to find apikey credentials for the [{config.auth_apikey_profile}] profile under {self.credentials_file_path}."
+                error = f"unable to find keyid or apikey credentials for the [{config.auth_apikey_profile}] profile under {self.credentials_file_path}."
                 raise Exception(error)
 
             except Exception as e:

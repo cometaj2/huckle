@@ -54,7 +54,7 @@ def navigator(root, apiname):
 
     elif config.auth_mode == "hcoak":
         credentials = credential.CredentialManager()
-        s.auth = authenticator.BearerAuth(credentials.hcoak_find())
+        s.auth = authenticator.HCOAKBearerAuth(*(credentials.hcoak_find()))
 
     nav = Navigator.hal(root=root, apiname=apiname, session=s)
 
@@ -278,7 +278,7 @@ def flexible_executor(url, method):
 
     elif config.auth_mode == "hcoak":
         credentials = credential.CredentialManager()
-        auth_mode = authenticator.BearerAuth(credentials.hcoak_find())
+        auth_mode = authenticator.HCOAKBearerAuth(*(credentials.hcoak_find()))
 
     if method == "get":
         r = requests.get(url, stream=True, verify=ssl_verify, auth=auth_mode)
