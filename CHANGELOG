@@ -5,8 +5,10 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [4.3.0]
-- Add Basic HTTP Auth credentials support (hcli config and credentials file)
-- Add profile support for HTTP Auth credentials (one section per unique user)
+- Add Basic HTTP Authentication credentials support (hcli config and credentials file)
+- Add HCLI Core API Key (HCOAK) Bearer Authentication credentials (hcli config and credentials file)
+- Add profile support for Basic HTTP Authentication credentials (one unique username/password per section/profile name)
+- Add profile support for HCOAK Bearer Authentication credentials (one unique keyid/apikey per section/profile name)
 - Update huckle help file to roff format best practice
 - Update HCLI navigation error message
 
