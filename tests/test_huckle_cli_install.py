@@ -7,7 +7,7 @@ def test_function():
     setup = """
     #!/bin/bash
 
-    gunicorn --workers=1 --threads=1 --chdir `hcli_core path` "hcli_core:connector()" --daemon
+    gunicorn --workers=1 --threads=1 "hcli_core:connector()" --daemon
     huckle cli install http://127.0.0.1:8000
     echo '{"hello":"world"}' | jsonf go
     """
