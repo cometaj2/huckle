@@ -41,9 +41,10 @@ def navigator(root, apiname):
     if config.ssl_verify == "verify":
         s.verify = certifi.where()
     elif config.ssl_verify == "skip":
-        #import warnings
-        #from urllib3.exceptions import InsecureRequestWarning
-        #warnings.simplefilter('ignore', InsecureRequestWarning)
+        logging.warning("SSL verification is being skipped. This will leak credentials on the network if using authentication.")
+        import warnings
+        from urllib3.exceptions import InsecureRequestWarning
+        warnings.simplefilter('ignore', InsecureRequestWarning)
         s.verify = False
 
     if config.auth_mode == "basic":

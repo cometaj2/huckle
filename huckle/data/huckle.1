@@ -11,10 +11,10 @@ huckle \- A generic hypertext command line interface (HCLI) client
 ]
 .SH DESCRIPTION
 .B huckle
-is a generic CLI, and python library, that can be used with any API that abides by
-the standard version 1.0 hypertext command line interface (HCLI) semantics.
+is a generic CLI, and python library, that can be used with any API that presents
+hypertext command line interface (HCLI) semantics.
 .sp
-CLI aliases are directly invoked by name provided the HCLI entry scripts are locatable in your shell PATH.
+CLI aliases are directly invoked by name if the HCLI entry scripts are locatable in your shell PATH.
 See 'huckle env' for details to make your environment configuration more permanent.
 .sp
 .SH COMMANDS
@@ -35,7 +35,9 @@ for the same CLI.
 .IP "cli rm <cliname>"
 Removes an installed CLI.
 .IP "cli flush <cliname>"
-Flushes pinned urls (url cache of final/non-HCLI/API surface urls). The cache is used to increase speed to API surface use and to reduce quantity of network calls.
+Flushes pinned urls (url cache of final/non-HCLI/API surface urls). The cache is used to increase speed to API surface by reducing the quantity of network calls normally executed to navigate the HCLI semantics.
+.sp
+Note that unexpected failures can occur if the cache is invalidated for a reason or another.
 .IP "cli run <cliname>"
 Used to invoke a CLI by name, the details of which are otherwise left to API implementers. This is equivalent to invoking
 <cliname> directly after CLI installation and after exporting the huckle env path (see "huckle env").
@@ -77,9 +79,9 @@ This help file.
 .SH OPTIONS
 .IP --version
 .B huckle
-version and the version of it's dependencies.
+version and the version of its dependencies.
 .SH CACHING
-Huckle is able to cache the final execution URL of given common as a caching mechanism to avoid having to traverse the HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. staleness per the expected HCLI semantics). See url.pinning under EXAMPLE CONFIGURATION FILE.
+Huckle is able to cache the final execution URL of given command to help avoid traversal of HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. potential staleness per the expected HCLI semantics). See url.pinning under EXAMPLE CONFIGURATION FILE.
 .SH LOGGING
 Huckle supports logging of errors to ~/.huckle/var/log/huckle.log if configured in the common configuration file per ~/.huckle/etc/config. See log and log.level under EXAMPLE COMMON CONFIGURATION FILE.
 .SS EXAMPLE COMMON CONFIGURATION FILE
@@ -93,15 +95,15 @@ log.level = <info | debug | warning | error | critical>
 .SH AUTHENTICATION
 Huckle supports three authentication modes:
 .PP
-- No Authentication - See auth.mode
+- No Authentication - See auth.mode under EXAMPLE CONFIGURATION FILE.
 .br
-- HTTP Basic Authentication - See auth.mode and auth.user.profile configuration.
+- HTTP Basic Authentication - See auth.mode and auth.user.profile under EXAMPLE CONFIGURATION FILE.
 .br
-- HCOAK (HCLI Core API Key Authentication) - See auth.mode and auth.apikey.profile configuration
+- HCOAK (HCLI Core API Key Authentication) - See auth.mode and auth.apikey.profile under EXAMPLE CONFIGURATION FILE.
 .PP
-A user created credential file should be stored under ~/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
+A user created credentials file is expected under ~/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
 .PP
-Both authentication modes are supported via the use of [profile] in a credentials file referenced by auth.user.profile or auth.apikey.profile, as appropriate. See EXAMPLE CREDENTIALS FILE and EXAMPLE CONFIGURATION FILE.
+Both HTTP Basic Authentication and HCOAK Authentication are supported via the use of [profile] in a credentials file, as referenced by auth.user.profile or auth.apikey.profile. See EXAMPLE CREDENTIALS FILE and EXAMPLE CONFIGURATION FILE.
 .SS EXAMPLE CREDENTIALS FILE
 [default]
 .br
@@ -139,11 +141,21 @@ auth.apikey.profile = <credentials profile (section name)>
 .SH EXAMPLE
 huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
 .sp
+eval $(huckle env)
+.sp
+jsonf
+.sp
+huckle cli install localhost:8000
+.sp
+huckle cli install localhost:8000 | xargs bash -c '$0 help'
+.sp
 huckle cli run jsonf (equivalent to simply invoking "jsonf" in the shell after a successful cli installation and setup via 'eval $(huckle env)')
 .sp
 huckle cli ls
 .sp
 huckle cli config jsonf
+.sp
+huckle cli flush jsonf
 .sp
 huckle cli rm jsonf
 .sp
