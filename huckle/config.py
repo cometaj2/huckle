@@ -16,11 +16,14 @@ root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
 home = os.path.expanduser("~")
 dot_huckle = "%s/.huckle" % home
+dot_huckle_var_log = dot_huckle + "/var/log"
 dot_huckle_scripts = dot_huckle + "/bin"
 dot_huckle_config = dot_huckle + "/etc"
+dot_huckle_common_config_file_path = dot_huckle_config + "/config"
 dot_bash_profile = home + "/.bash_profile"
 dot_bashrc = home + "/.bashrc"
 credentials_file_path = None
+log_file_path = dot_huckle_var_log + "/huckle.log"
 
 # These next variables are dynamically updated from read configuration. Be careful!
 url = ""
@@ -40,6 +43,25 @@ hcli_command_type = "command"
 hcli_option_type = "option"
 hcli_parameter_type = "parameter"
 hcli_execution_type = "execution"
+
+# parses the common huckle configuration to set configured execution
+def parse_common_configuration():
+    global dot_huckle_common_config_file_path
+    common_config_file_path = dot_huckle_common_config_file_path
+
+    parser = ConfigParser()
+    parser.read(common_config_file_path)
+    if parser.has_section("default"):
+        for section_name in parser.sections():
+            for name, value in parser.items("default"):
+                if name == "log":
+                    global log
+                    log = value
+                if name == "log.level":
+                    global log_level
+                    log_level = value
+    else:
+        sys.exit("huckle: no common configuration " + common_config_file_path + " available")
 
 # parses the configuration of a given cli to set configured execution
 def parse_configuration(cli):
@@ -106,6 +128,21 @@ def save_pinned_urls():
     with open(pinned_file_path, 'w') as file:
         json.dump(pinned_urls, file)
 
+# creates a common configuration file for huckle
+def create_common_configuration():
+    global dot_huckle_common_config_file_path
+    common_config_file_path = dot_huckle_common_config_file_path
+
+    if not os.path.exists(common_config_file_path):
+        hutils.create_file(common_config_file_path)
+        init_common_configuration()
+    else:
+        text = "huckle: the common configuration already exists. leaving the existing configuration untouched."
+        return text
+
+    text = "huckle: common was successfully configured."
+    return text
+
 # creates a configuration file for a named cli
 def create_configuration(cli, url):
     global credentials_file_path
@@ -136,6 +173,19 @@ def alias_cli(cli):
         g.write("#!/bin/bash\n")
         g.write("huckle cli run " + cli + " \"$@\"")
         g.close
+
+# initializes the common huckle configuration file
+def init_common_configuration():
+    global dot_huckle_common_config_file_path
+    common_config_file_path = dot_huckle_common_config_file_path
+
+    parser = ConfigParser()
+    parser.read_file(StringIO(u"[default]"))
+    parser.set("default", "log", "skip")
+    parser.set("default", "log.level", "info")
+
+    with open(common_config_file_path, "w") as config:
+        parser.write(config)
 
 # initializes the configuration file of a given cli (initialized when a cli "created")
 def init_configuration(cli, url):

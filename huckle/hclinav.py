@@ -1,5 +1,3 @@
-from __future__ import absolute_import, division, print_function
-
 from subprocess import call
 from restnavigator import Navigator
 from functools import partial
@@ -49,10 +47,12 @@ def navigator(root, apiname):
         s.verify = False
 
     if config.auth_mode == "basic":
+        logging.debug("HTTP Basic Authentication...")
         credentials = credential.CredentialManager()
         s.auth = requests.auth.HTTPBasicAuth(*(credentials.find()))
 
     elif config.auth_mode == "hcoak":
+        logging.debug("HCLI Core API Key Authentication...")
         credentials = credential.CredentialManager()
         s.auth = authenticator.HCOAKBearerAuth(*(credentials.hcoak_find()))
 
@@ -66,7 +66,8 @@ def traverse_argument(nav, arg):
     try:
         ilength = len(nav.links()["cli"])
     except Exception as warning:
-        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. unauthenticated, wrong url, or the service isn't running? " + str(nav.uri)
+        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong url, or the service isn't running? " + str(nav.uri)
+        logging.error(error)
         raise Exception(error)
 
     for j, y in enumerate(nav.links()["cli"]):
@@ -95,10 +96,12 @@ def traverse_argument(nav, arg):
                 return nav
         except:
             error = config.cliname + ": " + arg + ": " + "command not found."
+            logging.error(error)
             raise Exception(error)
 
         if j == ilength - 1:
             error = config.cliname + ": " + arg + ": " + "command not found."
+            logging.error(error)
             raise Exception(error)
 
 # attempts to traverse through an execution. (only attempted when we've run out of command line arguments to parse)
@@ -115,10 +118,12 @@ def traverse_execution(nav):
     except KeyError:
         error = config.cliname + ": " + "command/parameter confusion. try escaping parameter: e.g., \\\"param\\\" or \\\'param\\\'.\n"
         error += for_help()
+        logging.error(error)
         raise Exception(error)
 
     error = config.cliname + ": " + "unable to execute.\n"
     error += for_help()
+    logging.error(error)
     raise Exception(error)
 
 # attempts to pull at the root of the hcli to auto configure the cli
@@ -135,13 +140,15 @@ def pull(url):
                 configuration = config.create_configuration(cli, url)
                 return text + configuration
             except Exception as error:
+                logging.error(error)
                 raise Exception(error)
     except Exception as warning:
         try:
             for k, z in enumerate(nav.links()["cli"]):
                 return pull(nav.links()["cli"][k].uri)
         except Exception as warning:
-            error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. unauthenticated, wrong url, or the service isn't running? " + str(nav.uri)
+            error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong url, or the service isn't running? " + str(nav.uri)
+            logging.error(error)
             raise Exception(error)
 
 # displays a man page (file) located on a given path
@@ -270,12 +277,10 @@ def flexible_executor(url, method):
             config.pin_url(final_command, url, method)
             logging.debug("pinned: [" + final_command + "] " + url + " " + method)
 
-    # if we're configured for basic authentication, we setup user credentials
     auth_mode = None
     if config.auth_mode == "basic":
         credentials = credential.CredentialManager()
         auth_mode = requests.auth.HTTPBasicAuth(*(credentials.find()))
-
     elif config.auth_mode == "hcoak":
         credentials = credential.CredentialManager()
         auth_mode = authenticator.HCOAKBearerAuth(*(credentials.hcoak_find()))
@@ -300,16 +305,24 @@ def flexible_executor(url, method):
 # outputs the response received from an execution
 def output_chunks(response):
     if response.status_code >= 400:
-        code = response.status_code
-        error = str(code) + " " + requests.status_codes._codes[code][0] + "\n"
-        error += str(response.headers) + "\n"
-        error += str(response.content)
-        raise Exception(error)
+        f = getattr(sys.stderr, 'buffer', sys.stderr)
+        if response.headers['content-type'] == 'application/problem+json':
+            try:
+                problem_detail = json.loads(response.content)
+                logging.error(problem_detail)
+                error_msg = f"{problem_detail.get('detail', '')}\n"
+                yield ('stderr', error_msg.encode('utf-8'))
+            except (json.JSONDecodeError, KeyError) as error:
+                raise Exception(error)
+        else:
+            for chunk in response.iter_content(16384):
+                if chunk:
+                    yield ('stderr', chunk)
     else:
         f = getattr(sys.stdout, 'buffer', sys.stdout)
         for chunk in response.iter_content(16384):
             if chunk:
-                yield chunk
+                yield ('stdout', chunk)
 
 # wraps stdin into a unbuffered generator
 class nbstdin:

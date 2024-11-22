@@ -125,14 +125,22 @@ from an HCLI data aggregation service called 'hleg' running locally on port 9000
                 hello = io.BytesIO(b'{"hello":"world"}')
                 with stdin(hello):
                     chunks = cli("jsonf go")
-                    json_string = ''.join(chunk.decode('utf-8') for chunk in chunks)
-                    logging.info(json_string)
+
+                    json_string = ""
+                    for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk) where dest == 'stdout' or dest == 'stderr'
+                        if dest = 'stdout':
+                            json_string = ''.join(chunk.decode('utf-8'))
+                    data = json.loads(json_string)
+                    logging.info(data)
 
                 logging.info(cli("huckle --version"))
                 cli("huckle cli install 127.0.0.1:9000")
 
+                json_string = ""
                 chunks = cli("hleg ls")
-                json_string = ''.join(chunk.decode('utf-8') for chunk in chunks)
+                for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk) where dest == 'stdout' or dest == 'stderr'
+                    if dest = 'stdout':
+                        json_string = ''.join(chunk.decode('utf-8'))
                 data = json.loads(json_string)
 
                 return render_template('table.html', bills=data)

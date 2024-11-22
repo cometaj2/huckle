@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.0.0]
+- Add common huckle logging output per configuration
+- Add output to stderr rather than stdout for expected HCLI spec received RFC9457 problem detail
+- Add better sys exit failure code if stderr receives data
+- Update documentation to reflect changes
+
 ## [4.3.0]
 - Add Basic HTTP Authentication credentials support (hcli config and credentials file)
 - Add HCLI Core API Key (HCOAK) Bearer Authentication credentials (hcli config and credentials file)

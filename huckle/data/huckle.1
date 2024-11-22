@@ -78,6 +78,18 @@ This help file.
 .IP --version
 .B huckle
 version and the version of it's dependencies.
+.SH CACHING
+Huckle is able to cache the final execution URL of given common as a caching mechanism to avoid having to traverse the HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. staleness per the expected HCLI semantics). See url.pinning under EXAMPLE CONFIGURATION FILE.
+.SH LOGGING
+Huckle supports logging of errors to ~/.huckle/var/log/huckle.log if configured in the common configuration file per ~/.huckle/etc/config. See log and log.level under EXAMPLE COMMON CONFIGURATION FILE.
+.SS EXAMPLE COMMON CONFIGURATION FILE
+.br
+[default]
+.br
+log = <skip | log>
+.br
+log.level = <info | debug | warning | error | critical>
+.br
 .SH AUTHENTICATION
 Huckle supports three authentication modes:
 .PP
@@ -89,23 +101,8 @@ Huckle supports three authentication modes:
 .PP
 A user created credential file should be stored under ~/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
 .PP
-Both authentication modes are supported via the use of [profile] in a credentials file referenced by auth.user.profile or auth.apikey.profile configuration, as appropriate. See EXAMPLE CREDENTIAL FILE.
-.SH EXAMPLE CONFIGURATION FILE
-[default]
-.br
-url = <url>
-.br
-ssl.verify = <skip | verify>
-.br
-url.pinning = <dynamic | pin>
-.br
-auth.mode = <skip | basic | hcoak>
-.br
-auth.user.profile = <profile>
-.br
-auth.apikey.profile = <profile>
-.br
-.SH EXAMPLE CREDENTIALS FILE
+Both authentication modes are supported via the use of [profile] in a credentials file referenced by auth.user.profile or auth.apikey.profile, as appropriate. See EXAMPLE CREDENTIALS FILE and EXAMPLE CONFIGURATION FILE.
+.SS EXAMPLE CREDENTIALS FILE
 [default]
 .br
 username = <username>
@@ -124,6 +121,21 @@ keyid = <apikeyid>
 .br
 apikey = <apikey>
 .PP
+.SH EXAMPLE CONFIGURATION FILE
+[default]
+.br
+url = <url>
+.br
+ssl.verify = <skip | verify>
+.br
+url.pinning = <dynamic | pin>
+.br
+auth.mode = <skip | basic | hcoak>
+.br
+auth.user.profile = <credentials profile (section name)>
+.br
+auth.apikey.profile = <credentials profile (section name)>
+.br
 .SH EXAMPLE
 huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
 .sp

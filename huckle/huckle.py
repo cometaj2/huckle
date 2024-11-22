@@ -1,16 +1,37 @@
+from huckle import hutils
+from huckle import config
+from huckle import logger
+
+hutils.create_folder(config.dot_huckle)
+hutils.create_folder(config.dot_huckle_var_log)
+hutils.create_folder(config.dot_huckle_scripts)
+hutils.create_file(config.dot_bash_profile)
+
+# create and load the common huckle configuration for logging before first log initialization
+config.create_common_configuration()
+config.parse_common_configuration()
+
+# Map string log levels to logger constants
+LOG_LEVELS = {
+    'debug': logger.DEBUG,
+    'info': logger.INFO,
+    'warning': logger.WARNING,
+    'error': logger.ERROR,
+    'critical' : logger.CRITICAL
+}
+log_level = LOG_LEVELS.get(config.log_level.lower(), logger.INFO)
+
+logging = logger.Logger(log=config.log)
+logging.setLevel(log_level)
+
 import sys
 import shlex
 import io
 
-# huckle's imports
-from huckle import config
 from huckle import package
 from huckle import hclinav
-from huckle import logger
 
 from contextlib import contextmanager
-
-logging = logger.Logger()
 
 
 # navigate through the command line sequence for a given cliname
@@ -20,8 +41,10 @@ def navigate(argv):
     # we try to fail fast if the service isn't reachable
     try:
         nav()["name"]
-    except Exception as warning:
-        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. unauthenticated, wrong url, or the service isn't running? " + str(nav.uri)
+    except Exception as e:
+        logging.error(e)
+        error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong url, or the service isn't running? " + str(nav.uri)
+        logging.error(error)
         raise Exception(error)
 
     # if we're configured for url pinning, we try to get a cache hit
@@ -76,19 +99,19 @@ def cli(commands=None):
 
     if len(argv) > 2:
 
-        if argv[1] == "cli" and argv[2] == "install":
-
-            if len(argv) > 3:
-                return hclinav.pull(argv[3])
-
-            else:
-                return huckle_help()
-
-        elif argv[1] == "cli" and argv[2] == "run":
+        if argv[1] == "cli" and argv[2] == "run":
 
             if len(argv) > 3:
                 config.parse_configuration(argv[3])
                 return navigate(argv[3:])
+
+            else:
+                return huckle_help()
+
+        elif argv[1] == "cli" and argv[2] == "install":
+
+            if len(argv) > 3:
+                return hclinav.pull(argv[3])
 
             else:
                 return huckle_help()
