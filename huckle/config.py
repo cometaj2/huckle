@@ -133,15 +133,14 @@ def create_common_configuration():
     global dot_huckle_common_config_file_path
     common_config_file_path = dot_huckle_common_config_file_path
 
+    # create the configuration if it doesn't exist
     if not os.path.exists(common_config_file_path):
         hutils.create_file(common_config_file_path)
         init_common_configuration()
     else:
-        text = "huckle: the common configuration already exists. leaving the existing configuration untouched."
-        return text
+        pass
 
-    text = "huckle: common was successfully configured."
-    return text
+    return
 
 # creates a configuration file for a named cli
 def create_configuration(cli, url):
@@ -156,14 +155,13 @@ def create_configuration(cli, url):
         hutils.create_file(config_file)
         init_configuration(cli, url)
     else:
-        text = "huckle: the configuration for " + cli + " already exists. leaving the existing configuration untouched."
-        return text
+        hutils.eprint("huckle: the configuration for " + cli + " already exists. leaving the existing configuration untouched.")
+        sys.exit(1)
 
     hutils.create_folder(cli_manpage_path + "/huckle." + cli)
     alias_cli(cli)
 
-    text = "huckle: " + cli + " was successfully configured."
-    return text
+    return
 
 # sets up an alias for a cli so that it can be called directly by name (instead of calling it via the explicit huckle call) 
 def alias_cli(cli):
@@ -228,18 +226,18 @@ def remove_cli(cli):
     if(path.exists(dot_huckle_scripts + "/" + cli)):
         os.remove(dot_huckle_scripts + "/" + cli)
         shutil.rmtree(dot_huckle_config + "/" + cli)
-        print("huckle: " + cli + " was successfully removed.")
     else:
-        print("huckle: " + cli + " is not installed.")
+        hutils.eprint("huckle: " + cli + " is not installed.")
+        sys.exit(1)
 
 # remove a pinned url cache
 def flush_pinned_urls(cli):
     pinned_file_path = dot_huckle_config + "/" + cli + "/pinned.json"
     if(path.exists(pinned_file_path)):
         os.remove(pinned_file_path)
-        print("huckle: the pinned url cache was successfully flushed for " + cli + ".")
     else:
-        print("huckle: no pinned url cache to flush for " + cli + ".")
+        hutils.eprint("huckle: no pinned url cache to flush for " + cli + ".")
+        sys.exit(1)
 
 # lists all the configuration parameters of a cli
 def config_list(cli):

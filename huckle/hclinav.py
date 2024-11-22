@@ -4,8 +4,8 @@ from functools import partial
 from urllib.parse import urlparse, parse_qs, unquote
 
 # avoid broken pipe signal crashing the program
-from signal import signal, SIGPIPE, SIG_DFL 
-signal(SIGPIPE,SIG_DFL) 
+from signal import signal, SIGPIPE, SIG_DFL
+signal(SIGPIPE,SIG_DFL)
 
 # huckle's imports
 from huckle import config
@@ -127,35 +127,32 @@ def traverse_execution(nav):
     raise Exception(error)
 
 # attempts to pull at the root of the hcli to auto configure the cli
-def pull(url):
+def install(url):
     nav = navigator(root=url, apiname="unknown")
+    version = None
     try:
         version = nav()["hcli_version"]
-        if version == "1.0":
-            cli = nav()["name"]
-
-            text = ""
-            try:
-                text += hcli_to_text(nav)
-                configuration = config.create_configuration(cli, url)
-                return text + configuration
-            except Exception as error:
-                logging.error(error)
-                raise Exception(error)
     except Exception as warning:
+        pass
+
+    if version == "1.0":
+        cli = nav()["name"]
+
         try:
-            for k, z in enumerate(nav.links()["cli"]):
-                return pull(nav.links()["cli"][k].uri)
-        except Exception as warning:
-            error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong url, or the service isn't running? " + str(nav.uri)
+            configuration = config.create_configuration(cli, url)
+            return cli
+        except Exception as error:
             logging.error(error)
             raise Exception(error)
+    else:
+        for k, z in enumerate(nav.links()["cli"]):
+            return install(nav.links()["cli"][k].uri)
 
 # displays a man page (file) located on a given path
 def display_man_page(path):
     call(["man", path])
 
-# converts an hcli document to a text and displays it
+# converts an hcli document to text and displays it
 def hcli_to_text(navigator):
     text = ""
     for i, x in enumerate(navigator()["section"]):

@@ -111,7 +111,7 @@ def cli(commands=None):
         elif argv[1] == "cli" and argv[2] == "install":
 
             if len(argv) > 3:
-                return hclinav.pull(argv[3])
+                return hclinav.install(argv[3])
 
             else:
                 return huckle_help()

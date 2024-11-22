@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [5.0.0]
 - Add common huckle logging output per configuration
 - Add output to stderr rather than stdout for expected HCLI spec received RFC9457 problem detail
-- Add better sys exit failure code if stderr receives data
+- Add better sys exit failure code if we're yielding an error (e.g. stderr)
+- Update to the latest version of certifi (2024.8.30)
+- Update installation logic when navigating from a root that isn't an HCLI document
+- Update to better align with the *nix philosophy of silence on success
 - Update documentation to reflect changes
-- Update to latest version of certifi (2024.8.30)
 
 ## [4.3.0]
 - Add Basic HTTP Authentication credentials support (hcli config and credentials file)
