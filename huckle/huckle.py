@@ -3,6 +3,7 @@ from huckle import config
 from huckle import logger
 
 hutils.create_folder(config.dot_huckle)
+hutils.create_folder(config.dot_huckle_config)
 hutils.create_folder(config.dot_huckle_var_log)
 hutils.create_folder(config.dot_huckle_scripts)
 hutils.create_file(config.dot_bash_profile)
