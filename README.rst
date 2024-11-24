@@ -128,7 +128,7 @@ from an HCLI data aggregation service called 'hleg' running locally on port 9000
 
                     json_string = ""
                     for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk) where dest == 'stdout' or dest == 'stderr'
-                        if dest = 'stdout':
+                        if dest == 'stdout':
                             json_string = ''.join(chunk.decode('utf-8'))
                     data = json.loads(json_string)
                     logging.info(data)

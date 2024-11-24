@@ -95,8 +95,9 @@ def cli(commands=None):
         try:
             config.parse_configuration(argv[0])
             return navigate(argv[0:])
-        except Exception as e:
-            pass
+        except Exception as error:
+            logging.error(error)
+            raise Exception(error)
 
     if len(argv) > 2:
 
@@ -168,7 +169,8 @@ def cli(commands=None):
         return huckle_help()
 
 def huckle_help():
-    return "for help, use:\n\n  huckle help"
+    hutils.eprint("for help, use:\n\n  huckle help")
+    sys.exit(1)
 
 # show huckle's version and the version of its dependencies
 

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.0.2]
+- Fix config parsing error catch that would cause huckle help to be invoked
+- Fix singleton constraint in credentials manager to aleviate credentials caching issue when huckle is used as a library
+- Fix to output better stderr output and exit code when routing to huckle help
+
 ## [5.0.1]
 - Fix and update huckle help documentation
 - Add warning output in log when ssl.verify is set to skip (security risk)
