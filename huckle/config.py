@@ -20,6 +20,7 @@ root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
 home = os.path.expanduser("~")
 dot_huckle = "%s/.huckle" % home
+dot_huckle_tmp = dot_huckle + "/tmp"
 dot_huckle_var = dot_huckle + "/var"
 dot_huckle_var_log = dot_huckle_var + "/log"
 dot_huckle_scripts = dot_huckle + "/bin"

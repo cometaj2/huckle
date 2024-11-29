@@ -4,6 +4,7 @@ from huckle import logger
 from huckle.auth import credential
 
 config.create_folder(config.dot_huckle)
+config.create_folder(config.dot_huckle_tmp)
 config.create_folder(config.dot_huckle_config)
 config.create_folder(config.dot_huckle_var)
 config.create_folder(config.dot_huckle_var_log)
