@@ -1,12 +1,13 @@
 from huckle import hutils
 from huckle import config
 from huckle import logger
+from huckle.auth import credential
 
-hutils.create_folder(config.dot_huckle)
-hutils.create_folder(config.dot_huckle_config)
-hutils.create_folder(config.dot_huckle_var_log)
-hutils.create_folder(config.dot_huckle_scripts)
-hutils.create_file(config.dot_bash_profile)
+config.create_folder(config.dot_huckle)
+config.create_folder(config.dot_huckle_config)
+config.create_folder(config.dot_huckle_var_log)
+config.create_folder(config.dot_huckle_scripts)
+config.create_file(config.dot_bash_profile)
 
 # create and load the common huckle configuration for logging before first log initialization
 config.create_common_configuration()
@@ -136,9 +137,30 @@ def cli(commands=None):
                 return huckle_help()
 
         elif argv[1] == "cli" and argv[2] == "config":
-            if len(argv) > 3:
+            if len(argv) == 4:
                 return config.config_list(argv[3])
+            elif len(argv) == 5:
+                return config.get_parameter(argv[3], argv[4])
+            elif len(argv) == 6:
+                return config.update_parameter(argv[3], argv[4], argv[5])
+            else:
+                return huckle_help()
 
+        elif argv[1] == "cli" and argv[2] == "credential":
+            if len(argv) == 5:
+                if not sys.stdin.isatty():
+                    secret = sys.stdin.read()
+
+                    if isinstance(secret, bytes):
+                        secret = secret.decode().strip()
+                    else:
+                        secret = secret.strip()
+
+                    config.parse_configuration(argv[3])
+                    credentials = credential.CredentialManager()
+                    return credentials.update_credential(argv[4], secret)
+                else:
+                    return huckle_help()
             else:
                 return huckle_help()
 

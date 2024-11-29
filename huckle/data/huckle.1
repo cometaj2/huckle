@@ -69,6 +69,12 @@ echo '$$'| hc -j "connect me"
 Lists all the installed CLIs.
 .IP "cli config <cliname>"
 Lists the configuration options of an installed CLI.
+.IP "cli config <cliname> <property>"
+Returns the value of a set configured property.
+.IP "cli config <cliname> <property> <value>"
+Sets the value of a property to a specific value.
+.IP "cli credential <cliname> <username | keyid>"
+Sets the value of a username password or keyid apikey, as submitted via stdin to the configured credential helper.
 .IP "<cliname> ..."
 The <cliname> alias created for brevity, via huckle cli install.
 .IP "<cliname> ... help"
@@ -103,6 +109,25 @@ Huckle supports three authentication modes:
 .PP
 A user created credentials file is expected under ~/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
 .PP
+.SS HUCKLE VS KEYRING
+Huckle makes available two credential helpers huckle and keyring. See credential.helper under EXAMPLE CONFIGURATION FILE.
+.PP
+The huckle credential helper simply works with a plaintext credential file. It's not particularly secure but is convenient and can be made somewhat secure if a user's environment is made sufficiently secure.
+.PP
+The keyring credential helper makes use of the keyring library which defaults to a recommended backend. The following are supported by default:
+.PP
+- macOS Keychain
+.br
+- Freedesktop Secret Service supports many DE including GNOME (requires secretstorage)
+.br
+- KDE4 & KDE5 KWallet (requires dbus)
+.br
+- Windows Credential Locker
+.br
+See https://pypi.org/project/keyring/ for the full range or supported features and to understand how to setup 3rd party or custom storage backends 
+.PP
+the huckle
+.PP
 Both HTTP Basic Authentication and HCOAK Authentication are supported via the use of [profile] in a credentials file, as referenced by auth.user.profile or auth.apikey.profile. See EXAMPLE CREDENTIALS FILE and EXAMPLE CONFIGURATION FILE.
 .SS EXAMPLE CREDENTIALS FILE
 [default]
@@ -132,6 +157,8 @@ ssl.verify = <skip | verify>
 .br
 url.pinning = <dynamic | pin>
 .br
+credential.helper = <huckle | keyring>
+.br
 auth.mode = <skip | basic | hcoak>
 .br
 auth.user.profile = <credentials profile (section name)>
@@ -158,5 +185,13 @@ huckle cli config jsonf
 huckle cli flush jsonf
 .sp
 huckle cli rm jsonf
+.sp
+huckle cli config jsonf url.pinning pin
+.sp
+huckle cli config hco credential.helper keyring
+.sp
+tr -d '\\n' < bootstrappassword | huckle cli credential hco admin
+.sp
+tr -d '\\n' < passwordfile | tee >(hco passwd admin) | huckle cli credential hco admin
 .sp
 huckle --version

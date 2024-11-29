@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.1.0]
+- Add ability to get and update hcli configuration (git style; e.g. huckle cli config jsonf url.pinning pin)
+- Add process bound write locking and lock cleanup on folders and files with portalocker
+- Add credential manager keyring support (still supporting huckle plaintext credentials file)
+- Add huckle cli credential <cli> commands to help manage credential setting (keyring wrapper)
+- Fix to only attempt authentication, as appropriate, for finalexecution calls (not while traversing HCLI semantics)
+
 ## [5.0.2]
 - Fix config parsing error catch that would cause huckle help to be invoked
 - Fix singleton constraint in credentials manager to aleviate credentials caching issue when huckle is used as a library

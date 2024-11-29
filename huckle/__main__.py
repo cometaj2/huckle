@@ -1,8 +1,11 @@
 import sys
 
+from contextlib import nullcontext
+
 from huckle import hutils
 from huckle import config
 from huckle import huckle
+from huckle import stdin
 
 # prototype generator to identity generators as a type
 def generator():
@@ -10,7 +13,18 @@ def generator():
 
 def main():
     try:
-        output = huckle.cli()
+        # Read from stdin if there's input available
+        input_data = None
+        if not sys.stdin.isatty():
+            input_data = sys.stdin.buffer.read()
+
+        output = None
+        with stdin(input_data) if input_data else nullcontext():
+            output = huckle.cli()
+
+        if output is None:
+            return
+
         if isinstance(output, str):
             print(output)
         elif isinstance(output, type(generator())):

@@ -9,7 +9,6 @@ signal(SIGPIPE,SIG_DFL)
 
 # huckle's imports
 from huckle import config
-from huckle import hutils
 from huckle import logger
 from huckle.auth import credential
 from huckle.auth import authenticator
@@ -47,15 +46,15 @@ def navigator(root, apiname):
         warnings.simplefilter('ignore', InsecureRequestWarning)
         s.verify = False
 
-    if config.auth_mode == "basic":
-        logging.debug("HTTP Basic Authentication...")
-        credentials = credential.CredentialManager()
-        s.auth = requests.auth.HTTPBasicAuth(*(credentials.find()))
-
-    elif config.auth_mode == "hcoak":
-        logging.debug("HCLI Core API Key Authentication...")
-        credentials = credential.CredentialManager()
-        s.auth = authenticator.HCOAKBearerAuth(*(credentials.hcoak_find()))
+#     if config.auth_mode == "basic":
+#         logging.debug("HTTP Basic Authentication...")
+#         credentials = credential.CredentialManager()
+#         s.auth = requests.auth.HTTPBasicAuth(*(credentials.find()))
+# 
+#     elif config.auth_mode == "hcoak":
+#         logging.debug("HCLI Core API Key Authentication...")
+#         credentials = credential.CredentialManager()
+#         s.auth = authenticator.HCOAKBearerAuth(*(credentials.hcoak_find()))
 
     nav = Navigator.hal(root=root, apiname=apiname, session=s)
 
@@ -198,8 +197,8 @@ def options_and_commands_to_text(navigator):
 def hcli_to_man(navigator):
     millis = str(time.time())
     dynamic_doc_path = config.cli_manpage_path + "/" + config.cliname + "." + millis + ".man" 
-    hutils.create_folder(config.cli_manpage_path)
-    hutils.create_file(dynamic_doc_path)
+    config.create_folder(config.cli_manpage_path)
+    config.create_file(dynamic_doc_path)
     f = open(dynamic_doc_path, "a+")
     f.write(".TH " + navigator()["name"] + " 1 \n")
     for i, x in enumerate(navigator()["section"]):

@@ -1,8 +1,11 @@
 from configparser import ConfigParser
+from contextlib import contextmanager
+from pathlib import Path
 from io import StringIO
 from os import listdir
 from os.path import isfile, join
 from os import path
+import errno
 
 # huckle's imports
 from huckle import hutils
@@ -11,6 +14,7 @@ import os
 import sys
 import shutil
 import json
+import portalocker
 
 root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
@@ -31,6 +35,7 @@ cliname = "huckle"
 cli_manpage_path = dot_huckle + "/tmp"
 ssl_verify = "verify"
 url_pinning = "dynamic"
+credential_helper = "huckle"
 auth_mode = "skip"
 auth_user_profile = "default"
 auth_apikey_profile = "default"
@@ -88,6 +93,9 @@ def parse_configuration(cli):
                 if name == "url.pinning":
                     global url_pinning
                     url_pinning = value
+                if name == "credential.helper":
+                    global credential_helper
+                    credential_helper = value
                 if name == "auth.mode":
                     global auth_mode
                     auth_mode = value
@@ -125,8 +133,9 @@ def get_pinned_url(command):
 
 def save_pinned_urls():
     pinned_file_path = dot_huckle_config + "/" + cliname + "/pinned.json"
-    with open(pinned_file_path, 'w') as file:
-        json.dump(pinned_urls, file)
+    with write_lock(pinned_file_path):
+        with open(pinned_file_path, 'w') as file:
+            json.dump(pinned_urls, file)
 
 # creates a common configuration file for huckle
 def create_common_configuration():
@@ -135,7 +144,7 @@ def create_common_configuration():
 
     # create the configuration if it doesn't exist
     if not os.path.exists(common_config_file_path):
-        hutils.create_file(common_config_file_path)
+        create_file(common_config_file_path)
         init_common_configuration()
     else:
         pass
@@ -149,16 +158,16 @@ def create_configuration(cli, url):
 
     config_file_folder = dot_huckle_config + "/" + cli
     config_file = config_file_folder + "/config"
-    hutils.create_folder(config_file_folder)
+    create_folder(config_file_folder)
 
     if not os.path.exists(config_file):
-        hutils.create_file(config_file)
+        create_file(config_file)
         init_configuration(cli, url)
     else:
         hutils.eprint("huckle: the configuration for " + cli + " already exists. leaving the existing configuration untouched.")
         sys.exit(1)
 
-    hutils.create_folder(cli_manpage_path + "/huckle." + cli)
+    create_folder(cli_manpage_path + "/huckle." + cli)
     alias_cli(cli)
 
     return
@@ -201,6 +210,7 @@ def init_configuration(cli, url):
 
     parser.set("default", "ssl.verify", "verify")
     parser.set("default", "url.pinning", "dynamic")
+    parser.set("default", "credential.helper", "huckle")
     parser.set("default", "auth.mode", "skip")
     parser.set("default", "auth.user.profile", "default")
     parser.set("default", "auth.apikey.profile", "default")
@@ -250,3 +260,68 @@ def config_list(cli):
         for name, value in parser.items(section_name):
             print('%s = %s' % (name, value))
         print
+
+# update a configured parameter to a new value
+def update_parameter(cli, parameter, value):
+    config_file_path = dot_huckle_config + "/" + cli + "/config"
+    parser = ConfigParser()
+    parser.read(config_file_path)
+
+    try:
+        parser.set('default', parameter, value)
+    except Exception as error:
+        hutils.eprint("huckle: unable to update configuration")
+        sys.exit(1)
+
+    with write_lock(config_file_path):
+        with open(config_file_path, "w") as config:
+            parser.write(config)
+
+# get a configured parameter
+def get_parameter(cli, parameter):
+    config_file_path = dot_huckle_config + "/" + cli + "/config"
+    parser = ConfigParser()
+    parser.read(config_file_path)
+
+    try:
+        return parser.get('default', parameter)
+    except Exception as error:
+        hutils.eprint("huckle: unable to retrieve configuration")
+        sys.exit(1)
+
+# creates a folder at "path"
+def create_folder(path):
+    with write_lock(path):
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+# creates a file at "path"
+def create_file(path):
+    with write_lock(path):
+        if not os.path.exists(path):
+            flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
+
+            try:
+                file_handle = os.open(path, flags, 0o0600)
+            except OSError as e:
+                if e.errno == errno.EEXIST:  # Failed since the file already exists.
+                    pass
+                else:
+                    raise
+            else:
+                with os.fdopen(file_handle, 'w') as file_obj:
+                    file_obj.write("")
+                    file_obj.close
+
+@contextmanager
+def write_lock(file_path):
+    lockfile = Path(file_path).with_suffix('.lock')
+    with portalocker.Lock(lockfile, timeout=10) as lock:
+        yield
+
+        # we cleanup the lock if successful.
+        try:
+            if lockfile.exists():
+                os.unlink(lockfile)
+        except OSError:
+            pass
