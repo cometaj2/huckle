@@ -87,9 +87,9 @@ This help file.
 .B huckle
 version and the version of its dependencies.
 .SH CACHING
-Huckle is able to cache the final execution URL of given command to help avoid traversal of HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. potential staleness per the expected HCLI semantics). See url.pinning under EXAMPLE CONFIGURATION FILE.
+Huckle is able to cache the final execution URL of given command to help avoid traversal of HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. potential staleness per the expected HCLI semantics); see url.pinning under EXAMPLE CONFIGURATION FILE.
 .SH LOGGING
-Huckle supports logging of errors to ~/.huckle/var/log/huckle.log if configured in the common configuration file per ~/.huckle/etc/config. See log and log.level under EXAMPLE COMMON CONFIGURATION FILE.
+Huckle supports logging of errors to ~/.huckle/var/log/huckle.log if configured in the common configuration file per ~/.huckle/etc/config; see log and log.level under EXAMPLE COMMON CONFIGURATION FILE.
 .SS EXAMPLE COMMON CONFIGURATION FILE
 .br
 [default]
@@ -110,9 +110,9 @@ Huckle supports three authentication modes:
 A user created credentials file is expected under ~/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
 .PP
 .SS HUCKLE VS KEYRING
-Huckle makes available two credential helpers huckle and keyring. See credential.helper under EXAMPLE CONFIGURATION FILE.
+Huckle makes available two credential helpers: huckle, and keyring; see credential.helper under EXAMPLE CONFIGURATION FILE.
 .PP
-The huckle credential helper simply works with a plaintext credential file. It's not particularly secure but is convenient and can be made somewhat secure if a user's environment is made sufficiently secure.
+The huckle credential helper simply works with a ~/.huckle/etc/<cliname>/credentials plaintext file. It is not particularly secure, but is otherwise convenient and can be made sufficiently secure if the user's environment is made sufficiently secure.
 .PP
 The keyring credential helper makes use of the keyring library which defaults to a recommended backend. The following are supported by default:
 .PP
@@ -123,12 +123,10 @@ The keyring credential helper makes use of the keyring library which defaults to
 - KDE4 & KDE5 KWallet (requires dbus)
 .br
 - Windows Credential Locker
-.br
-See https://pypi.org/project/keyring/ for the full range or supported features and to understand how to setup 3rd party or custom storage backends 
 .PP
-the huckle
+See https://pypi.org/project/keyring/ for the full range or supported features and to understand how to setup 3rd party or custom storage backends.
 .PP
-Both HTTP Basic Authentication and HCOAK Authentication are supported via the use of [profile] in a credentials file, as referenced by auth.user.profile or auth.apikey.profile. See EXAMPLE CREDENTIALS FILE and EXAMPLE CONFIGURATION FILE.
+Both HTTP Basic Authentication and HCOAK Authentication are supported via the use of [profile] in a credentials file, as referenced by auth.user.profile or auth.apikey.profile; see EXAMPLE CREDENTIALS FILE and EXAMPLE CONFIGURATION FILE.
 .SS EXAMPLE CREDENTIALS FILE
 [default]
 .br
@@ -190,7 +188,7 @@ huckle cli config jsonf url.pinning pin
 .sp
 huckle cli config hco credential.helper keyring
 .sp
-tr -d '\\n' < bootstrappassword | huckle cli credential hco admin
+tr -d '\\n' < passwordfile | huckle cli credential hco admin
 .sp
 tr -d '\\n' < passwordfile | tee >(hco passwd admin) | huckle cli credential hco admin
 .sp
