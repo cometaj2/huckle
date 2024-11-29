@@ -5,6 +5,7 @@ from huckle.auth import credential
 
 config.create_folder(config.dot_huckle)
 config.create_folder(config.dot_huckle_config)
+config.create_folder(config.dot_huckle_var)
 config.create_folder(config.dot_huckle_var_log)
 config.create_folder(config.dot_huckle_scripts)
 config.create_file(config.dot_bash_profile)

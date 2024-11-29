@@ -40,22 +40,16 @@ salt = *" > ./test_credentials
     huckle cli install http://127.0.0.1:9000
 
     echo "Setup bootstrap admin config and credentials for hco and jsonf..."
-    echo -e "[default]
-username = admin
-password = `cat ./password`" > ~/.huckle/etc/hco/credentials
-
-    echo -e "[default]
-username = admin
-password = `cat ./password`" > ~/.huckle/etc/jsonf/credentials
+    huckle cli config hco credential.helper keyring
+    huckle cli config jsonf credential.helper keyring
+    tr -d '\n' < ./password | huckle cli credential hco admin
+    tr -d '\n' < ./password | huckle cli credential jsonf admin
 
     echo "Setting up basic auth config..."
     huckle cli config hco auth.mode basic
     huckle cli config jsonf auth.mode basic
-
-    echo "Validating config files..."
-    grep "auth.mode" ~/.huckle/etc/hco/config
-    grep "auth.mode" ~/.huckle/etc/jsonf/config
-
+    huckle cli config hco auth.user.profile huckle.1
+    huckle cli config jsonf auth.user.profile huckle.1
     """
     process = subprocess.Popen(['bash', '-c', setup], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     out, err = process.communicate()
