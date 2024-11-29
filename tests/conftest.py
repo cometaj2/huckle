@@ -39,9 +39,14 @@ salt = *" > ./test_credentials
     huckle cli install http://127.0.0.1:8000
     huckle cli install http://127.0.0.1:9000
 
-    echo "Setup bootstrap admin config and credentials for hco and jsonf..."
+    echo "Setup bootstrap admin config and credentials for hco and jsonf for both huckle and keyring credential helpers..."
     huckle cli config hco credential.helper keyring
     huckle cli config jsonf credential.helper keyring
+    tr -d '\n' < ./password | huckle cli credential hco admin
+    tr -d '\n' < ./password | huckle cli credential jsonf admin
+
+    huckle cli config hco credential.helper huckle
+    huckle cli config jsonf credential.helper huckle
     tr -d '\n' < ./password | huckle cli credential hco admin
     tr -d '\n' < ./password | huckle cli credential jsonf admin
 
