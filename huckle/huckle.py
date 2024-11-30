@@ -1,32 +1,6 @@
 from huckle import hutils
 from huckle import config
-from huckle import logger
 from huckle.auth import credential
-
-config.create_folder(config.dot_huckle)
-config.create_folder(config.dot_huckle_tmp)
-config.create_folder(config.dot_huckle_config)
-config.create_folder(config.dot_huckle_var)
-config.create_folder(config.dot_huckle_var_log)
-config.create_folder(config.dot_huckle_scripts)
-config.create_file(config.dot_bash_profile)
-
-# create and load the common huckle configuration for logging before first log initialization
-config.create_common_configuration()
-config.parse_common_configuration()
-
-# Map string log levels to logger constants
-LOG_LEVELS = {
-    'debug': logger.DEBUG,
-    'info': logger.INFO,
-    'warning': logger.WARNING,
-    'error': logger.ERROR,
-    'critical' : logger.CRITICAL
-}
-log_level = LOG_LEVELS.get(config.log_level.lower(), logger.INFO)
-
-logging = logger.Logger(log=config.log)
-logging.setLevel(log_level)
 
 import sys
 import shlex
@@ -34,8 +8,11 @@ import io
 
 from huckle import package
 from huckle import hclinav
+from huckle import logger
 
 from contextlib import contextmanager
+
+logging = logger.Logger()
 
 
 # navigate through the command line sequence for a given cliname
@@ -46,9 +23,7 @@ def navigate(argv):
     try:
         nav()["name"]
     except Exception as e:
-        logging.error(e)
         error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong url, or the service isn't running? " + str(nav.uri)
-        logging.error(error)
         raise Exception(error)
 
     # if we're configured for url pinning, we try to get a cache hit
@@ -95,12 +70,8 @@ def cli(commands=None):
     if argv[0] == "huckle":
         pass
     else:
-        try:
-            config.parse_configuration(argv[0])
-            return navigate(argv[0:])
-        except Exception as error:
-            logging.error(error)
-            raise Exception(error)
+        config.parse_configuration(argv[0])
+        return navigate(argv[0:])
 
     if len(argv) > 2:
 
@@ -180,8 +151,12 @@ def cli(commands=None):
         elif argv[1] == "env":
             text = "export PATH=$PATH:" + config.dot_huckle_scripts + "\n\n"
             text += "# To point your shell to huckle's HCLI entrypoint scripts, run:\n"
-            text += "# eval $(huckle env)"
-            return text
+            text += "# eval $(huckle env)\n"
+
+            def generator():
+                yield ('stdout', text.encode('utf-8'))
+
+            return generator()
 
         elif argv[1] == "help":
             return hclinav.display_man_page(config.huckle_manpage_path)
@@ -193,8 +168,8 @@ def cli(commands=None):
         return huckle_help()
 
 def huckle_help():
-    hutils.eprint("for help, use:\n\n  huckle help")
-    sys.exit(1)
+    error = "for help, use:\n\n  huckle help"
+    raise Exception(error)
 
 # show huckle's version and the version of its dependencies
 
@@ -204,7 +179,11 @@ def show_dependencies():
         dependencies += " "
         dependencies += package.dependencies[i].rsplit('==', 1)[0] + "/"
         dependencies += package.dependencies[i].rsplit('==', 1)[1]
-    return "huckle/" + package.__version__ + dependencies
+
+    def generator():
+        yield ('stdout', f"huckle/{package.__version__}{dependencies}\n".encode('utf-8'))
+
+    return generator()
 
 def reconstruct_command(args):
     reconstructed = []

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.1.1]
+- Fix to remove outstanding str returns with certain huckle commands, leading to differentiated handling in cli callers
+- Fix huckle's logging output to yield a more consistent exception trace
+- Remove now unused hcli_to_text and pretty_json
+
 ## [5.1.0]
 - Add ability to get and update hcli configuration (git style; e.g. huckle cli config jsonf url.pinning pin)
 - Add process bound write locking and lock cleanup on folders and files with portalocker
@@ -18,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [5.0.1]
 - Fix and update huckle help documentation
-- Add warning output in log when ssl.verify is set to skip (security risk)
+- Fix warning output in log when ssl.verify is set to skip (security risk)
 
 ## [5.0.0]
 - Add common huckle logging output per configuration

@@ -67,7 +67,6 @@ def traverse_argument(nav, arg):
         ilength = len(nav.links()["cli"])
     except Exception as warning:
         error = config.cliname + ": unable to navigate HCLI 1.0 compliant semantics. wrong url, or the service isn't running? " + str(nav.uri)
-        logging.error(error)
         raise Exception(error)
 
     for j, y in enumerate(nav.links()["cli"]):
@@ -96,12 +95,10 @@ def traverse_argument(nav, arg):
                 return nav
         except:
             error = config.cliname + ": " + arg + ": " + "command not found."
-            logging.error(error)
             raise Exception(error)
 
         if j == ilength - 1:
             error = config.cliname + ": " + arg + ": " + "command not found."
-            logging.error(error)
             raise Exception(error)
 
 # attempts to traverse through an execution. (only attempted when we've run out of command line arguments to parse)
@@ -118,12 +115,10 @@ def traverse_execution(nav):
     except KeyError:
         error = config.cliname + ": " + "command/parameter confusion. try escaping parameter: e.g., \\\"param\\\" or \\\'param\\\'.\n"
         error += for_help()
-        logging.error(error)
         raise Exception(error)
 
     error = config.cliname + ": " + "unable to execute.\n"
     error += for_help()
-    logging.error(error)
     raise Exception(error)
 
 # attempts to pull at the root of the hcli to auto configure the cli
@@ -138,12 +133,7 @@ def install(url):
     if version == "1.0":
         cli = nav()["name"]
 
-        try:
-            configuration = config.create_configuration(cli, url)
-            return cli
-        except Exception as error:
-            logging.error(error)
-            raise Exception(error)
+        return config.create_configuration(cli, url)
     else:
         for k, z in enumerate(nav.links()["cli"]):
             return install(nav.links()["cli"][k].uri)
@@ -151,16 +141,6 @@ def install(url):
 # displays a man page (file) located on a given path
 def display_man_page(path):
     call(["man", path])
-
-# converts an hcli document to text and displays it
-def hcli_to_text(navigator):
-    text = ""
-    for i, x in enumerate(navigator()["section"]):
-        section = navigator()["section"][i]
-        text += section["name"].upper() + "\n"
-        text += "       " + section["description"] + "\n\n"
-    text += options_and_commands_to_text(navigator)
-    return text
 
 # generates an OPTIONS and COMMANDS section to add to a text page
 def options_and_commands_to_text(navigator):
@@ -239,10 +219,6 @@ def options_and_commands_to_man(navigator):
         commands = ".SH COMMANDS\n" + commands
 
     return options + commands
-
-# pretty json dump
-def pretty_json(json):
-    print(json.dumps(json, indent=4, sort_keys=True))
 
 # standard error message to tell users to go check the help pages (man pages)
 def for_help():

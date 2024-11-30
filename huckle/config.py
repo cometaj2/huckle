@@ -1,3 +1,10 @@
+import errno
+import os
+import sys
+import shutil
+import json
+import portalocker
+
 from configparser import ConfigParser
 from contextlib import contextmanager
 from pathlib import Path
@@ -5,16 +12,8 @@ from io import StringIO
 from os import listdir
 from os.path import isfile, join
 from os import path
-import errno
 
-# huckle's imports
 from huckle import hutils
-
-import os
-import sys
-import shutil
-import json
-import portalocker
 
 root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
@@ -68,7 +67,8 @@ def parse_common_configuration():
                     global log_level
                     log_level = value
     else:
-        sys.exit("huckle: no common configuration " + common_config_file_path + " available")
+        error = f"huckle: no common configuration {common_config_file_path} available."
+        raise Exception(error)
 
 # parses the configuration of a given cli to set configured execution
 def parse_configuration(cli):
@@ -107,9 +107,12 @@ def parse_configuration(cli):
                 if name == "auth.apikey.profile":
                     global auth_apikey_profile
                     auth_apikey_profile = value
-            if url == "": sys.exit("huckle: no url defined for " + cli + " under " + config_file_path)
+            if url == "":
+                error = f"huckle: no url defined for {cli} under {config_file_path}."
+                raise Exception(error)
     else:
-        sys.exit("huckle: no cli configuration " + config_file_path + " available for " + cli) 
+        error = f"huckle: no cli configuration {config_file_path} available for {cli}."
+        raise Exception(error)
 
     pinned_file_path = dot_huckle_config + "/" + cli + "/pinned.json"
     try:
@@ -118,6 +121,11 @@ def parse_configuration(cli):
             pinned_urls = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         pinned_urls = {}
+
+    def success_generator():
+        yield ('stdout', b'')
+
+    return success_generator()
 
 def pin_url(command, url, method):
     if command not in pinned_urls:
@@ -157,7 +165,6 @@ def create_common_configuration():
 def create_configuration(cli, url):
     global credentials_file_path
     credentials_file_path = dot_huckle_config + "/" + cli + "/credentials"
-
     config_file_folder = dot_huckle_config + "/" + cli
     config_file = config_file_folder + "/config"
     create_folder(config_file_folder)
@@ -165,14 +172,16 @@ def create_configuration(cli, url):
     if not os.path.exists(config_file):
         create_file(config_file)
         init_configuration(cli, url)
+        create_folder(cli_manpage_path + "/huckle." + cli)
+        alias_cli(cli)
     else:
-        hutils.eprint("huckle: the configuration for " + cli + " already exists. leaving the existing configuration untouched.")
-        sys.exit(1)
+        error = f"huckle: the configuration for {cli} already exists. leaving the existing configuration untouched."
+        raise Exception(error)
 
-    create_folder(cli_manpage_path + "/huckle." + cli)
-    alias_cli(cli)
+    def success_generator():
+        yield ('stdout', f"{cli}\n".encode('utf-8'))
 
-    return
+    return success_generator()
 
 # sets up an alias for a cli so that it can be called directly by name (instead of calling it via the explicit huckle call) 
 def alias_cli(cli):
@@ -229,27 +238,52 @@ def is_configured(file_path, contains):
 
 # list all the installed clis
 def list_clis():
-    files = [f for f in listdir(dot_huckle_scripts) if isfile(join(dot_huckle_scripts, f))]
-    for f in files:
-        print(f) 
+    def generator():
+        try:
+            files = [f for f in listdir(dot_huckle_scripts) if isfile(join(dot_huckle_scripts, f))]
+            for f in files:
+                yield ('stdout', f"{f}\n".encode('utf-8'))
+            if not files:
+                yield ('stdout', b'')  # Empty list case
+        except Exception as e:
+            error = f"huckle: error listing clis: {str(e)}"
+            raise Exception(error)
+
+    return generator()
 
 # remove a cli
 def remove_cli(cli):
-    if(path.exists(dot_huckle_scripts + "/" + cli)):
-        os.remove(dot_huckle_scripts + "/" + cli)
-        shutil.rmtree(dot_huckle_config + "/" + cli)
-    else:
-        hutils.eprint("huckle: " + cli + " is not installed.")
-        sys.exit(1)
+    script_path = dot_huckle_scripts + "/" + cli
+    config_path = dot_huckle_config + "/" + cli
+
+    def generator():
+        if path.exists(script_path):
+            os.remove(script_path)
+            shutil.rmtree(config_path)
+            yield ('stdout', b'')
+        else:
+            error = f"huckle: {cli} is not installed."
+            raise Exception(error)
+
+    return generator()
 
 # remove a pinned url cache
 def flush_pinned_urls(cli):
     pinned_file_path = dot_huckle_config + "/" + cli + "/pinned.json"
-    if(path.exists(pinned_file_path)):
-        os.remove(pinned_file_path)
-    else:
-        hutils.eprint("huckle: no pinned url cache to flush for " + cli + ".")
-        sys.exit(1)
+
+    def generator():
+        if path.exists(pinned_file_path):
+            try:
+                os.remove(pinned_file_path)
+                yield ('stdout', b'')  # Success case - empty stdout
+            except Exception as e:
+                error = f"huckle: error flushing pinned urls: {str(e)}"
+                raise Exception(error)
+        else:
+            error = f"huckle: no pinned url cache to flush for {cli}."
+            raise Exception(error)
+
+    return generator()
 
 # lists all the configuration parameters of a cli
 def config_list(cli):
@@ -257,11 +291,17 @@ def config_list(cli):
     parser = ConfigParser()
     parser.read(config_file_path)
 
-    for section_name in parser.sections():
-        print("[" + section_name + "]")
-        for name, value in parser.items(section_name):
-            print('%s = %s' % (name, value))
-        print
+    def generator():
+        try:
+            for section_name in parser.sections():
+                yield ('stdout', f"[{section_name}]\n".encode('utf-8'))
+                for name, value in parser.items(section_name):
+                    yield ('stdout', f'{name} = {value}\n'.encode('utf-8'))
+        except Exception as error:
+            error = "huckle: unable to list configuration."
+            raise Exception(error)
+
+    return generator()
 
 # update a configured parameter to a new value
 def update_parameter(cli, parameter, value):
@@ -269,15 +309,18 @@ def update_parameter(cli, parameter, value):
     parser = ConfigParser()
     parser.read(config_file_path)
 
-    try:
-        parser.set('default', parameter, value)
-    except Exception as error:
-        hutils.eprint("huckle: unable to update configuration")
-        sys.exit(1)
+    def generator():
+        try:
+            parser.set('default', parameter, value)
+            with write_lock(config_file_path):
+                with open(config_file_path, "w") as config:
+                    parser.write(config)
+            yield ('stdout', b'')
+        except Exception as error:
+            error = "huckle: unable to update configuration."
+            raise Exception(error)
 
-    with write_lock(config_file_path):
-        with open(config_file_path, "w") as config:
-            parser.write(config)
+    return generator()
 
 # get a configured parameter
 def get_parameter(cli, parameter):
@@ -285,11 +328,15 @@ def get_parameter(cli, parameter):
     parser = ConfigParser()
     parser.read(config_file_path)
 
-    try:
-        return parser.get('default', parameter)
-    except Exception as error:
-        hutils.eprint("huckle: unable to retrieve configuration")
-        sys.exit(1)
+    def generator():
+        try:
+            value = parser.get('default', parameter)
+            yield ('stdout', value.encode('utf-8'))
+        except Exception as error:
+            error = "huckle: unable to retrieve configuration."
+            raise Exception(error)
+
+    return generator()
 
 # creates a folder at "path"
 def create_folder(path):
@@ -327,3 +374,31 @@ def write_lock(file_path):
                 os.unlink(lockfile)
         except OSError:
             pass
+
+create_folder(dot_huckle)
+create_folder(dot_huckle_tmp)
+create_folder(dot_huckle_config)
+create_folder(dot_huckle_var)
+create_folder(dot_huckle_var_log)
+create_folder(dot_huckle_scripts)
+create_file(dot_bash_profile)
+
+# create and load the common huckle configuration for logging before first log initialization
+create_common_configuration()
+parse_common_configuration()
+
+# we load the logger after the configuration is in otherwise we get no logger
+from huckle import logger
+
+# Map string log levels to logger constants
+LOG_LEVELS = {
+    'debug': logger.DEBUG,
+    'info': logger.INFO,
+    'warning': logger.WARNING,
+    'error': logger.ERROR,
+    'critical' : logger.CRITICAL
+}
+
+log_level = LOG_LEVELS.get(log_level.lower(), logger.INFO)
+logging = logger.Logger(log=log)
+logging.setLevel(log_level)

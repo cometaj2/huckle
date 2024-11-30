@@ -22,7 +22,7 @@ class CredentialManager:
 
     def parse_credentials(self):
         try:
-            log.debug("Keyring backend: " + str(keyring.get_keyring()))
+            log.debug("keyring backend: " + str(keyring.get_keyring()))
 
             with open(self.credentials_file_path, 'r') as cred_file:
                 parser = ConfigParser(interpolation=None)
@@ -61,7 +61,7 @@ class CredentialManager:
                         elif config.credential_helper == 'huckle':
                             new_credentials[str(section_name)].append({str(name): str(value)})
                         else:
-                            error = f"huckle: unknown credential helper configuration: {config.credential_helper}"
+                            error = f"unknown credential helper configuration: {config.credential_helper}"
                             self._credentials = None
                             raise Exception(error)
 
@@ -139,7 +139,7 @@ class CredentialManager:
         try:
             config.create_file(self.credentials_file_path)
             with config.write_lock(self.credentials_file_path):
-                log.debug("Updating credentials file.")
+                log.debug("updating credentials file.")
                 parser = ConfigParser(interpolation=None)
                 log.debug(self.credentials_file_path)
                 parser.read(self.credentials_file_path)
