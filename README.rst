@@ -181,6 +181,11 @@ Supports
 
 - HTTP/HTTPS
 
+- Support various authentication and/or passthrough per CLI configuration
+
+    - HTTP Basic Auth
+    - HCLI Core API Key Authentication (HCOAK)
+
 - HCLI version 1.0 semantics for:
 
     - hal+json
@@ -192,12 +197,12 @@ Supports
     - All media types
 
 - Streaming:
- 
+
     - Handles very large stdin/stdout streams (fixed chunk size of 16834)
 
 - SOCKS tunneling through environment variables (ALL_PROXY)
 
-- Auto configuration of a CLI when provided with an HCLI API root URL (e.g. huckle cli install `<http://hcli.io/hcli/cli/jsonf?command=jsonf>`_  
+- Auto configuration of a CLI when provided with an HCLI API root URL (e.g. huckle cli install `<http://hcli.io/hcli/cli/jsonf?command=jsonf>`_)
 
 - Listing of installed CLIs
 
@@ -209,10 +214,16 @@ Supports
 
 - Use as a python library along with simple stdin-and-stdout-like data streaming.
 
+- RFC 9457, per HCLI specification, to help yield consistent stderr output.
+
+- Customizable logging and log level configuration for debugging and for stderr messages.
+
+- HCLI configuration and credentials management via huckle commands
+
+- Keyring as credential helper (see `<https://github.com/jaraco/keyring>`_)
+
 To Do
 -----
-- Support HTTP, RFC 9457 to help yield consistent stderr output.
-
 - Fork restnavigator repo or otherwise adjust to use restnavigator with requests (single http client instead of two)
 
 - Support help docs output in the absence of man pages (e.g. git-bash on Windows)
@@ -236,27 +247,22 @@ To Do
 
 - Support non-stream send/receive (via CLI configuration)
 
-- Support various authentication and/or passthrough per CLI configuration  
+- Support various authentication and/or passthrough per CLI configuration
 
-    - HTTP Basic Auth  
-    - HTTP Digest  
-    - Oauth2  
-    - X509 (HTTPS mutual authentication)  
+    - HTTP Digest
+    - Oauth2
+    - X509 (HTTPS mutual authentication)
     - AWS
-    - SAML 
+    - SAML
 
 - Better implementation for huckle params/options handling
 
-- Support for re-aliasing a CLI with additional huckle options (e.g. adding "--ssl-no-verify" to huckle cli jsonf's shell script)
-
-- Support server certificate validation bypass (e.g. --ssl-no-verify. This is not secure but is sometimes useful to troubleshoot)  
-
-- Support for viewing information about an HCLI root (e.g. huckle view `<http://hcli.io/hcli/cli/jsonf?command=jsonf>`_
+- Support for viewing information about an HCLI root (e.g. huckle view `<http://hcli.io/hcli/cli/jsonf?command=jsonf>`_)
 
 - Support forward proxy configuration through proxy environment variables (HTTP_PROXY, HTTPS_PROXY)
 
 - Support hcli name conflic resolution (use namespaces?)
-  
+
     - View currently selected namespace (e.g. huckle ns)
     - Viewing namespace list (e.g. huckle ns list)
     - Selecting a namespace (e.g. huckle ns use abc)
@@ -267,17 +273,13 @@ To Do
 
 - Support HCLI nativization
 
-- Support for Huckle DEBUG mode
-
 - Support better help output for python library use
 
 - Support better Huckle configuration and HCLI customization for python library use
 
 - Support full in memory configuration use to avoid filesystem files in a python library use context
 
-- Add circleci tests for python library use (intput and output streaming)
-
-- Support for clear hcli parameter values documentation (e.g. ssl & pin)
+- Add circleci tests for python library use (input and output streaming)
 
 Bugs
 ----
