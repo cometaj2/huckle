@@ -53,8 +53,6 @@ salt = *" > ./test_credentials
     echo "Setting up basic auth config..."
     huckle cli config hco auth.mode basic
     huckle cli config jsonf auth.mode basic
-    huckle cli config hco auth.user.profile huckle.1
-    huckle cli config jsonf auth.user.profile huckle.1
     """
     process = subprocess.Popen(['bash', '-c', setup], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     out, err = process.communicate()

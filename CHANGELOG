@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.1.2]
+- Fix credential profile creation logic with initial default when the file has no sections
+
 ## [5.1.1]
 - Fix to remove outstanding str returns with certain huckle commands, leading to differentiated handling in cli callers
 - Fix huckle's logging output to yield a more consistent exception trace

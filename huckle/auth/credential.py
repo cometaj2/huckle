@@ -148,22 +148,51 @@ class CredentialManager:
                 id_type = "keyid" if is_apikey else "username"
                 value_type = "apikey" if is_apikey else "password"
 
-                for section in parser.sections():
-                    if parser.has_option(section, id_type) and parser.get(section, id_type) == key:
-                        if config.credential_helper == 'keyring':
-                            keyring.set_password(config.url, key, secret)
-                        elif config.credential_helper == 'huckle':
-                            parser.set(section, value_type, secret)
-                        break
-                else:
-                    new_section = f"huckle.{len(parser.sections()) + 1}"
+                # default section created if the credentials file is empty first
+                if not parser.sections():
+                    # Create default section without number
+                    new_section = f"default"
                     parser.add_section(new_section)
                     parser.set(new_section, id_type, key)
-
                     if config.credential_helper == 'keyring':
                         keyring.set_password(config.url, key, secret)
                     elif config.credential_helper == 'huckle':
                         parser.set(new_section, value_type, secret)
+                else:
+                    # Find existing credential and track highest section number
+                    found_section = None
+                    highest_num = 0
+                    base_section = f"{id_type}_profile"
+
+                    for section in parser.sections():
+                        # Check if this is the credential we're updating
+                        if parser.has_option(section, id_type) and parser.get(section, id_type) == key:
+                            found_section = section
+
+                        # Track highest section number
+                        if section.startswith(base_section):
+                            try:
+                                section_num = int(section[len(base_section):] or 0)
+                                highest_num = max(highest_num, section_num)
+                            except ValueError:
+                                continue
+
+                    if found_section:
+                        # Update existing credential
+                        if config.credential_helper == 'keyring':
+                            keyring.set_password(config.url, key, secret)
+                        elif config.credential_helper == 'huckle':
+                            parser.set(found_section, value_type, secret)
+                    else:
+                        # Create new section with next number
+                        new_section = f"{base_section}{highest_num + 1}"
+                        parser.add_section(new_section)
+                        parser.set(new_section, id_type, key)
+
+                        if config.credential_helper == 'keyring':
+                            keyring.set_password(config.url, key, secret)
+                        elif config.credential_helper == 'huckle':
+                            parser.set(new_section, value_type, secret)
 
                 with open(self.credentials_file_path, 'w') as configfile:
                     parser.write(configfile)
