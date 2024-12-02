@@ -1,4 +1,3 @@
-from huckle import hutils
 from huckle import config
 from huckle.auth import credential
 
@@ -151,7 +150,7 @@ def cli(commands=None):
         elif argv[1] == "env":
             text = "export PATH=$PATH:" + config.dot_huckle_scripts + "\n\n"
             text += "# To point your shell to huckle's HCLI entrypoint scripts, run:\n"
-            text += "# eval $(huckle env)\n"
+            text += "# eval $(huckle env)"
 
             def generator():
                 yield ('stdout', text.encode('utf-8'))
@@ -181,7 +180,7 @@ def show_dependencies():
         dependencies += package.dependencies[i].rsplit('==', 1)[1]
 
     def generator():
-        yield ('stdout', f"huckle/{package.__version__}{dependencies}\n".encode('utf-8'))
+        yield ('stdout', f"huckle/{package.__version__}{dependencies}".encode('utf-8'))
 
     return generator()
 

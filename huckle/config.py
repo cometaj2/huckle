@@ -13,8 +13,6 @@ from os import listdir
 from os.path import isfile, join
 from os import path
 
-from huckle import hutils
-
 root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
 home = os.path.expanduser("~")
@@ -179,7 +177,7 @@ def create_configuration(cli, url):
         raise Exception(error)
 
     def success_generator():
-        yield ('stdout', f"{cli}\n".encode('utf-8'))
+        yield ('stdout', f"{cli}".encode('utf-8'))
 
     return success_generator()
 
@@ -241,10 +239,19 @@ def list_clis():
     def generator():
         try:
             files = [f for f in listdir(dot_huckle_scripts) if isfile(join(dot_huckle_scripts, f))]
-            for f in files:
-                yield ('stdout', f"{f}\n".encode('utf-8'))
+            # Handle empty list case first
             if not files:
-                yield ('stdout', b'')  # Empty list case
+                yield ('stdout', b'')
+                return
+
+            # Output all but last item with newlines
+            for f in files[:-1]:
+                yield ('stdout', f"{f}\n".encode('utf-8'))
+
+            # Last item without newline
+            if files:
+                yield ('stdout', f"{files[-1]}".encode('utf-8'))
+
         except Exception as e:
             error = f"huckle: error listing clis: {str(e)}"
             raise Exception(error)
@@ -275,7 +282,7 @@ def flush_pinned_urls(cli):
         if path.exists(pinned_file_path):
             try:
                 os.remove(pinned_file_path)
-                yield ('stdout', b'')  # Success case - empty stdout
+                yield ('stdout', b'')
             except Exception as e:
                 error = f"huckle: error flushing pinned urls: {str(e)}"
                 raise Exception(error)
@@ -293,10 +300,26 @@ def config_list(cli):
 
     def generator():
         try:
+            # Get all content first
+            all_lines = []
             for section_name in parser.sections():
-                yield ('stdout', f"[{section_name}]\n".encode('utf-8'))
+                all_lines.append(f"[{section_name}]")
                 for name, value in parser.items(section_name):
-                    yield ('stdout', f'{name} = {value}\n'.encode('utf-8'))
+                    all_lines.append(f'{name} = {value}')
+
+            # Handle empty case
+            if not all_lines:
+                yield ('stdout', b'')
+                return
+
+            # Output all but last line with newlines
+            for line in all_lines[:-1]:
+                yield ('stdout', f"{line}\n".encode('utf-8'))
+
+            # Output last line without newline
+            if all_lines:
+                yield ('stdout', all_lines[-1].encode('utf-8'))
+
         except Exception as error:
             error = "huckle: unable to list configuration."
             raise Exception(error)

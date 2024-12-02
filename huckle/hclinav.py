@@ -113,11 +113,11 @@ def traverse_execution(nav):
                 nav = tempnav["cli"][0]
                 return flexible_executor(nav.uri, method)
     except KeyError:
-        error = config.cliname + ": " + "command/parameter confusion. try escaping parameter: e.g., \\\"param\\\" or \\\'param\\\'.\n"
+        error = config.cliname + ": " + "command/parameter confusion. try escaping parameter: e.g., \\\"param\\\" or \\\'param\\\'."
         error += for_help()
         raise Exception(error)
 
-    error = config.cliname + ": " + "unable to execute.\n"
+    error = config.cliname + ": " + "unable to execute."
     error += for_help()
     raise Exception(error)
 
@@ -283,7 +283,7 @@ def output_chunks(response):
             try:
                 problem_detail = json.loads(response.content)
                 logging.error(problem_detail)
-                error_msg = f"{problem_detail.get('detail', '')}\n"
+                error_msg = f"{problem_detail.get('detail', '')}"
                 yield ('stderr', error_msg.encode('utf-8'))
             except (json.JSONDecodeError, KeyError) as error:
                 raise Exception(error)
