@@ -68,13 +68,17 @@ def main():
                         except UnicodeDecodeError:
                             eprint(chunk)
                             logging.error(chunk)
+
+                        # Add newline for stderr before exit if needed
+                        if stderr_bytes_written > 0 and not no_newline:
+                            sys.stderr.write('\n')
                         sys.exit(1)
 
             # Add newlines after all output if in terminal
             if not no_newline:
                 if dest == 'stdout' and stdout_bytes_written > 0 and sys.stdout.isatty():
                     sys.stdout.write('\n')
-                elif dest == 'stderr' and stdout_bytes_written > 0 and sys.stderr.isatty():
+                elif dest == 'stderr' and sterr_bytes_written > 0 and sys.stderr.isatty():
                     eprint('\n')
         else:
             error = "huckle: unexpected non-generator type."

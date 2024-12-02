@@ -1,4 +1,4 @@
-__version__ = "5.2.0"
+__version__ = "5.2.1"
 dependencies = ["restnavigator==1.0.1",
                 "requests[socks]==2.28.1",
                 "configparser==5.3.0",

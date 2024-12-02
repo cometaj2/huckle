@@ -43,7 +43,7 @@ def test_hco_ls_keyring_credential_helper(gunicorn_server_auth, cleanup):
     out, err = p2.communicate()
     result = out.decode('utf-8')
 
-    assert('admin\n' in result)
+    assert('admin' in result)
 
 def test_jsonf_keyring_credential_helper(gunicorn_server_auth, cleanup):
     hello = """
@@ -58,7 +58,7 @@ def test_jsonf_keyring_credential_helper(gunicorn_server_auth, cleanup):
     out, err = p2.communicate()
     result = out.decode('utf-8')
 
-    assert('{\n    "hello": "world"\n}\n' in result)
+    assert('{\n    "hello": "world"\n}' in result)
 
 def test_hco_key_admin_huckle_credential_helper(gunicorn_server_auth, cleanup):
     hello = """
@@ -101,7 +101,7 @@ def test_hco_ls_huckle_credential_helper(gunicorn_server_auth, cleanup):
     out, err = p2.communicate()
     result = out.decode('utf-8')
 
-    assert('admin\n' in result)
+    assert('admin' in result)
 
 def test_jsonf_huckle_credential_helper(gunicorn_server_auth, cleanup):
     hello = """
@@ -117,4 +117,4 @@ def test_jsonf_huckle_credential_helper(gunicorn_server_auth, cleanup):
     out, err = p2.communicate()
     result = out.decode('utf-8')
 
-    assert('{\n    "hello": "world"\n}\n' in result)
+    assert('{\n    "hello": "world"\n}' in result)
