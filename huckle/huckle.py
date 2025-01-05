@@ -173,11 +173,26 @@ def huckle_help():
 # show huckle's version and the version of its dependencies
 
 def show_dependencies():
+    def parse_dependency(dep_string):
+        # Common version specifiers
+        specifiers = ['==', '>=', '<=', '~=', '>', '<', '!=']
+
+        # Find the first matching specifier
+        for specifier in specifiers:
+            if specifier in dep_string:
+                name, version = dep_string.split(specifier, 1)
+                return name.strip(), specifier, version.strip()
+
+        # If no specifier found, return just the name
+        return dep_string.strip(), '', ''
+
     dependencies = ""
-    for i, x in enumerate(package.dependencies):
-        dependencies += " "
-        dependencies += package.dependencies[i].rsplit('==', 1)[0] + "/"
-        dependencies += package.dependencies[i].rsplit('==', 1)[1]
+    for dep in package.dependencies:
+        name, specifier, version = parse_dependency(dep)
+        if version:  # Only add separator if there's a version
+            dependencies += f" {name}/{version}"
+        else:
+            dependencies += f" {name}"
 
     def generator():
         yield ('stdout', f"huckle/{package.__version__}{dependencies}".encode('utf-8'))
