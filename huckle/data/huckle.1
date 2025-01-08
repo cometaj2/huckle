@@ -11,8 +11,11 @@ huckle \- A generic hypertext command line interface (HCLI) client
 ]
 .SH DESCRIPTION
 .B huckle
-is a generic CLI, and python library, that can be used with any API that presents
+is a generic HCLI client, CLI, and python library, that can be used with any API that presents
 hypertext command line interface (HCLI) semantics.
+.sp
+By default huckle installs itself in a user's home directory (i.e. ~), however this can be overridden via the HUCKLE_HOME environment variable
+(e.g. export HUCKLE_HOME=/tmp)
 .sp
 CLI aliases are directly invoked by name if the HCLI entry scripts are locatable in your shell PATH.
 See 'huckle env' for details to make your environment configuration more permanent.
@@ -26,9 +29,9 @@ This outputs the HCLI entry scripts path to export to enable direct HCLI executi
 This attempts to install/auto configure a CLI if provided with the root URL of an HCLI API. If successful, the CLI
 can be invoked by name.
 .sp
-- Its entry script is located under ~/.huckle/bin/<cliname> (huckle created).
+- Its entry script is located under $HUCKLE_HOME/.huckle/bin/<cliname> (huckle created).
 .br
-- Its configuration is located under ~/.huckle/etc/<cliname>/config (huckle created). See EXAMPLE CONFIGURATION FILE.
+- Its configuration is located under $HUCKLE_HOME/.huckle/etc/<cliname>/config (huckle created). See EXAMPLE CONFIGURATION FILE.
 .sp
 Note that an existing configuration file is left alone if the command is run multiple times
 for the same CLI.
@@ -89,7 +92,7 @@ version and the version of its dependencies.
 .SH CACHING
 Huckle is able to cache the final execution URL of given command to help avoid traversal of HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. potential staleness per the expected HCLI semantics); see url.pinning under EXAMPLE CONFIGURATION FILE.
 .SH LOGGING
-Huckle supports logging of errors to ~/.huckle/var/log/huckle.log if configured in the common configuration file per ~/.huckle/etc/config; see log and log.level under EXAMPLE COMMON CONFIGURATION FILE.
+Huckle supports logging of errors to $HUCKLE_HOME/.huckle/var/log/huckle.log if configured in the common configuration file per $HUCKLE_HOME/.huckle/etc/config; see log and log.level under EXAMPLE COMMON CONFIGURATION FILE.
 .SS EXAMPLE COMMON CONFIGURATION FILE
 .br
 [default]
@@ -107,12 +110,12 @@ Huckle supports three authentication modes:
 .br
 - HCOAK (HCLI Core API Key Authentication) - See auth.mode and auth.apikey.profile under EXAMPLE CONFIGURATION FILE.
 .PP
-A user created credentials file is expected under ~/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
+A user created credentials file is expected under $HUCKLE_HOME/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
 .PP
 .SS HUCKLE VS KEYRING
 Huckle makes available two credential helpers: huckle, and keyring; see credential.helper under EXAMPLE CONFIGURATION FILE.
 .PP
-The huckle credential helper simply works with a ~/.huckle/etc/<cliname>/credentials plaintext file. It is not particularly secure, but is otherwise convenient and can be made sufficiently secure if the user's environment is made sufficiently secure.
+The huckle credential helper simply works with a $HUCKLE_HOME/.huckle/etc/<cliname>/credentials plaintext file. It is not particularly secure, but is otherwise convenient and can be made sufficiently secure if the user's environment is made sufficiently secure.
 .PP
 The keyring credential helper makes use of the keyring library which defaults to a recommended backend. The following are supported by default:
 .PP

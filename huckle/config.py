@@ -15,7 +15,7 @@ from os import path
 
 root = os.path.abspath(os.path.dirname(__file__))
 huckle_manpage_path = root + "/data/huckle.1"
-home = os.path.expanduser("~")
+home = os.getenv('HUCKLE_HOME') or os.path.expanduser("~")
 dot_huckle = "%s/.huckle" % home
 dot_huckle_tmp = dot_huckle + "/tmp"
 dot_huckle_var = dot_huckle + "/var"
