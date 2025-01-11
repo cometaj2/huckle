@@ -133,10 +133,15 @@ def install(url):
     if version == "1.0":
         cli = nav()["name"]
 
-        return config.create_configuration(cli, url)
+        yield from config.create_configuration(cli, url)
     else:
+        configurations = []
         for k, z in enumerate(nav.links()["cli"]):
-            return install(nav.links()["cli"][k].uri)
+            yield from install(nav.links()["cli"][k].uri)
+
+            # Add separator after each HCLI except the last one
+            if k < len(nav.links()["cli"]) - 1:
+                yield ('stdout', b'\n')
 
 # displays a man page (file) located on a given path
 def display_man_page(path):
