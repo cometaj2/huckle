@@ -363,6 +363,13 @@ def get_parameter(cli, parameter):
 
 # creates a folder at "path"
 def create_folder(path):
+
+    # Skip lock only if this is the actual user's home directory (not a custom HUCKLE_HOME)
+    if path == os.path.expanduser("~"):
+        if not os.path.exists(path):
+            os.makedirs(path)
+        return
+
     with write_lock(path):
         if not os.path.exists(path):
             os.makedirs(path)
