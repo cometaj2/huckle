@@ -7,6 +7,9 @@ def test_hfm(cleanup):
     #!/bin/bash
     set -x
 
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     # we setup a custom credentials file for the test run
     echo -e "[config]
 core.auth = False" > ./noauth_credentials
@@ -32,7 +35,9 @@ core.auth = False" > ./noauth_credentials
     #!/bin/bash
     set -x
 
-    export PATH=$PATH:~/.huckle/bin
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     echo '{"hello":"world"}' > hello.json
     cat hello.json | hfm cp -l ./hello.json
     hfm cp -r hello.json > hello1.json

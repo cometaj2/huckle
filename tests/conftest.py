@@ -9,7 +9,12 @@ def gunicorn_server_auth():
     setup = """
     #!/bin/bash
     set -x
-    export PATH=$PATH:~/.huckle/bin
+
+    rm -rf ~/.huckle_test
+    mkdir ~/.huckle_test
+    export HUCKLE_HOME_TEST=$HUCKLE_HOME
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
 
     echo "Cleanup preexisting huckle hcli installations..."
     huckle cli rm hco
@@ -24,35 +29,35 @@ def gunicorn_server_auth():
     echo "Setup a custom credentials file for the test run"
     echo -e "[config]
 core.auth = True
-mgmt.port = 9000
+mgmt.port = 19000
 
 [default]
 username = admin
 password = *
 salt = *" > ./test_credentials
 
-    gunicorn --workers=1 --threads=1 -b 0.0.0.0:8000 -b 0.0.0.0:9000 "hcli_core:connector(config_path=\\\"./test_credentials\\\")" --daemon --log-file=./gunicorn.log --error-logfile=./gunicorn-error.log --capture-output
+    gunicorn --workers=1 --threads=1 -b 0.0.0.0:18000 -b 0.0.0.0:19000 "hcli_core:connector(config_path=\\\"./test_credentials\\\")" --daemon --log-file=./gunicorn.log --error-logfile=./gunicorn-error.log --capture-output
 
     sleep 2
 
     grep "Password:" ./gunicorn-error.log | awk '{print $8}' > ./password
-    huckle cli install http://127.0.0.1:8000
-    huckle cli install http://127.0.0.1:9000
+    huckle cli install http://127.0.0.1:18000
+    huckle cli install http://127.0.0.1:19000
 
-    echo "Setup bootstrap admin config and credentials for hco and jsonf for both huckle and keyring credential helpers..."
-    huckle cli config hco credential.helper keyring
-    huckle cli config jsonf credential.helper keyring
-    tr -d '\n' < ./password | huckle cli credential hco admin
-    tr -d '\n' < ./password | huckle cli credential jsonf admin
-
-    huckle cli config hco credential.helper huckle
+    echo "Setup bootstrap admin config and credentials for hco and jsonf..."
     huckle cli config jsonf credential.helper huckle
-    tr -d '\n' < ./password | huckle cli credential hco admin
-    tr -d '\n' < ./password | huckle cli credential jsonf admin
+    huckle cli config hco credential.helper huckle
+    cat ./password | huckle cli credential hco admin
+    cat ./password | huckle cli credential jsonf admin
+    huckle cli config jsonf credential.helper keyring
+    huckle cli config hco credential.helper keyring
+    cat ./password | huckle cli credential hco admin
+    cat ./password | huckle cli credential jsonf admin
 
     echo "Setting up basic auth config..."
     huckle cli config hco auth.mode basic
     huckle cli config jsonf auth.mode basic
+
     """
     process = subprocess.Popen(['bash', '-c', setup], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     out, err = process.communicate()
@@ -72,6 +77,9 @@ def cleanup():
     cleanup_script = """
     #!/bin/bash
     set -x  # Print commands as they execute
+
+    #rm -rf ~/.huckle_test
+    export HUCKLE_HOME=$HUCKLE_HOME_TEST
 
     # Force kill any remaining processes
     for pid in $(ps aux | grep '[g]unicorn' | awk '{print $2}'); do

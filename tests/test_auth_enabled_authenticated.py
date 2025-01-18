@@ -7,7 +7,9 @@ def test_hco_key_admin_keyring_credential_helper(gunicorn_server_auth, cleanup):
     #!/bin/bash
     set -x
 
-    export PATH=$PATH:~/.huckle/bin
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     huckle cli config hco credential.helper keyring
     hco key admin
 
@@ -33,7 +35,9 @@ def test_hco_ls_keyring_credential_helper(gunicorn_server_auth, cleanup):
     #!/bin/bash
     set -x
 
-    export PATH=$PATH:~/.huckle/bin
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     huckle cli config hco credential.helper keyring
     hco ls
 
@@ -49,7 +53,9 @@ def test_jsonf_keyring_credential_helper(gunicorn_server_auth, cleanup):
     hello = """
     #!/bin/bash
 
-    export PATH=$PATH:~/.huckle/bin
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     huckle cli config jsonf credential.helper keyring
     echo '{"hello":"world"}' | jsonf go
     """
@@ -65,7 +71,9 @@ def test_hco_key_admin_huckle_credential_helper(gunicorn_server_auth, cleanup):
     #!/bin/bash
     set -x
 
-    export PATH=$PATH:~/.huckle/bin
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     huckle cli config hco credential.helper huckle
     hco key admin
 
@@ -91,7 +99,9 @@ def test_hco_ls_huckle_credential_helper(gunicorn_server_auth, cleanup):
     #!/bin/bash
     set -x
 
-    export PATH=$PATH:~/.huckle/bin
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     huckle cli config hco credential.helper huckle
     hco ls
 
@@ -107,7 +117,9 @@ def test_jsonf_huckle_credential_helper(gunicorn_server_auth, cleanup):
     hello = """
     #!/bin/bash
 
-    export PATH=$PATH:~/.huckle/bin
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     huckle cli config jsonf credential.helper huckle
     echo '{"hello":"world"}' | jsonf go
     kill $(ps aux | grep '[g]unicorn' | awk '{print $2}')

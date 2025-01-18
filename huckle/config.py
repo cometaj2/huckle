@@ -398,6 +398,7 @@ def write_lock(file_path):
         except OSError:
             pass
 
+create_folder(home)
 create_folder(dot_huckle)
 create_folder(dot_huckle_tmp)
 create_folder(dot_huckle_config)

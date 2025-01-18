@@ -7,10 +7,12 @@ def test_hco_key_admin(gunicorn_server_auth, cleanup):
     #!/bin/bash
     set -x
 
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     echo "Wipeout auth to fail..."
     huckle cli config hco auth.mode skip
 
-    export PATH=$PATH:~/.huckle/bin
     hco key admin
 
     """
@@ -29,10 +31,12 @@ def test_jsonf(gunicorn_server_auth, cleanup):
     hello = """
     #!/bin/bash
 
+    export HUCKLE_HOME=~/.huckle_test
+    eval $(huckle env)
+
     echo "Wipeout auth to fail..."
     huckle cli config jsonf auth.mode skip
 
-    export PATH=$PATH:~/.huckle/bin
     echo '{"hello":"world"}' | jsonf go
     kill $(ps aux | grep '[g]unicorn' | awk '{print $2}')
     """

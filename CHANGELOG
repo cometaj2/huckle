@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.5.1]
+- Fix failure for huckle env when the HUCKLE_HOME is updated and the home doesn't yet exist
+- Update tests to avoid impacting a default local installation of huckle
+
 ## [5.5.0]
 - Add support for multi-root aggregate installation
 
