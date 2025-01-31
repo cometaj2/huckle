@@ -3,12 +3,10 @@
 huckle \- A generic hypertext command line interface (HCLI) client
 .SH SYNOPSIS
 .B huckle
-[
-.I option
-|
-.I <command>
-.I <parameter>
-]
+{ --version |
+[ -n ]
+.I <commands>
+}
 .SH DESCRIPTION
 .B huckle
 is a generic HCLI client, CLI, and python library, that can be used with any API that presents
@@ -89,6 +87,9 @@ This help file.
 .IP --version
 .B huckle
 version and the version of its dependencies.
+.IP -n
+.B huckle
+prevents the default output of a linefeed in stdout, for *nix tool compatibility, in favor of exact data stream handling (e.g. binary streams).
 .SH CACHING
 Huckle is able to cache the final execution URL of given command to help avoid traversal of HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. potential staleness per the expected HCLI semantics); see url.pinning under EXAMPLE CONFIGURATION FILE.
 .SH LOGGING

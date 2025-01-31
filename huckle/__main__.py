@@ -74,11 +74,11 @@ def main():
                             sys.stderr.write('\n')
                         sys.exit(1)
 
-            # Add newlines after all output if in terminal
+            # Add newlines after all output so that other *nix tools will work correctly
             if not no_newline:
-                if dest == 'stdout' and stdout_bytes_written > 0 and sys.stdout.isatty():
+                if dest == 'stdout' and stdout_bytes_written > 0:
                     sys.stdout.write('\n')
-                elif dest == 'stderr' and sterr_bytes_written > 0 and sys.stderr.isatty():
+                elif dest == 'stderr' and sterr_bytes_written > 0:
                     eprint('\n')
         else:
             error = "huckle: unexpected non-generator type."
@@ -86,13 +86,13 @@ def main():
             logging.error(error)
             logging.error(type(output))
             logging.error(output)
-            if sys.stderr.isatty() and not no_newline:
+            if not no_newline:
                 eprint('\n')
     except Exception as error:
         trace = traceback.format_exc()
         eprint(error)
         logging.error(trace)
-        if sys.stderr.isatty() and not no_newline:
+        if not no_newline:
             eprint('\n')
         sys.exit(1)
 

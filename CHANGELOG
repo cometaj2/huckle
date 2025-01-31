@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.5.3]
+- Fix bug whereby \n doesn't get outputted for piped stdout by default, breaking unix tool compatibility
+- Add huckle documentation update for the -n option to avoid default trailing linefeed in stdout (e.g. for binary stream handling)
+
 ## [5.5.2]
 - Fix bug with portalocker attempting to acquire a lock on the users's home
 

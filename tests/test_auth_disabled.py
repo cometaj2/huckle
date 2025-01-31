@@ -38,7 +38,7 @@ core.auth = False" > ./noauth_credentials
     export HUCKLE_HOME=~/.huckle_test
     eval $(huckle env)
 
-    echo '{"hello":"world"}' > hello.json
+    echo -n '{"hello":"world"}' > hello.json
     cat hello.json | hfm cp -l ./hello.json
     hfm cp -r hello.json > hello1.json
     kill $(ps aux | grep '[g]unicorn' | awk '{print $2}')
