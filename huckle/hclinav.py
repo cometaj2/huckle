@@ -269,12 +269,14 @@ def flexible_executor(url, method):
     if method == "post":
         if not sys.stdin.isatty():
 
+            logging.debug("Attempting to stream POST data...")
             headers = {'content-type': 'application/octet-stream'}
             stream = nbstdin()
 
             r = requests.post(url, data=stream.read(), headers=headers, stream=True, verify=ssl_verify, auth=auth_mode)
             return output_chunks(r)
         else:
+            logging.debug("No data to stream. Empty POST data.")
             r = requests.post(url, data=None, stream=True, verify=ssl_verify, auth=auth_mode)
             return output_chunks(r)
 
@@ -310,9 +312,11 @@ class nbstdin:
     def read(self):
         try:
             f = os.fdopen(sys.stdin.fileno(), 'rb', 0)
+            logging.debug("It's likely a real command line environment stdin inputstream.")
             with f as fis:
                 for chunk in iter(partial(fis.read, 16384), b''):
                     yield chunk
         except Exception as e:
+            logging.debug("It's likely a huckle library use context. Falling back to an assumed doctored io.BytesIO inputstream.")
             for chunk in iter(partial(sys.stdin.read, 16384), b''):
                 yield chunk
