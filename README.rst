@@ -99,15 +99,15 @@ from an HCLI data aggregation service called 'hleg' running locally on port 9000
 
 .. code-block:: python
 
-    from __future__ import absolute_import, division, print_function
-
     import flask
     import config
     import json
     import logger
+    import sys
     import io
+    import traceback
 
-    from huckle import cli, stdin
+    from huckle import cli
     from flask import Flask, render_template, send_file, jsonify, Response
 
     logging = logger.Logger()
@@ -120,35 +120,30 @@ from an HCLI data aggregation service called 'hleg' running locally on port 9000
         @app.route('/')
         def index():
             try:
-                cli("huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf")
+                chunks = cli("huckle --version")
+                for dest, chunk in chunks:
+                    if dest == 'stdout':
+                        logging.info(chunk.decode().rstrip())
 
-                hello = io.BytesIO(b'{"hello":"world"}')
-                with stdin(hello):
-                    chunks = cli("jsonf go")
+                try:
+                    cli("huckle cli install http://127.0.0.1:8000")
+                except:
+                    pass
 
-                    json_string = ""
-                    for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk) where dest == 'stdout' or dest == 'stderr'
-                        if dest == 'stdout':
-                            json_string = ''.join(chunk.decode('utf-8'))
-                    data = json.loads(json_string)
-                    logging.info(data)
-
-                logging.info(cli("huckle --version"))
-                cli("huckle cli install 127.0.0.1:9000")
+                logging.info("Refreshing legislation information...")
+                chunks = cli("hleg ls")
 
                 json_string = ""
-                chunks = cli("hleg ls")
-                for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk) where dest == 'stdout' or dest == 'stderr'
-                    if dest = 'stdout':
-                        json_string = ''.join(chunk.decode('utf-8'))
+                for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk)
+                    if dest == 'stdout':
+                        json_string += chunk.decode()
                 data = json.loads(json_string)
-
                 return render_template('table.html', bills=data)
 
             except Exception as error:
-                logging.error(error)
+                logging.error(traceback.format_exc())
 
-            return render_template('index.html')
+            return render_template('table.html', bills="[]")
 
         @app.route('/manifest.json')
         def serve_manifest():
@@ -159,7 +154,6 @@ from an HCLI data aggregation service called 'hleg' running locally on port 9000
             return app.send_static_file('sw.js')
 
         return app
-
 
 Configuration
 -------------

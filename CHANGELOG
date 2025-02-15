@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.5.6]
+- Fix README library use example
+
 ## [5.5.5]
 - Fix stdin edge case whereby the provided inputstream happens to be None
 - Fix stdin handling in the case where cli is used standalone in a library use context
