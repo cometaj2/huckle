@@ -58,8 +58,22 @@ def stdin(stream):
     finally:
         sys.stdin = sys.__stdin__
 
-# huckle's minimal set of commands
+# Execute CLI commands either from command line or as a library.
+# Now checks if we're already in a stdin context.
 def cli(commands=None):
+    if commands is not None:
+        needs_stdin = not isinstance(sys.stdin, io.BytesIO)
+
+        if needs_stdin:
+            with stdin(io.BytesIO(b'')):
+                return __execute_cli(commands)
+        else:
+            return __execute_cli(commands)
+    else:
+        return __execute_cli(None)
+
+# huckle's minimal set of commands
+def __execute_cli(commands=None):
     if commands is not None:
         argv = shlex.split(commands)
     else:

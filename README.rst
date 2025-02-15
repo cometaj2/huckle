@@ -97,8 +97,6 @@ Python Library - Basic Usage
 Here's a basic flask PWA example that incorporates huckle usage as a python library to get data
 from an HCLI data aggregation service called 'hleg' running locally on port 9000 and a jsonf HCLI hosted on hcli.io.
 
-Note the constraint on proper stdin initialization to avoid inconsistent stdin state when huckle needs to interact with input streams:
-
 .. code-block:: python
 
     from __future__ import absolute_import, division, print_function
@@ -117,15 +115,6 @@ Note the constraint on proper stdin initialization to avoid inconsistent stdin s
 
 
     def webapp():
-        ################################################ CRITICAL ################################################
-        # This ensures a clean stdin state before workers fork (e.g. gunicorn).
-        # Without this, a WSGI server can hand off an inconsistent stdin state to huckle which causes
-        # it to attempt to stream data when stdin is in a broken state, leading to unexpected stream interruption,
-        # unexpected socket cleanup/closeout in urllib3's pool, and bad file descriptor errors.
-        ##########################################################################################################
-        if not sys.stdin.isatty():
-            sys.stdin = io.BytesIO()
-
         app = Flask(__name__)
 
         @app.route('/')
