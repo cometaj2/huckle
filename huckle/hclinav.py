@@ -25,6 +25,7 @@ import socket
 import certifi
 import textwrap
 import re
+import shutil
 
 try:
         from urllib import quote  # Python 2.X
@@ -348,7 +349,15 @@ class nbstdin:
             for chunk in iter(partial(sys.stdin.read, 16384), b''):
                 yield chunk
 
-def troff_to_text(content, width=80):
+def troff_to_text(content, width=None):
+    # If width is not specified, try to get the terminal size
+    if width is None:
+        try:
+            columns, _ = shutil.get_terminal_size()
+            width = columns
+        except Exception:
+            # Fall back to 80 if we can't determine terminal size
+            width = 80
 
     # Helper function to handle troff escape characters
     def process_escapes(text):
