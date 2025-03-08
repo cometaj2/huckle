@@ -187,7 +187,7 @@ def hcli_to_troff(navigator, save_to_file=True):
     man_content = ""
 
     # Add the title header
-    man_content += ".TH " + navigator()["name"] + " 1 \n"
+    man_content += ".TH " + navigator()["name"].upper() + " 1 \n"
 
     # Process each section
     for i, x in enumerate(navigator()["section"]):
@@ -349,18 +349,31 @@ class nbstdin:
                 yield chunk
 
 def troff_to_text(content, width=80):
+
     # Extract the man page title from .TH line
     title_match = re.search(r'\.TH\s+(\S+)\s+(\S+)', content)
     if title_match:
         name = title_match.group(1)
         section = title_match.group(2)
-        # Format header like col -b output (left-aligned, middle, right-aligned)
         name_section = f"{name}({section})"
-        centered_text = "User Commands"  # Match the col -b text
-        # Calculate spacing to position the elements properly using tabs
-        header = f"{name_section}\t\t\t{centered_text}\t\t\t{name_section}"
-        # Footer format from col -b example - right-aligned only
-        footer = f"\t\t\t\t\t\t\t\t\t{name_section}"
+        centered_text = "User Commands"
+
+        # Calculate proper alignment positions for header
+        left_text = name_section
+        center_text = centered_text
+        right_text = name_section
+
+        # Create properly aligned header
+        left_part = left_text
+        center_start = (width - len(center_text)) // 2
+        center_part = " " * (center_start - len(left_part)) + center_text
+        right_start = width - len(right_text)
+        right_part = " " * (right_start - len(left_part) - len(center_part)) + right_text
+
+        header = left_part + center_part + right_part
+
+        # Create right-aligned footer
+        footer = " " * (width - len(name_section)) + name_section
     else:
         header = ""
         footer = ""
