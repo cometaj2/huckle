@@ -28,7 +28,7 @@ can be invoked by name.
 .sp
 - Its entry script is located under $HUCKLE_HOME/.huckle/bin/<cliname> (huckle created).
 .br
-- Its configuration is located under $HUCKLE_HOME/.huckle/etc/<cliname>/config (huckle created). See EXAMPLE CONFIGURATION FILE.
+- Its configuration is located under $HUCKLE_HOME/.huckle/etc/<cliname>/config (huckle created). See EXAMPLE HCLI CONFIGURATION FILE.
 .sp
 Note that an existing configuration file is left alone if the command is run multiple times
 for the same CLI.
@@ -89,7 +89,7 @@ version and the version of its dependencies.
 .B huckle
 prevents the default output of a linefeed in stdout, for *nix tool compatibility, in favor of exact data stream handling (e.g. binary streams).
 .SH CACHING
-Huckle is able to cache the final execution URL of given command to help avoid traversal of HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. potential staleness per the expected HCLI semantics); see url.pinning under EXAMPLE CONFIGURATION FILE.
+Huckle is able to cache the final execution URL of given command to help avoid traversal of HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. potential staleness per the expected HCLI semantics); see url.pinning under EXAMPLE HCLI CONFIGURATION FILE.
 .SH LOGGING
 Huckle supports logging of errors to $HUCKLE_HOME/.huckle/var/log/huckle.log if configured in the common configuration file per $HUCKLE_HOME/.huckle/etc/config; see log and log.level under EXAMPLE COMMON CONFIGURATION FILE.
 .SS EXAMPLE COMMON CONFIGURATION FILE
@@ -105,15 +105,15 @@ help = <text | man>
 .SH AUTHENTICATION
 Huckle supports three authentication modes:
 .sp
-- No Authentication - See auth.mode under EXAMPLE CONFIGURATION FILE.
+- No Authentication - See auth.mode under EXAMPLE HCLI CONFIGURATION FILE.
 .br
-- HTTP Basic Authentication - See auth.mode and auth.user.profile under EXAMPLE CONFIGURATION FILE.
+- HTTP Basic Authentication - See auth.mode and auth.user.profile under EXAMPLE HCLI CONFIGURATION FILE.
 .br
-- HCOAK (HCLI Core API Key Authentication) - See auth.mode and auth.apikey.profile under EXAMPLE CONFIGURATION FILE.
+- HCOAK (HCLI Core API Key Authentication) - See auth.mode and auth.apikey.profile under EXAMPLE HCLI CONFIGURATION FILE.
 .sp
 A user created credentials file is expected under $HUCKLE_HOME/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
 .SS HUCKLE VS KEYRING
-Huckle makes available two credential helpers: huckle, and keyring; see credential.helper under EXAMPLE CONFIGURATION FILE.
+Huckle makes available two credential helpers: huckle, and keyring; see credential.helper under EXAMPLE HCLI CONFIGURATION FILE.
 .sp
 The huckle credential helper simply works with a $HUCKLE_HOME/.huckle/etc/<cliname>/credentials plaintext file. It is not particularly secure, but is otherwise convenient and can be made sufficiently secure if the user's environment is made sufficiently secure.
 .sp
@@ -129,8 +129,8 @@ The keyring credential helper makes use of the keyring library which defaults to
 .sp
 See https://pypi.org/project/keyring/ for the full range or supported features and to understand how to setup 3rd party or custom storage backends.
 .sp
-Both HTTP Basic Authentication and HCOAK Authentication are supported via the use of [profile] in a credentials file, as referenced by auth.user.profile or auth.apikey.profile; see EXAMPLE CREDENTIALS FILE and EXAMPLE CONFIGURATION FILE.
-.SS EXAMPLE CREDENTIALS FILE
+Both HTTP Basic Authentication and HCOAK Authentication are supported via the use of [profile] in a credentials file, as referenced by auth.user.profile or auth.apikey.profile; see EXAMPLE HCLI CREDENTIALS FILE and EXAMPLE HCLI CONFIGURATION FILE.
+.SS EXAMPLE HCLI CREDENTIALS FILE
 [default]
 .br
 username = <username>
@@ -148,7 +148,7 @@ password = <anotherpassword>
 keyid = <apikeyid>
 .br
 apikey = <apikey>
-.SH EXAMPLE CONFIGURATION FILE
+.SH EXAMPLE HCLI CONFIGURATION FILE
 [default]
 .br
 url = <url>

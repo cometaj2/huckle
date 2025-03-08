@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [5.6.0]
 - Add text formatted help stdout via help
 - Update help default to terminal text output rather than to man page (configurable)
+- Update huckle documentation for additional clarity
 
 ## [5.5.6]
 - Fix README library use example
