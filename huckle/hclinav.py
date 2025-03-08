@@ -193,7 +193,7 @@ def hcli_to_troff(navigator, save_to_file=True):
     for i, x in enumerate(navigator()["section"]):
         section = navigator()["section"][i]
         man_content += ".SH " + section["name"].upper() + "\n"
-        man_content += section["description"].replace("\\n", "\n") + "\n"
+        man_content += section["description"].replace("\\n\\n", "\n.sp\n") + "\n"
 
     # Add options and commands
     man_content += options_and_commands_to_man(navigator)
@@ -233,7 +233,7 @@ def options_and_commands_to_man(navigator):
         if hcli_type == config.hcli_option_type:
             option_count += 1
             options = options + ".IP " + tempnav()["name"] + "\n"
-            options = options + tempnav()["description"].replace("\\n", "\n") + "\n"
+            options = options + tempnav()["description"].replace("\\n\\n", "\n.sp\n") + "\n"
     if option_count > 0:
         options = ".SH OPTIONS\n" + options
 
@@ -246,7 +246,7 @@ def options_and_commands_to_man(navigator):
         if hcli_type == config.hcli_command_type:
             command_count += 1
             commands = commands + ".IP " + tempnav()["name"] + "\n"
-            commands = commands + tempnav()["description"].replace("\\n", "\n") + "\n"
+            commands = commands + tempnav()["description"].replace("\\n\\n", "\n.sp\n") + "\n"
     if command_count > 0:
         commands = ".SH COMMANDS\n" + commands
 
