@@ -23,6 +23,8 @@ import requests
 import errno
 import socket
 import certifi
+import textwrap
+import re
 
 try:
         from urllib import quote  # Python 2.X
@@ -73,8 +75,14 @@ def traverse_argument(nav, arg):
 
         # we give first precedence to help so that help is easily accessible at all time.
         if arg == "help":
-            hcli_to_man(nav)
-            sys.exit(0)
+            if config.help_mode == "text":
+                (content, path) = hcli_to_troff(nav, save_to_file=False)
+                text = troff_to_text(content)
+                return  ('stdout', text.encode('utf-8'))
+            elif config.help_mode == "man":
+                (content, path) = hcli_to_troff(nav, save_to_file=True)
+                call(["man", path])
+                sys.exit(0)
 
         # we give precedence to parameter traversal to help avoid forcing double quoting on the command line
         try:
@@ -143,10 +151,6 @@ def install(url):
             if k < len(nav.links()["cli"]) - 1:
                 yield ('stdout', b'\n')
 
-# displays a man page (file) located on a given path
-def display_man_page(path):
-    call(["man", path])
-
 # generates an OPTIONS and COMMANDS section to add to a text page
 def options_and_commands_to_text(navigator):
 
@@ -178,22 +182,45 @@ def options_and_commands_to_text(navigator):
 
     return options + commands
 
-# converts an hcli document to a man page and displays it
-def hcli_to_man(navigator):
-    millis = str(time.time())
-    dynamic_doc_path = config.cli_manpage_path + "/" + config.cliname + "." + millis + ".man" 
-    config.create_folder(config.cli_manpage_path)
-    config.create_file(dynamic_doc_path)
-    f = open(dynamic_doc_path, "a+")
-    f.write(".TH " + navigator()["name"] + " 1 \n")
+# format hcli navigation to manpage like format
+def hcli_to_troff(navigator, save_to_file=True):
+    man_content = ""
+
+    # Add the title header
+    man_content += ".TH " + navigator()["name"] + " 1 \n"
+
+    # Process each section
     for i, x in enumerate(navigator()["section"]):
         section = navigator()["section"][i]
-        f.write(".SH " + section["name"].upper() + "\n")
-        f.write(section["description"].replace("\\n", "\n") + "\n")
-    f.write(options_and_commands_to_man(navigator))
+        man_content += ".SH " + section["name"].upper() + "\n"
+        man_content += section["description"].replace("\\n", "\n") + "\n"
 
-    f.close()
-    display_man_page(dynamic_doc_path)
+    # Add options and commands
+    man_content += options_and_commands_to_man(navigator)
+
+    # Save to file if requested
+    file_path = None
+    if save_to_file:
+        millis = str(time.time())
+        dynamic_doc_path = config.cli_manpage_path + "/" + config.cliname + "." + millis + ".man"
+        config.create_folder(config.cli_manpage_path)
+        config.create_file(dynamic_doc_path)
+
+        with open(dynamic_doc_path, "w") as f:
+            f.write(man_content)
+
+        file_path = dynamic_doc_path
+
+    return (man_content, file_path)
+
+def man_to_txt(man_page):
+    try:
+        process = subprocess.run(['man', man_page], capture_output=True, text=True, check=True)
+        process_col = subprocess.run(['col', '-b'], input=process.stdout, capture_output=True, text=True, check=True)
+        return process_col.stdout
+    except subprocess.CalledProcessError as e:
+        error = "unable to convert help man page to text"
+        raise Exception(error)
 
 # generates an OPTIONS and COMMANDS section to add to a man page
 def options_and_commands_to_man(navigator):
@@ -320,3 +347,177 @@ class nbstdin:
             logging.debug("It's likely a huckle library use context. Falling back to an assumed doctored io.BytesIO inputstream.")
             for chunk in iter(partial(sys.stdin.read, 16384), b''):
                 yield chunk
+
+def troff_to_text(content, width=80):
+    # Extract the man page title from .TH line
+    title_match = re.search(r'\.TH\s+(\S+)\s+(\S+)', content)
+    if title_match:
+        name = title_match.group(1)
+        section = title_match.group(2)
+        # Format header like col -b output (left-aligned, middle, right-aligned)
+        name_section = f"{name}({section})"
+        centered_text = "User Commands"  # Match the col -b text
+        # Calculate spacing to position the elements properly using tabs
+        header = f"{name_section}\t\t\t{centered_text}\t\t\t{name_section}"
+        # Footer format from col -b example - right-aligned only
+        footer = f"\t\t\t\t\t\t\t\t\t{name_section}"
+    else:
+        header = ""
+        footer = ""
+
+    # Initialize result with header
+    result = [header, ""] if header else []
+
+    # Process the content line by line
+    lines = content.split('\n')
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+
+        # Process .SH (section header)
+        if line.startswith('.SH'):
+            # Add only a single blank line before section header
+            if result and result[-1] != "":  # Only add if the last line isn't already blank
+                result.append("")
+            section_name = line[4:].strip().strip('"')
+            result.append(section_name)
+            i += 1
+
+            # Process the content until the next .SH or end
+            section_content = []
+            paragraph_lines = []
+
+            while i < len(lines):
+                current = lines[i].strip()
+
+                # Check for next section header
+                if current.startswith('.SH'):
+                    break
+
+                # Process subsection header (.SS)
+                if current.startswith('.SS'):
+                    # Process any accumulated content before the subsection
+                    if paragraph_lines:
+                        # Join paragraph lines and then wrap
+                        para_text = ' '.join(paragraph_lines)
+                        # Width for wrapped text is the total width minus the indentation
+                        wrapped_lines = textwrap.wrap(para_text, width=width-7)
+                        for wrapped_line in wrapped_lines:
+                            result.append(f"       {wrapped_line}")
+                        result.append("")
+                        paragraph_lines = []
+
+                    # Add only a single blank line before subsection header
+                    if result and result[-1] != "":  # Only add if the last line isn't already blank
+                        result.append("")
+                    # Add the subsection header
+                    subsection_name = current[4:].strip().strip('"')
+                    result.append(f"   {subsection_name}")
+                    i += 1
+                    continue
+
+                # Process indented paragraph (.IP)
+                if current.startswith('.IP'):
+                    # Process any accumulated content before the .IP
+                    if paragraph_lines:
+                        para_text = ' '.join(paragraph_lines)
+                        wrapped_lines = textwrap.wrap(para_text, width=width-7)
+                        for wrapped_line in wrapped_lines:
+                            result.append(f"       {wrapped_line}")
+                        paragraph_lines = []
+
+                    # Add blank line before .IP entry
+                    result.append("")
+
+                    # Extract the item name
+                    item_match = re.search(r'\.IP\s+"([^"]+)"', current)
+                    if item_match:
+                        item_name = item_match.group(1)
+                    else:
+                        item_name = current[3:].strip().strip('"')
+
+                    # Format for col -b style IP entries - less indentation, all the way to left margin
+                    result.append(f"       {item_name}")
+                    i += 1
+
+                    # Collect the description lines
+                    desc_text = []
+                    while i < len(lines) and not (lines[i].strip().startswith('.') and 
+                                               not lines[i].strip().startswith('.br') and 
+                                               not lines[i].strip().startswith('.sp')):
+                        if lines[i].strip().startswith('.sp'):
+                            # Handle paragraph breaks
+                            if desc_text:
+                                # Wrap and add description with deeper indentation
+                                wrapped_desc = textwrap.wrap(' '.join(desc_text), width=width-14)
+                                for wrapped_line in wrapped_desc:
+                                    result.append(f"              {wrapped_line}")
+                                result.append("")
+                                desc_text = []
+                        elif lines[i].strip().startswith('.br'):
+                            # Handle line breaks
+                            if desc_text:
+                                wrapped_desc = textwrap.wrap(' '.join(desc_text), width=width-14)
+                                for wrapped_line in wrapped_desc:
+                                    result.append(f"              {wrapped_line}")
+                                desc_text = []
+                        else:
+                            # Regular text
+                            if not lines[i].strip().startswith('.'):
+                                desc_text.append(lines[i].strip())
+                        i += 1
+
+                    # Process the final description block
+                    if desc_text:
+                        wrapped_desc = textwrap.wrap(' '.join(desc_text), width=width-14)
+                        for wrapped_line in wrapped_desc:
+                            result.append(f"              {wrapped_line}")
+
+                    continue
+
+                # Handle paragraph breaks (.sp)
+                if current.startswith('.sp'):
+                    if paragraph_lines:
+                        para_text = ' '.join(paragraph_lines)
+                        wrapped_lines = textwrap.wrap(para_text, width=width-7)
+                        for wrapped_line in wrapped_lines:
+                            result.append(f"       {wrapped_line}")
+                        result.append("")
+                        paragraph_lines = []
+                    i += 1
+                    continue
+
+                # Handle line breaks (.br)
+                if current.startswith('.br'):
+                    if paragraph_lines:
+                        para_text = ' '.join(paragraph_lines)
+                        wrapped_lines = textwrap.wrap(para_text, width=width-7)
+                        for wrapped_line in wrapped_lines:
+                            result.append(f"       {wrapped_line}")
+                        paragraph_lines = []
+                    i += 1
+                    continue
+
+                # Regular text (not a directive)
+                if not current.startswith('.'):
+                    paragraph_lines.append(current)
+
+                i += 1
+
+            # Process any remaining section content
+            if paragraph_lines:
+                para_text = ' '.join(paragraph_lines)
+                wrapped_lines = textwrap.wrap(para_text, width=width-7)
+                for wrapped_line in wrapped_lines:
+                    result.append(f"       {wrapped_line}")
+
+            continue
+
+        i += 1
+
+    # Add footer with empty line before it
+    if footer:
+        result.append("")
+        result.append(footer)
+
+    return '\n'.join(result)

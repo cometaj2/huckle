@@ -1,4 +1,4 @@
-.TH HUCKLE 1 "FEBRUARY 2017" Linux "User Manuals"
+.TH HUCKLE 1
 .SH NAME
 huckle \- A generic hypertext command line interface (HCLI) client
 .SH SYNOPSIS
@@ -17,7 +17,6 @@ By default huckle installs itself in a user's home directory (i.e. ~), however t
 .sp
 CLI aliases are directly invoked by name if the HCLI entry scripts are locatable in your shell PATH.
 See 'huckle env' for details to make your environment configuration more permanent.
-.sp
 .SH COMMANDS
 .IP "env"
 This outputs the HCLI entry scripts path to export to enable direct HCLI execution by name (i.e. <cliname>. Equivalent to huckle cli run <cliname>).
@@ -65,7 +64,6 @@ This would also succeed if multiple words must be passed as a parameter:
 echo '$$'| hc -j 'connect me'
 .sp
 echo '$$'| hc -j "connect me"
-.sp
 .IP "cli ls"
 Lists all the installed CLIs.
 .IP "cli config <cliname>"
@@ -102,24 +100,25 @@ log = <skip | log>
 .br
 log.level = <info | debug | warning | error | critical>
 .br
+help = <text | man>
+.br
 .SH AUTHENTICATION
 Huckle supports three authentication modes:
-.PP
+.sp
 - No Authentication - See auth.mode under EXAMPLE CONFIGURATION FILE.
 .br
 - HTTP Basic Authentication - See auth.mode and auth.user.profile under EXAMPLE CONFIGURATION FILE.
 .br
 - HCOAK (HCLI Core API Key Authentication) - See auth.mode and auth.apikey.profile under EXAMPLE CONFIGURATION FILE.
-.PP
+.sp
 A user created credentials file is expected under $HUCKLE_HOME/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
-.PP
 .SS HUCKLE VS KEYRING
 Huckle makes available two credential helpers: huckle, and keyring; see credential.helper under EXAMPLE CONFIGURATION FILE.
-.PP
+.sp
 The huckle credential helper simply works with a $HUCKLE_HOME/.huckle/etc/<cliname>/credentials plaintext file. It is not particularly secure, but is otherwise convenient and can be made sufficiently secure if the user's environment is made sufficiently secure.
-.PP
+.sp
 The keyring credential helper makes use of the keyring library which defaults to a recommended backend. The following are supported by default:
-.PP
+.sp
 - macOS Keychain
 .br
 - Freedesktop Secret Service supports many DE including GNOME (requires secretstorage)
@@ -127,9 +126,9 @@ The keyring credential helper makes use of the keyring library which defaults to
 - KDE4 & KDE5 KWallet (requires dbus)
 .br
 - Windows Credential Locker
-.PP
+.sp
 See https://pypi.org/project/keyring/ for the full range or supported features and to understand how to setup 3rd party or custom storage backends.
-.PP
+.sp
 Both HTTP Basic Authentication and HCOAK Authentication are supported via the use of [profile] in a credentials file, as referenced by auth.user.profile or auth.apikey.profile; see EXAMPLE CREDENTIALS FILE and EXAMPLE CONFIGURATION FILE.
 .SS EXAMPLE CREDENTIALS FILE
 [default]
@@ -137,19 +136,18 @@ Both HTTP Basic Authentication and HCOAK Authentication are supported via the us
 username = <username>
 .br
 password = <password>
-.PP
+.sp
 [anotherprofile]
 .br
 username = <anotherusername>
 .br
 password = <anotherpassword>
-.PP
+.sp
 [user_apikeyprofile]
 .br
 keyid = <apikeyid>
 .br
 apikey = <apikey>
-.PP
 .SH EXAMPLE CONFIGURATION FILE
 [default]
 .br
@@ -166,7 +164,6 @@ auth.mode = <skip | basic | hcoak>
 auth.user.profile = <credentials profile (section name)>
 .br
 auth.apikey.profile = <credentials profile (section name)>
-.br
 .SH EXAMPLE
 huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
 .sp

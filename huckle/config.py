@@ -64,6 +64,9 @@ def parse_common_configuration():
                 if name == "log.level":
                     global log_level
                     log_level = value
+                if name == "help":
+                    global help_mode
+                    help_mode = value
     else:
         error = f"huckle: no common configuration {common_config_file_path} available."
         raise Exception(error)
@@ -199,6 +202,7 @@ def init_common_configuration():
     parser.read_file(StringIO(u"[default]"))
     parser.set("default", "log", "skip")
     parser.set("default", "log.level", "info")
+    parser.set("default", "help", "text")
 
     with open(common_config_file_path, "w") as config:
         parser.write(config)

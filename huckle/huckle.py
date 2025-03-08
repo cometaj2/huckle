@@ -4,6 +4,7 @@ from huckle.auth import credential
 import sys
 import shlex
 import io
+from subprocess import call
 
 from huckle import package
 from huckle import hclinav
@@ -40,6 +41,10 @@ def navigate(argv):
     for i, x in enumerate(argv[1:]):
         nav = hclinav.traverse_argument(nav, x)
 
+        if type(nav) == tuple:
+            def generator():
+                yield nav
+            return generator()
         if i == length - 1:
             return hclinav.traverse_execution(nav)
 
@@ -151,7 +156,18 @@ def __execute_cli(commands=None):
                 return huckle_help()
 
         elif argv[1] == "help":
-            return hclinav.display_man_page(config.huckle_manpage_path)
+            if config.help_mode == "text":
+                with open(config.huckle_manpage_path, "r") as f:
+
+                    text = f.read()
+                    def generator():
+                        yield ('stdout', hclinav.troff_to_text(text).encode('utf-8'))
+
+                    return generator()
+                f.close()
+            elif config.help_mode == "man":
+                call(["man", config.huckle_manpage_path])
+                sys.exit(0)
 
         else:
             return huckle_help()
@@ -172,7 +188,18 @@ def __execute_cli(commands=None):
             return generator()
 
         elif argv[1] == "help":
-            return hclinav.display_man_page(config.huckle_manpage_path)
+            if config.help_mode == "text":
+                with open(config.huckle_manpage_path, "r") as f:
+
+                    text = f.read()
+                    def generator():
+                        yield ('stdout', hclinav.troff_to_text(text).encode('utf-8'))
+
+                    return generator()
+                f.close()
+            elif config.help_mode == "man":
+                call(["man", config.huckle_manpage_path])
+                sys.exit(0)
 
         else:
             return huckle_help()
