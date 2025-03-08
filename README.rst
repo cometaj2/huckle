@@ -85,7 +85,7 @@ huckle cli run \<cliname>
 \<cliname> ... help
 
     The reserved "help" command can be used anywhere in a command line sequence to have huckle generate
-    a man page from the last successfully received HCLI Document. This helps with CLI exploration.
+    man page like documentation from the last successfully received HCLI Document. This helps with CLI exploration.
 
 huckle help
 
