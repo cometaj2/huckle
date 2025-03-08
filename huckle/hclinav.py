@@ -350,6 +350,12 @@ class nbstdin:
 
 def troff_to_text(content, width=80):
 
+    # Helper function to handle troff escape characters
+    def process_escapes(text):
+        # Generic rule: remove backslash before any character
+        text = re.sub(r'\\(.)', r'\1', text)
+        return text
+
     # Extract the man page title from .TH line
     title_match = re.search(r'\.TH\s+(\S+)\s+(\S+)', content)
     if title_match:
@@ -392,7 +398,7 @@ def troff_to_text(content, width=80):
             # Add only a single blank line before section header
             if result and result[-1] != "":  # Only add if the last line isn't already blank
                 result.append("")
-            section_name = line[4:].strip().strip('"')
+            section_name = process_escapes(line[4:].strip().strip('"'))
             result.append(section_name)
             i += 1
 
@@ -424,7 +430,7 @@ def troff_to_text(content, width=80):
                     if result and result[-1] != "":  # Only add if the last line isn't already blank
                         result.append("")
                     # Add the subsection header
-                    subsection_name = current[4:].strip().strip('"')
+                    subsection_name = process_escapes(current[4:].strip().strip('"'))
                     result.append(f"   {subsection_name}")
                     i += 1
                     continue
@@ -445,9 +451,9 @@ def troff_to_text(content, width=80):
                     # Extract the item name
                     item_match = re.search(r'\.IP\s+"([^"]+)"', current)
                     if item_match:
-                        item_name = item_match.group(1)
+                        item_name = process_escapes(item_match.group(1))
                     else:
-                        item_name = current[3:].strip().strip('"')
+                        item_name = process_escapes(current[3:].strip().strip('"'))
 
                     # Format for col -b style IP entries - less indentation, all the way to left margin
                     result.append(f"       {item_name}")
@@ -513,7 +519,9 @@ def troff_to_text(content, width=80):
 
                 # Regular text (not a directive)
                 if not current.startswith('.'):
-                    paragraph_lines.append(current)
+                    # Process escape characters
+                    processed_text = process_escapes(current)
+                    paragraph_lines.append(processed_text)
 
                 i += 1
 
