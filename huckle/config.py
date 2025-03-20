@@ -67,6 +67,9 @@ def parse_common_configuration():
                 if name == "help":
                     global help_mode
                     help_mode = value
+                if name == "protocol.mismatch.timeout":
+                    global protocol_mismatch_timeout
+                    protocol_mismatch_timeout = value
     else:
         error = f"huckle: no common configuration {common_config_file_path} available."
         raise Exception(error)
@@ -163,18 +166,27 @@ def create_common_configuration():
     return
 
 # creates a configuration file for a named cli
-def create_configuration(cli, url):
+def create_configuration(cli, url, description):
     global credentials_file_path
     credentials_file_path = dot_huckle_config + "/" + cli + "/credentials"
     config_file_folder = dot_huckle_config + "/" + cli
     config_file = config_file_folder + "/config"
-    create_folder(config_file_folder)
+
+    try:
+        create_folder(config_file_folder)
+    except Exception as e:
+        error = repr(e)
+        logging.error(error)
 
     if not os.path.exists(config_file):
-        create_file(config_file)
-        init_configuration(cli, url)
-        create_folder(cli_manpage_path + "/huckle." + cli)
-        alias_cli(cli)
+        try:
+            create_file(config_file)
+            init_configuration(cli, url, description)
+            create_folder(cli_manpage_path + "/huckle." + cli)
+            alias_cli(cli)
+        except Exception as e:
+            error = repr(e)
+            logging.error(error)
     else:
         error = f"huckle: the configuration for {cli} already exists. leaving the existing configuration untouched."
         raise Exception(error)
@@ -203,12 +215,13 @@ def init_common_configuration():
     parser.set("default", "log", "skip")
     parser.set("default", "log.level", "info")
     parser.set("default", "help", "text")
+    parser.set("default", "protocol.mismatch.timeout", "5")
 
     with open(common_config_file_path, "w") as config:
         parser.write(config)
 
 # initializes the configuration file of a given cli (initialized when a cli "created")
-def init_configuration(cli, url):
+def init_configuration(cli, url, description):
     global credentials_file_path
     credentials_file_path = dot_huckle_config + "/" + cli + "/credentials"
 
@@ -221,6 +234,7 @@ def init_configuration(cli, url):
     else:
         parser.set("default", "url", url)
 
+    parser.set("default", "description", description)
     parser.set("default", "ssl.verify", "verify")
     parser.set("default", "url.pinning", "dynamic")
     parser.set("default", "credential.helper", "huckle")
@@ -238,23 +252,71 @@ def is_configured(file_path, contains):
     else:
         return False
 
+def get_description(config_path):
+    parser = ConfigParser()
+    parser.read(config_path)
+
+    description = ""
+    if parser.has_section("default"):
+        for section_name in parser.sections():
+            for name, value in parser.items("default"):
+                if name == "description":
+                    return value
+
+    return ""
+
 # list all the installed clis
 def list_clis():
     def generator():
         try:
             files = [f for f in listdir(dot_huckle_scripts) if isfile(join(dot_huckle_scripts, f))]
+
             # Handle empty list case first
             if not files:
                 yield ('stdout', b'')
                 return
 
+            # Find the longest CLI name for padding calculation
+            longest_name = max(len(f) for f in files) if files else 0
+            # Set column width with exactly 2 spaces after the longest name
+            column_width = longest_name + 2
+
+            # Calculate terminal width (fallback to 80 if can't determine)
+            terminal_width = 80
+            try:
+                import shutil
+                terminal_width = shutil.get_terminal_size().columns
+            except:
+                pass  # Use default 80 if we can't get the terminal width
+
+            # Leave some space for the HCLI column and spacing
+            desc_max_width = terminal_width - column_width - 2
+
+            # Format and output header
+            yield ('stdout', f"{'HCLI':<{column_width}}DESCRIPTION\n".encode('utf-8'))
+
             # Output all but last item with newlines
             for f in files[:-1]:
-                yield ('stdout', f"{f}\n".encode('utf-8'))
+                config_path = dot_huckle_config + "/" + f + "/config"
+                description = get_description(config_path)
+
+                # Truncate description if needed to fit in terminal
+                if desc_max_width > 10 and len(description) > desc_max_width:
+                    description = description[:desc_max_width-3] + "..."
+
+                yield ('stdout', f"{f:<{column_width}}{description}\n".encode('utf-8'))
 
             # Last item without newline
             if files:
-                yield ('stdout', f"{files[-1]}".encode('utf-8'))
+                f = files[-1]
+                config_path = dot_huckle_config + "/" + f + "/config"
+                description = get_description(config_path)
+
+                # Truncate description if needed to fit in terminal
+                if desc_max_width > 10 and len(description) > desc_max_width:
+                    description = description[:desc_max_width-3] + "..."
+
+                yield ('stdout', f"{f:<{column_width}}{description}".encode('utf-8'))
 
         except Exception as e:
             error = f"huckle: error listing clis: {str(e)}"
@@ -272,6 +334,10 @@ def remove_cli(cli):
             os.remove(script_path)
             shutil.rmtree(config_path)
             yield ('stdout', b'')
+        elif path.exists(config_path):
+            shutil.rmtree(config_path)
+            error = f"huckle: {cli} was not installed, however some configuration remained and is now cleanly deleted."
+            raise Exception(error)
         else:
             error = f"huckle: {cli} is not installed."
             raise Exception(error)

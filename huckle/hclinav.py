@@ -59,6 +59,40 @@ def navigator(root, apiname):
 #         credentials = credential.CredentialManager()
 #         s.auth = authenticator.HCOAKBearerAuth(*(credentials.hcoak_find()))
 
+#     # Ensure root URL has proper scheme
+#     if not root.lower().startswith(('http://', 'https://')):
+#         # Add default http:// if no scheme is specified
+#         root = 'http://' + root
+#         logging.debug(f"huckle: no scheme specified, using: {root}")
+
+    # For HTTPS URLs, add a fixed timeout to prevent indefinite stalling
+    if root.lower().startswith('https://'):
+        parsed_url = urlparse(root)
+        hostname = parsed_url.netloc.split(':')[0]
+        port = parsed_url.port or 443
+
+        try:
+            # Make a simple HEAD request with a short timeout
+            # This will quickly reveal if HTTPS is working
+            response = s.head(root, timeout=5)
+            # If we get here, HTTPS is working fine
+        except requests.exceptions.SSLError:
+            # SSL errors mean the server is responding but has certificate issues
+            # This is not a protocol mismatch, so continue
+            pass
+        except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout) as e:
+            # Connection errors or timeouts might indicate protocol mismatch
+            # If it's "connection reset" or similar, server is responding somehow
+            error_str = str(e).lower()
+            if "timed out" in error_str or "connection aborted" in error_str:
+                # These specific errors often indicate protocol mismatch
+                logging.warning("huckle: https connection appears to be stalled - possible protocol mismatch")
+                http_url = root.replace('https://', 'http://', 1)
+                error_msg = (f"{config.cliname}: https connection attempt stalled. "
+                            f"The server at {hostname} may not support https. "
+                            f"Try using {http_url}")
+                raise Exception(error_msg)
+
     nav = Navigator.hal(root=root, apiname=apiname, session=s)
 
     return nav
@@ -142,7 +176,14 @@ def install(url):
     if version == "1.0":
         cli = nav()["name"]
 
-        yield from config.create_configuration(cli, url)
+        # Extract description from the section where name is "name"
+        description = ""
+        for section in nav().get("section", []):
+            if section.get("name") == "name":
+                description = section.get("description")
+                break
+
+        yield from config.create_configuration(cli, url, description)
     else:
         configurations = []
         for k, z in enumerate(nav.links()["cli"]):
@@ -340,12 +381,12 @@ class nbstdin:
     def read(self):
         try:
             f = os.fdopen(sys.stdin.fileno(), 'rb', 0)
-            logging.debug("It's likely a real command line environment stdin inputstream.")
+            logging.debug("huckle: It's likely a real command line environment stdin inputstream.")
             with f as fis:
                 for chunk in iter(partial(fis.read, 16384), b''):
                     yield chunk
         except Exception as e:
-            logging.debug("It's likely a huckle library use context. Falling back to an assumed doctored io.BytesIO inputstream.")
+            logging.debug("huckle: It's likely a huckle library use context. Falling back to an assumed doctored io.BytesIO inputstream.")
             for chunk in iter(partial(sys.stdin.read, 16384), b''):
                 yield chunk
 

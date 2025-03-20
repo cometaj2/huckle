@@ -23,15 +23,16 @@ This outputs the HCLI entry scripts path to export to enable direct HCLI executi
 .sp
 "eval $(huckle env)" can be setup in ~/.bashrc, ~/.bash_profile or ~/.profile to ensure the path is always loaded on shell start.
 .IP "cli install <url>"
-This attempts to install/auto configure a CLI if provided with the root URL of an HCLI API. If successful, the CLI
+This attempts to install/auto configure a CLI if provided with a convenience wrapper URL, or the root URL of an HCLI API. If successful, the CLI
 can be invoked by name.
 .sp
-- Its entry script is located under $HUCKLE_HOME/.huckle/bin/<cliname> (huckle created).
-.br
-- Its configuration is located under $HUCKLE_HOME/.huckle/etc/<cliname>/config (huckle created). See EXAMPLE HCLI CONFIGURATION FILE.
+For a localhost deployment, the convenience wrapper would likely be accessible on something like "localhost:port" or "ip:port".
 .sp
-Note that an existing configuration file is left alone if the command is run multiple times
-for the same CLI.
+- Installed HCLI entry script are located under $HUCKLE_HOME/.huckle/bin/<cliname> (huckle created).
+.br
+- Installed HCLI configuration is located under $HUCKLE_HOME/.huckle/etc/<cliname>/config (huckle created). See EXAMPLE HCLI CONFIGURATION FILE.
+.sp
+Note that an existing configuration file is left alone if the command is run multiple times for the same CLI.
 .IP "cli rm <cliname>"
 Removes an installed CLI.
 .IP "cli flush <cliname>"
