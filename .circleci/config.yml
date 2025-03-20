@@ -37,7 +37,7 @@ jobs:
           ls
           pip install --upgrade pip
           pip install --upgrade pytest
-          pip install --upgrade --force-reinstall setuptools
+          pip install --upgrade --force-reinstall "setuptools>=67.0.0"
           pip install hcli_core
           pip install gunicorn==23.0.0
           pip install keyrings.alt[file]
