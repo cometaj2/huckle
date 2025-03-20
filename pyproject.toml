@@ -8,7 +8,7 @@ dynamic = ["version", "dependencies"]
 description = "A CLI, and python library, that can act as an impostor for any CLI expressed through hypertext command line interface (HCLI) semantics."
 readme = "README.rst"
 authors = [{name = "Jeff Michaud", email = "cometaj2@proton.me"}]
-license = "MIT"
+license = {text = "MIT"}
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
