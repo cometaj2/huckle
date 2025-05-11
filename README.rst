@@ -24,9 +24,9 @@ You can access a simple example HCLI service to play with huckle on http://hcli.
 
 The HCLI Internet-Draft [2] is a work in progress by the author and 
 the current implementation leverages hal+json alongside a static form of ALPS
-(semantic profile) [3] to help enable widespread cross media-type support.
+semantic profile [3] to help enable widespread cross media-type support.
 
-Help shape huckle and HCLI on the discussion list [4] or by raising issues on github!
+Help shape huckle and HCLI on Discord [4] or by raising issues on github!
 
 [1] http://hcli.io
 
@@ -34,7 +34,7 @@ Help shape huckle and HCLI on the discussion list [4] or by raising issues on gi
 
 [3] http://alps.io
 
-[4] https://groups.google.com/forum/#!forum/huck-hypermedia-unified-cli-with-a-kick
+[4] https://discord.gg/H2VeFSgXv2
 
 Install Python, pip and huckle
 ------------------------------
@@ -94,8 +94,9 @@ huckle help
 Python Library - Basic Usage
 ----------------------------
 
-Here's a basic flask PWA example that incorporates huckle usage as a python library to get data
-from an HCLI data aggregation service called 'hleg' running locally on port 9000 and a jsonf HCLI hosted on hcli.io.
+Here's a bit of flask web frontend logic from haillo (`<https://github.com/cometaj2/haillo/haillo.py>`_) that 
+incorporates huckle usage as a python library to get data from an HCLI AI Chat application called 
+'hai' (`<https://github.com/cometaj2/hcli_hai>`_).
 
 .. code-block:: python
 
@@ -106,13 +107,46 @@ from an HCLI data aggregation service called 'hleg' running locally on port 9000
     import sys
     import io
     import traceback
-
-    from huckle import cli
-    from flask import Flask, render_template, send_file, jsonify, Response
+    import contextlib
+    import urllib3
+    import time
+    from huckle import cli, stdin
+    from flask import Flask, render_template, send_file, jsonify, Response, redirect, url_for, request, render_template_string
+    import subprocess
+    import ast
 
     logging = logger.Logger()
     logging.setLevel(logger.INFO)
 
+    app = None
+
+
+    def get_chat_list():
+        try:
+            chunks = cli("hai ls --json")
+            json_string = ""
+            for dest, chunk in chunks:
+                if dest == 'stdout':
+                    json_string += chunk.decode()
+            chats = json.loads(json_string)
+            # Sort the list with most recent dates first
+            sorted_chats = sorted(chats, key=lambda x: x['update_time'], reverse=True)
+            return sorted_chats
+        except Exception as error:
+            logging.error(f"Error getting chat list: {error}")
+            return []
+
+    def parse_context(context_str):
+        try:
+            context_data = json.loads(context_str)
+            return {
+                'messages': context_data.get('messages', []),
+                'name': context_data.get('name', ''),
+                'title': context_data.get('title', '')
+            }
+        except json.JSONDecodeError as e:
+            logging.error(f"Error parsing context JSON: {e}")
+            return {'messages': [], 'name': '', 'title': ''}
 
     def webapp():
         app = Flask(__name__)
@@ -120,40 +154,251 @@ from an HCLI data aggregation service called 'hleg' running locally on port 9000
         @app.route('/')
         def index():
             try:
-                chunks = cli("huckle --version")
+                # Get the current context
+                chunks = cli("hai context --json")
+                context_str = ""
                 for dest, chunk in chunks:
                     if dest == 'stdout':
-                        logging.info(chunk.decode().rstrip())
+                        context_str += chunk.decode()
 
-                try:
-                    cli("huckle cli install http://127.0.0.1:8000")
-                except:
-                    pass
+                # Get chat list for sidebar
+                chats = get_chat_list()
 
-                logging.info("Refreshing legislation information...")
-                chunks = cli("hleg ls")
-
-                json_string = ""
+                # Get model in use
+                chunks = cli(f"hai model --json")
+                model = ""
                 for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk)
                     if dest == 'stdout':
-                        json_string += chunk.decode()
-                data = json.loads(json_string)
-                return render_template('table.html', bills=data)
+                        model += chunk.decode()
 
+                # Convert to a python list
+                model = ast.literal_eval(model)[0]
+
+                # Get models list
+                chunks = cli(f"hai model ls --json")
+                models = ""
+                for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk)
+                    if dest == 'stdout':
+                        models += chunk.decode()
+
+                # Convert to a python list
+                models = ast.literal_eval(models)
+
+                # Parse the context into structured data
+                context_data = parse_context(context_str)
+
+                popup_message = request.args.get('popup')  # Get from query param
+                return render_template('index.html',
+                                        messages=context_data['messages'],
+                                        name=context_data['name'],
+                                        title=context_data['title'],
+                                        chats=chats,
+                                        model=model,
+                                        models=models,
+                                        popup_message=popup_message)
+            except Exception as error:
+                logging.error(traceback.format_exc())
+                return render_template('index.html',
+                                        messages=[],
+                                        name='',
+                                        title='',
+                                        chats=[],
+                                        model=None,
+                                        models=[],
+                                        popup_message=None)
+
+        @app.route('/chat_history')
+        def chat_history():
+            try:
+                # Get chat list for sidebar
+                chats = get_chat_list()
+
+                # Get model in use
+                chunks = cli(f"hai model --json")
+                model = ""
+                for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk)
+                    if dest == 'stdout':
+                        model += chunk.decode()
+
+                # Convert to a python list
+                model = ast.literal_eval(model)[0]
+
+                # Get models list
+                chunks = cli(f"hai model ls --json")
+                models = ""
+                for dest, chunk in chunks:  # Now unpacking tuple of (dest, chunk)
+                    if dest == 'stdout':
+                        models += chunk.decode()
+
+                # Convert to a python list
+                models = ast.literal_eval(models)
+
+                popup_message = request.args.get('popup')  # Get from query param
+                return render_template('chat_history.html', chats=chats,
+                                        model=model,
+                                        models=models,
+                                        popup_message=popup_message)
             except Exception as error:
                 logging.error(traceback.format_exc())
 
-            return render_template('table.html', bills="[]")
+            return render_template('chat_history.html', chats=[],
+                                    model=None,
+                                    models=[],
+                                    popup_message=None)
+
+        # We select and set a chat context
+        @app.route('/context/<context_id>')
+        def navigate_context(context_id):
+            try:
+                logging.info("Switching to context_id " + context_id)
+
+                chunks = cli(f"hai set {context_id}")
+                stderr_output = ""
+                stdout_output = ""
+                for dest, chunk in chunks:
+                    if dest == 'stderr':
+                        stderr_output += chunk.decode()
+                    elif dest == 'stdout':
+                        stdout_output += chunk.decode()
+
+                if stderr_output:
+                    logging.error(f"{stderr_output}")
+                    return redirect(url_for('index', popup=f"{stderr_output}"))
+
+                return redirect(url_for('index'))
+            except Exception as error:
+                logging.error(f"Context switch failed: {error}")
+                logging.error(traceback.format_exc())
+                return redirect(url_for('index'))
+
+        # We delete a chat context with hai rm
+        @app.route('/context/<context_id>', methods=['POST'])
+        def delete_context(context_id):
+            try:
+                logging.info("Removing context_id " + context_id)
+
+                chunks = cli(f"hai rm {context_id}")
+                for dest, chunk in chunks:
+                    pass
+
+                return redirect(url_for('index'))
+            except Exception as error:
+                logging.error(f"Context deletion failed: {error}")
+                logging.error(traceback.format_exc())
+                return redirect(url_for('index'))
+
+        # We stream chat data to hai
+        @app.route('/chat', methods=['POST'])
+        def chat():
+            try:
+                message = request.form.get('message')
+                logging.info("Sending message to selected model...")
+                stream = io.BytesIO(message.encode('utf-8'))
+
+                with stdin(stream):
+                    chunks = cli(f"hai")
+                    stderr_output = ""
+                    stdout_output = ""
+                    for dest, chunk in chunks:
+                        if dest == 'stderr':
+                            stderr_output += chunk.decode()
+                        elif dest == 'stdout':
+                            stdout_output += chunk.decode()
+
+                    if stderr_output:
+                        logging.error(f"{stderr_output}")
+                        return redirect(url_for('index', popup=f"{stderr_output}"))
+
+                return redirect(url_for('index'))
+            except Exception as error:
+                logging.error(f"Context switch failed: {error}")
+                logging.error(traceback.format_exc())
+                return redirect(url_for('index'))
+
+        # We set the model with hai model set
+        @app.route('/set_model', methods=['POST'])
+        def set_model():
+            try:
+                model = request.form.get('model')
+                logging.info(f"Setting model to {model}")
+
+                chunks = cli(f"hai model set {model}")
+                for dest, chunk in chunks:
+                    pass
+
+                return redirect(url_for('index'))
+            except Exception as error:
+                logging.error(f"Model switch failed: {error}")
+                logging.error(traceback.format_exc())
+                return redirect(url_for('index'))
+
+        # We create a new hai chat context with hai new
+        @app.route('/new_chat', methods=['POST'])
+        def new_chat():
+            try:
+                chunks = cli("hai new")
+                stderr_output = ""
+                stdout_output = ""
+                for dest, chunk in chunks:
+                    if dest == 'stderr':
+                        stderr_output += chunk.decode()
+                    elif dest == 'stdout':
+                        stdout_output += chunk.decode()
+
+                if stderr_output:
+                    logging.error(f"{stderr_output}")
+                    return redirect(url_for('index', popup=f"{stderr_output}"))
+
+                return redirect(url_for('index'))
+            except Exception as error:
+                logging.error(f"New chat creation failed: {error}")
+                logging.error(traceback.format_exc())
+                return redirect(url_for('index'))
+
+        # We start vibing
+        @app.route('/vibestart', methods=['POST'])
+        def vibe_start():
+            try:
+                chunks = cli("hai vibe start")
+                for dest, chunk in chunks:
+                    pass
+
+                return redirect(url_for('index'))
+            except Exception as error:
+                logging.error(f"Vibing failed: {error}")
+                logging.error(traceback.format_exc())
+                return redirect(url_for('index'))
+
+        # We stop vibing
+        @app.route('/vibestop', methods=['POST'])
+        def vibe_stop():
+            try:
+                chunks = cli("hai vibe stop")
+                for dest, chunk in chunks:
+                    pass
+
+                return redirect(url_for('index'))
+            except Exception as error:
+                logging.error(f"Vibing failed: {error}")
+                logging.error(traceback.format_exc())
+                return redirect(url_for('index'))
+
+        @app.route('/vibe_status', methods=['GET'])
+        def vibe_status():
+            chunks = cli("hai vibe status")
+            status_str = ""
+            for dest, chunk in chunks:
+                if dest == 'stdout':
+                    status_str += chunk.decode()
+            return status_str
 
         @app.route('/manifest.json')
         def serve_manifest():
             return app.send_static_file('manifest.json')
 
-        @app.route('/sw.js')
-        def serve_sw():
-            return app.send_static_file('sw.js')
-
         return app
+
+    app = webapp()
 
 Configuration
 -------------
@@ -184,7 +429,7 @@ Supports
 
     - hal+json
 
-- Automatic man page generation with the "help" command, anywhere in a CLI.
+- Automatic man page like documentation generation with the "help" command, anywhere in a CLI.
 
 - Command line execution responses for
 
@@ -212,15 +457,16 @@ Supports
 
 - Customizable logging and log level configuration for debugging and for stderr messages.
 
-- HCLI configuration and credentials management via huckle commands
+- Huckle HCLI configuration and credentials management via huckle commands
 
 - Keyring as credential helper (see `<https://github.com/jaraco/keyring>`_)
 
+- Configurable text only or man page help output to help support python library use (no man pages)
+
 To Do
 -----
-- Fork restnavigator repo or otherwise adjust to use restnavigator with requests (single http client instead of two)
 
-- Support help docs output in the absence of man pages (e.g. git-bash on Windows)
+- Fork restnavigator repo or otherwise adjust to use restnavigator with requests (single http client instead of two)
 
 - Support HCLI version 1.0 semantics for: 
 
@@ -265,7 +511,7 @@ To Do
 
 - Support multipart/form-data for very large uploads (see requests-toolbelt)
 
-- Support HCLI nativization
+- Support HCLI nativization as outlined in the HCLI specification
 
 - Support better help output for python library use
 
@@ -274,6 +520,8 @@ To Do
 - Support full in memory configuration use to avoid filesystem files in a python library use context
 
 - Add circleci tests for python library use (input and output streaming)
+
+- Add configuration to support auth throughout (HCLI + API) or only against the final API calls
 
 Bugs
 ----

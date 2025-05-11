@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.7.2]
+- Update outdated README entries in support and to do sections, and point to new Discord community
+- Fix troff_to_text that would mishandle lines starting with .B
+
+## [5.7.1]
+- Fix missing .B inline handling for huckle help in troff_to_text
+
 ## [5.7.0]
 - Fix an edge case that would not yield a clean removal of a partially installed hcli (straggling configuration)
 - Fix protocol mismatch failure to avoid indefinite stalling (e.g. explicitly requesting for https against an http server)

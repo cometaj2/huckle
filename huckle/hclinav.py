@@ -443,6 +443,14 @@ def troff_to_text(content, width=None):
     while i < len(lines):
         line = lines[i].strip()
 
+        if line.startswith('.B'):
+            # For top-level .B directives, collect them as part of the next regular text
+            # (we don't append to result yet)
+            bold_text = line[2:].strip()
+            i += 1
+            # Continue processing to find any text that should follow this bold text
+            continue
+
         # Process .SH (section header)
         if line.startswith('.SH'):
             # Add only a single blank line before section header
@@ -462,6 +470,14 @@ def troff_to_text(content, width=None):
                 # Check for next section header
                 if current.startswith('.SH'):
                     break
+
+                if current.startswith('.B'):
+                    # Instead of creating a new line, add the bold text to the paragraph lines
+                    bold_text = current[2:].strip()
+                    if bold_text:
+                        paragraph_lines.append(bold_text)
+                    i += 1
+                    continue
 
                 # Process subsection header (.SS)
                 if current.startswith('.SS'):
