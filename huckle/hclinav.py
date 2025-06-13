@@ -156,11 +156,11 @@ def traverse_execution(nav):
                 nav = tempnav["cli"][0]
                 return flexible_executor(nav.uri, method)
     except KeyError:
-        error = config.cliname + ": " + "command/parameter confusion. try escaping parameter: e.g., \\\"param\\\" or \\\'param\\\'."
+        error = config.cliname + ": " + "command/parameter confusion. try escaping parameter: e.g., \\\"param\\\" or \\\'param\\\'.\n"
         error += for_help()
         raise Exception(error)
 
-    error = config.cliname + ": " + "unable to execute."
+    error = config.cliname + ": " + "unable to execute.\n"
     error += for_help()
     raise Exception(error)
 

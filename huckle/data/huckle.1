@@ -190,8 +190,8 @@ huckle cli config jsonf url.pinning pin
 .sp
 huckle cli config hco credential.helper keyring
 .sp
-tr -d '\\n' < passwordfile | huckle cli credential hco admin
+huckle cli credential hco admin <<< $PASSWORD
 .sp
-tr -d '\\n' < passwordfile | tee >(hco passwd admin) | huckle cli credential hco admin
+hco passwd admin <<< $NEWPASSWORD
 .sp
 huckle --version
