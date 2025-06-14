@@ -3,10 +3,7 @@
 huckle \- A generic hypertext command line interface (HCLI) client
 .SH SYNOPSIS
 .B huckle
-{ --version |
-[ -n ]
-.I <commands>
-}
+[--version | -n] { env | cli { install <url> | rm <cliname> | flush <cliname> | run <cliname> [arg] ... [help] | ls | config <cliname> [<key> <value>]] | credential <cliname> <user>} } | help }
 .SH DESCRIPTION
 .B huckle
 is a generic HCLI client, CLI, and python library, that can be used with any API that presents

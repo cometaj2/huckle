@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.7.4]
+- Fix to output to terminal closer to nroff -man -rLL=$(tput cols)n ./huckle/data/huckle.1
+- Fix troff_to_text output to support .B under .IP while respecting paragraph indentation
+- Fix to avoid outputting a blank line before the first occuring .IP under .SH or .SS
+- Fix huckle synopsis to align to man page style conventions
+
 ## [5.7.3]
 - Add carriage return after parameter confusion and unable to execute error messages
 - Update README to include safer here string password credential assignment example

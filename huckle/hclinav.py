@@ -445,16 +445,14 @@ def troff_to_text(content, width=None):
 
         if line.startswith('.B'):
             # For top-level .B directives, collect them as part of the next regular text
-            # (we don't append to result yet)
             bold_text = line[2:].strip()
             i += 1
-            # Continue processing to find any text that should follow this bold text
             continue
 
         # Process .SH (section header)
         if line.startswith('.SH'):
             # Add only a single blank line before section header
-            if result and result[-1] != "":  # Only add if the last line isn't already blank
+            if result and result[-1] != "":
                 result.append("")
             section_name = process_escapes(line[4:].strip().strip('"'))
             result.append(section_name)
@@ -463,6 +461,7 @@ def troff_to_text(content, width=None):
             # Process the content until the next .SH or end
             section_content = []
             paragraph_lines = []
+            is_first_ip = True  # Flag to track first .IP in section
 
             while i < len(lines):
                 current = lines[i].strip()
@@ -472,7 +471,6 @@ def troff_to_text(content, width=None):
                     break
 
                 if current.startswith('.B'):
-                    # Instead of creating a new line, add the bold text to the paragraph lines
                     bold_text = current[2:].strip()
                     if bold_text:
                         paragraph_lines.append(bold_text)
@@ -481,29 +479,24 @@ def troff_to_text(content, width=None):
 
                 # Process subsection header (.SS)
                 if current.startswith('.SS'):
-                    # Process any accumulated content before the subsection
                     if paragraph_lines:
-                        # Join paragraph lines and then wrap
                         para_text = ' '.join(paragraph_lines)
-                        # Width for wrapped text is the total width minus the indentation
                         wrapped_lines = textwrap.wrap(para_text, width=width-7)
                         for wrapped_line in wrapped_lines:
                             result.append(f"       {wrapped_line}")
                         result.append("")
                         paragraph_lines = []
 
-                    # Add only a single blank line before subsection header
-                    if result and result[-1] != "":  # Only add if the last line isn't already blank
+                    if result and result[-1] != "":
                         result.append("")
-                    # Add the subsection header
                     subsection_name = process_escapes(current[4:].strip().strip('"'))
                     result.append(f"   {subsection_name}")
                     i += 1
+                    is_first_ip = True  # Reset flag for new subsection
                     continue
 
                 # Process indented paragraph (.IP)
                 if current.startswith('.IP'):
-                    # Process any accumulated content before the .IP
                     if paragraph_lines:
                         para_text = ' '.join(paragraph_lines)
                         wrapped_lines = textwrap.wrap(para_text, width=width-7)
@@ -511,48 +504,57 @@ def troff_to_text(content, width=None):
                             result.append(f"       {wrapped_line}")
                         paragraph_lines = []
 
-                    # Add blank line before .IP entry
-                    result.append("")
+                    # Add blank line before .IP entry only if it's not the first .IP
+                    if not is_first_ip:
+                        result.append("")
 
-                    # Extract the item name
+                    is_first_ip = False  # Update flag after processing first .IP
+
                     item_match = re.search(r'\.IP\s+"([^"]+)"', current)
                     if item_match:
                         item_name = process_escapes(item_match.group(1))
                     else:
                         item_name = process_escapes(current[3:].strip().strip('"'))
 
-                    # Format for col -b style IP entries - less indentation, all the way to left margin
                     result.append(f"       {item_name}")
                     i += 1
 
-                    # Collect the description lines
                     desc_text = []
+                    # Check for .B immediately following .IP
+                    if i < len(lines) and lines[i].strip().startswith('.B'):
+                        bold_text = process_escapes(lines[i].strip()[2:].strip())
+                        if bold_text:
+                            desc_text.append(bold_text)
+                        i += 1
+
                     while i < len(lines) and not (lines[i].strip().startswith('.') and 
                                                not lines[i].strip().startswith('.br') and 
-                                               not lines[i].strip().startswith('.sp')):
+                                               not lines[i].strip().startswith('.sp') and
+                                               not lines[i].strip().startswith('.B')):
                         if lines[i].strip().startswith('.sp'):
-                            # Handle paragraph breaks
                             if desc_text:
-                                # Wrap and add description with deeper indentation
                                 wrapped_desc = textwrap.wrap(' '.join(desc_text), width=width-14)
                                 for wrapped_line in wrapped_desc:
                                     result.append(f"              {wrapped_line}")
                                 result.append("")
                                 desc_text = []
                         elif lines[i].strip().startswith('.br'):
-                            # Handle line breaks
+                            if desc_text:
+                                wrapped_desc = textwrap.wrap(' '.join(desc_text), width=width-14)
+                                for wrapped_line in wrapped_desc:
+                                    result.append(f"              {wrapped_line}")
+                                desc_text = []
+                        elif lines[i].strip().startswith('.B'):
                             if desc_text:
                                 wrapped_desc = textwrap.wrap(' '.join(desc_text), width=width-14)
                                 for wrapped_line in wrapped_desc:
                                     result.append(f"              {wrapped_line}")
                                 desc_text = []
                         else:
-                            # Regular text
                             if not lines[i].strip().startswith('.'):
                                 desc_text.append(lines[i].strip())
                         i += 1
 
-                    # Process the final description block
                     if desc_text:
                         wrapped_desc = textwrap.wrap(' '.join(desc_text), width=width-14)
                         for wrapped_line in wrapped_desc:
@@ -560,7 +562,6 @@ def troff_to_text(content, width=None):
 
                     continue
 
-                # Handle paragraph breaks (.sp)
                 if current.startswith('.sp'):
                     if paragraph_lines:
                         para_text = ' '.join(paragraph_lines)
@@ -572,7 +573,6 @@ def troff_to_text(content, width=None):
                     i += 1
                     continue
 
-                # Handle line breaks (.br)
                 if current.startswith('.br'):
                     if paragraph_lines:
                         para_text = ' '.join(paragraph_lines)
@@ -583,15 +583,12 @@ def troff_to_text(content, width=None):
                     i += 1
                     continue
 
-                # Regular text (not a directive)
                 if not current.startswith('.'):
-                    # Process escape characters
                     processed_text = process_escapes(current)
                     paragraph_lines.append(processed_text)
 
                 i += 1
 
-            # Process any remaining section content
             if paragraph_lines:
                 para_text = ' '.join(paragraph_lines)
                 wrapped_lines = textwrap.wrap(para_text, width=width-7)
