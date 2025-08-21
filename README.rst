@@ -531,7 +531,7 @@ Bugs
 Known Issues
 ------------
 
-- If developing using pip editable installs on huckle and/or code referencing huckle as a library, an accidental working directory subfolder named huckle, anywhere you happen to be when executing related code, may prevent huckle from being imported properly as a library. This is a known side effect of PEP660 and import overshadowing on pip editable installs. This can be mitigated by ensuring no such subfolder exists where you are working, or by changing editable installs to compability mode (e.g. pip install -e . --config-settings editable_mode=compat). See https://github.com/pypa/setuptools/issues/3548.
+- If developing using pip editable installs on huckle and/or code referencing huckle as a library, an accidental working directory subfolder named huckle, anywhere you happen to be when executing related code, may prevent huckle from being imported properly as a library. This is a known side effect of PEP660 and import overshadowing on pip editable installs. This can be mitigated by ensuring no such subfolder exists where you are working, and may be by changing editable installs to compability mode (e.g. pip install -e . --config-settings editable_mode=compat). See https://github.com/pypa/setuptools/issues/3548.
 
 .. |build status| image:: https://circleci.com/gh/cometaj2/huckle.svg?style=shield
    :target: https://circleci.com/gh/cometaj2/huckle
