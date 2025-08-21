@@ -43,7 +43,7 @@ Used to invoke a CLI by name, the details of which are otherwise left to API imp
 Note that in certain exceptional cases where a parameter might be passed on the command line, if the parameter value matches exactly an available command,
 huckle will not be able to distinguish between an intent to pass a command or a parameter and will require additional information; notably escapement via backslash double quote or single quote.
 .sp
-Huckle accept lazy parameters (without quotes), and this works most of the time, however if ambiguity arises, additional information must be provided.
+Huckle accepts lazy parameters (without quotes); this works most of the time, however, if ambiguity arises, additional information must be provided.
 .sp
 For example, assuming an "hc" HCLI, an hc "connect" command and otherwise valid "-j" option; the following will fail:
 .sp

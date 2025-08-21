@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.7.5]
+- Add information about import overshadowing for pip editable installs
+- Fix huckle docs for additional clarity
+
 ## [5.7.4]
 - Fix to output to terminal closer to nroff -man -rLL=$(tput cols)n ./huckle/data/huckle.1
 - Fix troff_to_text output to support .B under .IP while respecting paragraph indentation
