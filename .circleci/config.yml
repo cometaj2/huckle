@@ -7,6 +7,12 @@ workflows:
   main:
     jobs:
       - test:
+          name: "Python 3.14"
+          v: "3.14"
+      - test:
+          name: "Python 3.13"
+          v: "3.13"
+      - test:
           name: "Python 3.12"
           v: "3.12"
       - test:
@@ -18,9 +24,6 @@ workflows:
       - test:
           name: "Python 3.9"
           v: "3.9"
-      - test:
-          name: "Python 3.8"
-          v: "3.8"
 
 jobs:
   test:
@@ -32,17 +35,12 @@ jobs:
       - image: cimg/python:<< parameters.v >>
     steps: &steps
       - checkout
-      - run: |
-          pwd
-          ls
-          pip install --upgrade pip
-          pip install --upgrade pytest
-          pip install --upgrade --force-reinstall "setuptools>=67.0.0"
-          pip install hcli_core
-          pip install gunicorn==23.0.0
-          pip install keyrings.alt[file]
-          python manage.py write-requirements
-          pip install -r requirements.txt
-          pip install -e .
-          python -m pytest -v
+      - run:
+          name: Install tox
+          command: |
+            pip install --upgrade pip
+            pip install tox
 
+      - run:
+          name: Run tox for this Python version
+          command: tox -e py<< parameters.v >>

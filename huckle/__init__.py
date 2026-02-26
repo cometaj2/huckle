@@ -6,8 +6,10 @@
 # as a library, an accidental working directory subfolder named huckle, anywhere you happen
 # to be when executing related code, may prevent huckle from being imported properly as a library.
 # This is a known side effect of PEP660 and import overshadowing on pip editable installs.
-# This can be mitigated by ensuring no such subfolder exists where you are working, and may be by changing
-# editable installs to # compability mode (e.g. pip install -e . --config-settings editable_mode=compat).
+# This can be mitigated by ensuring no such subfolder exists where you are working, and may be mitigated
+# by changing the editable installs to compability mode.
+#
+# (e.g. pip install -e . --config-settings editable_mode=compat).
 #
 # See https://github.com/pypa/setuptools/issues/3548.
 

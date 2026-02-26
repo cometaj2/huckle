@@ -237,7 +237,7 @@ def init_configuration(cli, url, description):
     parser.set("default", "description", description)
     parser.set("default", "ssl.verify", "verify")
     parser.set("default", "url.pinning", "dynamic")
-    parser.set("default", "credential.helper", "huckle")
+    parser.set("default", "credential.helper", "keyring")
     parser.set("default", "auth.mode", "skip")
     parser.set("default", "auth.user.profile", "default")
     parser.set("default", "auth.apikey.profile", "default")
@@ -405,6 +405,26 @@ def update_parameter(cli, parameter, value):
     def generator():
         try:
             parser.set('default', parameter, value)
+            with write_lock(config_file_path):
+                with open(config_file_path, "w") as config:
+                    parser.write(config)
+            yield ('stdout', b'')
+        except Exception as error:
+            error = "huckle: unable to update configuration."
+            raise Exception(error)
+
+    return generator()
+
+# unset a configured parameter
+def unset_parameter(cli, parameter):
+    config_file_path = dot_huckle_config + "/" + cli + "/config"
+    parser = ConfigParser()
+    parser.read(config_file_path)
+
+    def generator():
+        try:
+            if parser.has_section('default') and parser.has_option('default', parameter):
+                parser.remove_option('default', parameter)
             with write_lock(config_file_path):
                 with open(config_file_path, "w") as config:
                     parser.write(config)

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.8.0]
+- Add --unset flag to allow removal of key value pair from a cli's configuration
+- Add support for python 3.13 and 3.14
+- Update tests to make use of tox to get around circleci local execute cage groups v2 issues on linux
+- Update documentation for additional clarity.
+- Update to certifi==2026.1.4, requests==2.32.5, keyring==25.7.0
+- Update to default to credential.helper keyring for improved security
+- Update pytests to to hcli_core 4.0.0 cli usage
+- Remove support for python 3.8
+
 ## [5.7.5]
 - Add information about import overshadowing for pip editable installs
 - Fix huckle docs for additional clarity

@@ -133,7 +133,11 @@ def __execute_cli(commands=None):
             elif len(argv) == 5:
                 return config.get_parameter(argv[3], argv[4])
             elif len(argv) == 6:
-                return config.update_parameter(argv[3], argv[4], argv[5])
+                if sys.argv[4] == "--unset":
+                    return config.unset_parameter(sys.argv[3], sys.argv[5])
+                else:
+                    return config.update_parameter(sys.argv[3], sys.argv[4], sys.argv[5])
+
             else:
                 return huckle_help()
 
