@@ -40,7 +40,7 @@ jobs:
           command: |
             pip install --upgrade pip
             pip install tox
-            git clone https://github.com/cometaj2/hcli_core.git
+            git clone https://github.com/cometaj2/hcli_core.git ~/hcli_core
 
       - run:
           name: Run tox for this Python version
