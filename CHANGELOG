@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update documentation for additional clarity.
 - Update to certifi==2026.1.4, requests==2.32.5, keyring==25.7.0
 - Update to default to credential.helper keyring for improved security
-- Update pytests to to hcli_core 4.0.0 cli usage
+- Update pytests to hcli_core 4.0.0 cli usage
 - Remove support for python 3.8
 
 ## [5.7.5]
