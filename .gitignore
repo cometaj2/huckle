@@ -10,6 +10,5 @@ __pycache__/
 *.so
 *~
 test/__pycache__
-requirements.txt
 credentials.lock
 gunicorn.ctl
