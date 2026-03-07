@@ -137,11 +137,13 @@ def traverse_argument(nav, arg):
                 nav = tempnav["cli"][0]
                 return nav
         except:
-            error = config.cliname + ": " + arg + ": " + "command not found."
+            error = config.cliname + ": " + arg + ": " + "command not found.\n"
+            error += for_help()
             raise Exception(error)
 
         if j == ilength - 1:
-            error = config.cliname + ": " + arg + ": " + "command not found."
+            error = config.cliname + ": " + arg + ": " + "command not found.\n"
+            error += for_help()
             raise Exception(error)
 
 # attempts to traverse through an execution. (only attempted when we've run out of command line arguments to parse)
