@@ -74,7 +74,7 @@ def navigator(root, apiname):
         try:
             # Make a simple HEAD request with a short timeout
             # This will quickly reveal if HTTPS is working
-            response = s.head(root, timeout=5)
+            response = s.head(root, timeout=(5,5))
             # If we get here, HTTPS is working fine
         except requests.exceptions.SSLError:
             # SSL errors mean the server is responding but has certificate issues
