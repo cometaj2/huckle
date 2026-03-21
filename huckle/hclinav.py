@@ -362,7 +362,7 @@ def output_chunks(response):
                 problem_detail = json.loads(response.content)
                 logging.error(problem_detail)
                 error_msg = f"{problem_detail.get('detail', '')}"
-                yield ('stderr', error_msg.encode('utf-8'))
+                yield ('stderr', f"{config.cliname}: {error_msg}".encode('utf-8'))
             except (json.JSONDecodeError, KeyError) as error:
                 raise Exception(error)
         else:

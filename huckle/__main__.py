@@ -78,7 +78,7 @@ def main():
             if not no_newline:
                 if dest == 'stdout' and stdout_bytes_written > 0:
                     sys.stdout.write('\n')
-                elif dest == 'stderr' and sterr_bytes_written > 0:
+                elif dest == 'stderr' and stderr_bytes_written > 0:
                     eprint('\n')
         else:
             error = "huckle: unexpected non-generator type."
