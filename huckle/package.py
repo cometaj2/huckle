@@ -1,7 +1,7 @@
-__version__ = "5.9.0"
+__version__ = "5.9.1"
 dependencies = ["restnavigator==1.0.1",
-                "requests[socks]==2.32.5",
-                "configparser==5.3.0",
+                "requests[socks]==2.34.2",
+                "configparser==7.3.0",
                 "certifi",
-                "portalocker==2.10.1",
+                "portalocker==4.4.2",
                 "keyring==25.7.0"]
